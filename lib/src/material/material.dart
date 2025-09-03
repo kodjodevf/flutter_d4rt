@@ -31,6 +31,7 @@ import 'package:flutter_d4rt/src/material/outlined_button.dart';
 import 'package:flutter_d4rt/src/material/progress_indicator.dart';
 import 'package:flutter_d4rt/src/material/radio.dart';
 import 'package:flutter_d4rt/src/material/scaffold.dart';
+import 'package:flutter_d4rt/src/material/selection_area.dart';
 import 'package:flutter_d4rt/src/material/slider.dart';
 import 'package:flutter_d4rt/src/material/snack_bar.dart';
 import 'package:flutter_d4rt/src/material/switch.dart';
@@ -44,6 +45,8 @@ import 'package:flutter_d4rt/src/material/image.dart';
 import 'package:flutter_d4rt/src/material/form_fields.dart';
 import 'package:flutter_d4rt/src/material/theme.dart';
 import 'package:flutter_d4rt/src/material/theme_data.dart';
+
+// dart format off
 
 void registerMaterialBridges(D4rt interpreter) {
   interpreter.registerBridgedClass(
@@ -368,6 +371,12 @@ void registerMaterialBridges(D4rt interpreter) {
   );
   interpreter.registerBridgedClass(
     getThemeExtensionBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+
+  // Register SelectionArea
+  interpreter.registerBridgedClass(
+    getSelectionAreaBridgingDefinition(),
     'package:flutter/material_.dart',
   );
 }
