@@ -85,10 +85,10 @@ packages:
     dependency: transitive
     description:
       name: d4rt
-      sha256: f731c2027db3e1365fd2162d30a41ccbfe01d8b75901deba5fa167306d2fcf31
+      sha256: "59521e738b85c2db8240775fec9dbeda488d58bf6c1c27198baba54bbe623c5a"
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.4"
+    version: "0.1.5"
   fake_async:
     dependency: transitive
     description:
@@ -116,7 +116,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.0.3"
+    version: "0.0.4"
   flutter_lints:
     dependency: "direct dev"
     description:
