@@ -1,4 +1,7 @@
 # Changelog
+## [0.0.5] - 2025-09-11
+
+- update d4rt dependency to version 0.1.5
 
 ## [0.0.4] - 2025-08-27
 
