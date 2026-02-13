@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_d4rt/src/widgets/framework.dart';
 
 extension Widgets on InterpreterVisitor {
-  toWidgets(Object? object) {
+  dynamic toWidgets(Object? object) {
     if (object is List) {
       List<Widget> children = [];
       for (final child in object) {

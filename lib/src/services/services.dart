@@ -1,6 +1,7 @@
 import 'package:d4rt/d4rt.dart';
 import 'package:flutter_d4rt/src/services/asset_bundle.dart';
 import 'package:flutter_d4rt/src/services/system_services.dart' as system;
+import 'package:flutter_d4rt/src/services/platform_channels.dart';
 
 /// Registers all service bridges with the D4rt interpreter
 void registerServicesBridges(D4rt interpreter) {
@@ -60,6 +61,46 @@ void registerServicesBridges(D4rt interpreter) {
   );
   interpreter.registerBridgedClass(
     system.getApplicationSwitcherDescriptionBridgingDefinition(),
+    'package:flutter/services_.dart',
+  );
+
+  // Register Platform Channels
+  interpreter.registerBridgedClass(
+    getMethodChannelBridgingDefinition(),
+    'package:flutter/services_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getEventChannelBridgingDefinition(),
+    'package:flutter/services_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getBasicMessageChannelBridgingDefinition(),
+    'package:flutter/services_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getMethodCallBridgingDefinition(),
+    'package:flutter/services_.dart',
+  );
+
+  // Register Codecs
+  interpreter.registerBridgedClass(
+    getStandardMethodCodecBridgingDefinition(),
+    'package:flutter/services_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getJSONMethodCodecBridgingDefinition(),
+    'package:flutter/services_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getStringCodecBridgingDefinition(),
+    'package:flutter/services_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getBinaryCodecBridgingDefinition(),
+    'package:flutter/services_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getJSONMessageCodecBridgingDefinition(),
     'package:flutter/services_.dart',
   );
 }

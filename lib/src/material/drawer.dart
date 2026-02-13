@@ -90,3 +90,77 @@ BridgedClass getDrawerHeaderBridgingDefinition() {
     },
   );
 }
+
+/// Returns the BridgedClass for the Flutter UserAccountsDrawerHeader widget.
+BridgedClass getUserAccountsDrawerHeaderBridgingDefinition() {
+  return BridgedClass(
+    nativeType: UserAccountsDrawerHeader,
+    name: 'UserAccountsDrawerHeader',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final key = namedArgs.get<Key?>('key');
+        final decoration = namedArgs.get<Decoration?>('decoration');
+        final margin =
+            namedArgs.get<EdgeInsetsGeometry?>('margin') ??
+            const EdgeInsets.only(bottom: 8.0);
+        final currentAccountPicture = visitor.toWidgets(
+          namedArgs['currentAccountPicture'],
+        );
+        final otherAccountsPictures = namedArgs['otherAccountsPictures'];
+
+        List<Widget>? otherPictures;
+        if (otherAccountsPictures != null) {
+          final interpreted = visitor.toWidgets(otherAccountsPictures);
+          if (interpreted is List) {
+            otherPictures = interpreted.cast<Widget>();
+          }
+        }
+
+        final accountName = visitor.toWidgets(namedArgs['accountName']);
+        final accountEmail = visitor.toWidgets(namedArgs['accountEmail']);
+
+        // Handle onDetailsPressed callback
+        final onDetailsPressed = namedArgs['onDetailsPressed'];
+        VoidCallback? onDetailsPressedCallback;
+        if (onDetailsPressed != null) {
+          if (onDetailsPressed is InterpretedFunction) {
+            onDetailsPressedCallback = () => onDetailsPressed.call(visitor, []);
+          } else if (onDetailsPressed is Function) {
+            onDetailsPressedCallback = onDetailsPressed as VoidCallback?;
+          }
+        }
+
+        final arrowColor = namedArgs.get<Color?>('arrowColor');
+
+        return UserAccountsDrawerHeader(
+          key: key,
+          decoration: decoration,
+          margin: margin,
+          currentAccountPicture: currentAccountPicture,
+          otherAccountsPictures: otherPictures,
+          accountName: accountName,
+          accountEmail: accountEmail,
+          onDetailsPressed: onDetailsPressedCallback,
+          arrowColor: arrowColor ?? Colors.white,
+        );
+      },
+    },
+    getters: {
+      'decoration': (visitor, target) =>
+          (target as UserAccountsDrawerHeader).decoration,
+      'margin': (visitor, target) =>
+          (target as UserAccountsDrawerHeader).margin,
+      'currentAccountPicture': (visitor, target) =>
+          (target as UserAccountsDrawerHeader).currentAccountPicture,
+      'otherAccountsPictures': (visitor, target) =>
+          (target as UserAccountsDrawerHeader).otherAccountsPictures,
+      'accountName': (visitor, target) =>
+          (target as UserAccountsDrawerHeader).accountName,
+      'accountEmail': (visitor, target) =>
+          (target as UserAccountsDrawerHeader).accountEmail,
+      'arrowColor': (visitor, target) =>
+          (target as UserAccountsDrawerHeader).arrowColor,
+      'key': (visitor, target) => (target as UserAccountsDrawerHeader).key,
+    },
+  );
+}

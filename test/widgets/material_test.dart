@@ -553,5 +553,184 @@ void main() {
         expect(widget, isA<Widget>());
       });
     });
+
+    group('Tooltip Widget', () {
+      test('should create Tooltip with message and child', () {
+        const code = '''
+          import 'package:flutter/material.dart';
+
+          Widget build() {
+            return Tooltip(
+              message: 'This is a tooltip',
+              child: ElevatedButton(
+                onPressed: () {},
+                child: Text('Click me'),
+              ),
+            );
+          }
+        ''';
+
+        final widget = interpreter.execute(code, 'build');
+        expect(widget, isA<Tooltip>());
+        final tooltip = widget as Tooltip;
+        expect(tooltip.message, 'This is a tooltip');
+        expect(tooltip.child, isA<ElevatedButton>());
+      });
+
+      test('should create Tooltip with custom properties', () {
+        const code = '''
+          import 'package:flutter/material.dart';
+
+          Widget build() {
+            return Tooltip(
+              message: 'Custom tooltip',
+              height: 50.0,
+              padding: EdgeInsets.all(10.0),
+              margin: EdgeInsets.all(5.0),
+              verticalOffset: 20.0,
+              preferBelow: false,
+              showDuration: Duration(seconds: 2),
+              child: Text('Hover me'),
+            );
+          }
+        ''';
+
+        final widget = interpreter.execute(code, 'build');
+        expect(widget, isA<Tooltip>());
+        final tooltip = widget as Tooltip;
+        expect(tooltip.message, 'Custom tooltip');
+        expect(tooltip.height, 50.0);
+        expect(tooltip.verticalOffset, 20.0);
+        expect(tooltip.preferBelow, false);
+      });
+    });
+
+    group('RefreshIndicator Widget', () {
+      test('should create RefreshIndicator with onRefresh callback', () {
+        const code = '''
+          import 'package:flutter/material.dart';
+
+          Widget build() {
+            return RefreshIndicator(
+              onRefresh: () async {},
+              child: ListView(
+                children: [
+                  ListTile(title: Text('Item 1')),
+                  ListTile(title: Text('Item 2')),
+                ],
+              ),
+            );
+          }
+        ''';
+
+        final widget = interpreter.execute(code, 'build');
+        expect(widget, isA<RefreshIndicator>());
+        final refreshIndicator = widget as RefreshIndicator;
+        expect(refreshIndicator.child, isA<ListView>());
+        expect(refreshIndicator.onRefresh, isNotNull);
+      });
+
+      test('should create RefreshIndicator with custom properties', () {
+        const code = '''
+          import 'package:flutter/material.dart';
+
+          Widget build() {
+            return RefreshIndicator(
+              onRefresh: () async {},
+              displacement: 50.0,
+              edgeOffset: 10.0,
+              color: Colors.red,
+              backgroundColor: Colors.blue,
+              strokeWidth: 3.0,
+              child: Text('Content'),
+            );
+          }
+        ''';
+
+        final widget = interpreter.execute(code, 'build');
+        expect(widget, isA<RefreshIndicator>());
+        final refreshIndicator = widget as RefreshIndicator;
+        expect(refreshIndicator.displacement, 50.0);
+        expect(refreshIndicator.edgeOffset, 10.0);
+        expect(refreshIndicator.strokeWidth, 3.0);
+      });
+    });
+
+    group('DataTable Widget', () {
+      test('should create DataTable with columns and rows', () {
+        const code = '''
+          import 'package:flutter/material.dart';
+
+          Widget build() {
+            return DataTable(
+              columns: [
+                DataColumn(label: Text('Name')),
+                DataColumn(label: Text('Age')),
+              ],
+              rows: [
+                DataRow(cells: [
+                  DataCell(Text('John')),
+                  DataCell(Text('25')),
+                ]),
+              ],
+            );
+          }
+        ''';
+
+        final widget = interpreter.execute(code, 'build');
+        expect(widget, isA<MaterialApp>());
+      });
+
+      test('should create DataTable with sorting', () {
+        const code = '''
+          import 'package:flutter/material.dart';
+
+          Widget build() {
+            return DataTable(
+              columns: [
+                DataColumn(
+                  label: Text('Name'),
+                  onSort: (columnIndex, ascending) {},
+                ),
+              ],
+              rows: [
+                DataRow(cells: [DataCell(Text('Test'))]),
+              ],
+              sortColumnIndex: 0,
+              sortAscending: false,
+            );
+          }
+        ''';
+
+        final widget = interpreter.execute(code, 'build');
+        expect(widget, isA<MaterialApp>());
+      });
+    });
+
+    group('Stepper Widget', () {
+      test('should create Stepper with steps', () {
+        const code = '''
+          import 'package:flutter/material.dart';
+
+          Widget build() {
+            return Stepper(
+              steps: [
+                Step(
+                  title: Text('Step 1'),
+                  content: Text('Content 1'),
+                ),
+                Step(
+                  title: Text('Step 2'),
+                  content: Text('Content 2'),
+                ),
+              ],
+            );
+          }
+        ''';
+
+        final widget = interpreter.execute(code, 'build');
+        expect(widget, isA<MaterialApp>());
+      });
+    });
   });
 }

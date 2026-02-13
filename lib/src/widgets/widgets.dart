@@ -22,6 +22,13 @@ import 'package:flutter_d4rt/src/widgets/feedback.dart' as feedback;
 import 'package:flutter_d4rt/src/widgets/advanced.dart' as advanced;
 import 'package:flutter_d4rt/src/widgets/media_query.dart' as media_query;
 import 'package:flutter_d4rt/src/widgets/scaffold.dart' as scaffold;
+import 'package:flutter_d4rt/src/widgets/hero.dart';
+import 'package:flutter_d4rt/src/widgets/drag_and_drop.dart';
+import 'package:flutter_d4rt/src/widgets/fade_in_image.dart';
+import 'package:flutter_d4rt/src/widgets/safe_area.dart';
+import 'package:flutter_d4rt/src/widgets/tooltip.dart';
+import 'package:flutter_d4rt/src/widgets/ink_well.dart';
+import 'package:flutter_d4rt/src/widgets/selectable_text.dart';
 
 void registerWidgetsBridges(D4rt interpreter) {
   interpreter.registerBridgedClass(
@@ -629,6 +636,44 @@ void registerWidgetsBridges(D4rt interpreter) {
   );
   interpreter.registerBridgedClass(
     getRotationTransitionBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+
+  // Register new widget bridges
+  interpreter.registerBridgedClass(
+    getHeroBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getDraggableBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getDragTargetBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getFadeInImageBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getSafeAreaBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getSliverSafeAreaBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getTooltipWidgetBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getInkWellBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getSelectableTextBridgingDefinition(),
     'package:flutter/widgets_.dart',
   );
 }

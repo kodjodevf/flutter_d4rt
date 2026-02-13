@@ -227,7 +227,8 @@ class FlutterRunInterpreter {
     String functionName, {
     bool useCache = true,
     Map<String, String>? sources,
-    Object? args,
+    List<Object>? positionalArgs,
+    Map<String, Object>? namedArgs,
   }) {
     if (!_isInitialized) {
       throw StateError(
@@ -246,7 +247,8 @@ class FlutterRunInterpreter {
         source: code,
         name: functionName,
         sources: {...preloadedSources, ...?sources},
-        args: args,
+        positionalArgs: positionalArgs,
+        namedArgs: namedArgs,
       );
 
       final widget = _interpreter.visitor!.toWidgets(result);
@@ -646,7 +648,8 @@ class InterpretedWidget extends StatefulWidget {
   ///   'isAdmin': false,
   /// }
   /// ```
-  final Object? args;
+  final List<Object>? positionalArgs;
+  final Map<String, Object>? namedArgs;
 
   const InterpretedWidget({
     super.key,
@@ -656,7 +659,8 @@ class InterpretedWidget extends StatefulWidget {
     this.onError,
     this.useCache = true,
     this.sources,
-    this.args,
+    this.positionalArgs,
+    this.namedArgs,
   });
 
   @override
@@ -706,7 +710,8 @@ class _InterpretedWidgetState extends State<InterpretedWidget> {
         widget.entryPoint,
         useCache: widget.useCache,
         sources: widget.sources,
-        args: widget.args,
+        positionalArgs: widget.positionalArgs,
+        namedArgs: widget.namedArgs,
       );
 
       setState(() {
