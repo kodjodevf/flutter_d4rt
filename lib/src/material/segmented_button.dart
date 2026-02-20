@@ -1,5 +1,6 @@
 import 'package:d4rt/d4rt.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_d4rt/utils/extensions/map.dart';
 import 'package:flutter_d4rt/utils/extensions/widget.dart';
 
 /// Returns the BridgedClass for the Flutter SegmentedButton widget.
@@ -14,18 +15,10 @@ BridgedClass getSegmentedButtonBridgingDefinition() {
         final selected = namedArgs.get<Set>('selected') ?? {};
 
         // Handle onSelectionChanged callback
-        final onSelectionChanged = namedArgs['onSelectionChanged'];
-        void Function(Set<dynamic>)? onSelectionChangedCallback;
-        if (onSelectionChanged != null) {
-          if (onSelectionChanged is InterpretedFunction) {
-            onSelectionChangedCallback = (Set<dynamic> value) {
-              onSelectionChanged.call(visitor, [value]);
-            };
-          } else if (onSelectionChanged is Function) {
-            onSelectionChangedCallback =
-                onSelectionChanged as void Function(Set<dynamic>)?;
-          }
-        }
+        final onSelectionChanged = namedArgs.handleValueCallback<Set<dynamic>>(
+          'onSelectionChanged',
+          visitor,
+        );
 
         final multiSelectionEnabled =
             namedArgs.get<bool?>('multiSelectionEnabled') ?? false;
@@ -40,7 +33,7 @@ BridgedClass getSegmentedButtonBridgingDefinition() {
           key: key,
           segments: segments,
           selected: selected,
-          onSelectionChanged: onSelectionChangedCallback,
+          onSelectionChanged: onSelectionChanged,
           multiSelectionEnabled: multiSelectionEnabled,
           emptySelectionAllowed: emptySelectionAllowed,
           style: style,

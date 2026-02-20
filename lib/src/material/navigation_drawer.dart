@@ -1,5 +1,6 @@
 import 'package:d4rt/d4rt.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_d4rt/utils/extensions/map.dart';
 import 'package:flutter_d4rt/utils/extensions/widget.dart';
 
 /// Returns the BridgedClass for the Flutter NavigationDrawer widget.
@@ -19,17 +20,10 @@ BridgedClass getNavigationDrawerBridgingDefinition() {
         final selectedIndex = namedArgs.get<int?>('selectedIndex') ?? 0;
 
         // Handle onDestinationSelected callback
-        final onDestinationSelected = namedArgs['onDestinationSelected'];
-        void Function(int)? onDestinationSelectedCallback;
-        if (onDestinationSelected != null) {
-          if (onDestinationSelected is InterpretedFunction) {
-            onDestinationSelectedCallback = (int index) =>
-                onDestinationSelected.call(visitor, [index]);
-          } else if (onDestinationSelected is Function) {
-            onDestinationSelectedCallback =
-                onDestinationSelected as void Function(int)?;
-          }
-        }
+        final onDestinationSelected = namedArgs.handleValueCallback<int?>(
+          'onDestinationSelected',
+          visitor,
+        );
 
         final List<Widget> children = [];
         final interpretedChildren = visitor.toWidgets(namedArgs['children']);
@@ -46,7 +40,7 @@ BridgedClass getNavigationDrawerBridgingDefinition() {
           indicatorShape: indicatorShape,
           elevation: elevation,
           selectedIndex: selectedIndex,
-          onDestinationSelected: onDestinationSelectedCallback,
+          onDestinationSelected: onDestinationSelected,
           children: children,
         );
       },

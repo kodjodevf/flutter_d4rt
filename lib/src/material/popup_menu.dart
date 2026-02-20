@@ -3,29 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_d4rt/utils/extensions/map.dart';
 import 'package:flutter_d4rt/utils/extensions/widget.dart';
 
-// Helper functions for callback handling
-void Function(dynamic)? _handleDynamicCallback(
-  InterpreterVisitor visitor,
-  dynamic callback,
-) {
-  if (callback == null) return null;
-  if (callback is InterpretedFunction) {
-    return (dynamic value) => callback.call(visitor, [value]);
-  }
-  return callback as void Function(dynamic)?;
-}
-
-VoidCallback? _handleVoidCallback(
-  InterpreterVisitor visitor,
-  dynamic callback,
-) {
-  if (callback == null) return null;
-  if (callback is InterpretedFunction) {
-    return () => callback.call(visitor, []);
-  }
-  return callback as VoidCallback?;
-}
-
 /// Returns the BridgedClass for the Flutter PopupMenuButton widget.
 BridgedClass getPopupMenuButtonBridgingDefinition() {
   return BridgedClass(
@@ -34,14 +11,11 @@ BridgedClass getPopupMenuButtonBridgingDefinition() {
     constructors: {
       '': (visitor, positionalArgs, namedArgs) {
         final key = namedArgs.get<Key?>('key');
-        final onSelected = _handleDynamicCallback(
+        final onSelected = namedArgs.handleValueCallback<dynamic>(
+          'onSelected',
           visitor,
-          namedArgs['onSelected'],
         );
-        final onCanceled = _handleVoidCallback(
-          visitor,
-          namedArgs['onCanceled'],
-        );
+        final onCanceled = namedArgs.handleVoidCallback('onCanceled', visitor);
         final tooltip = namedArgs.get<String?>('tooltip');
         final elevation = namedArgs.getToDouble('elevation');
         final padding = namedArgs.get<EdgeInsetsGeometry?>('padding');

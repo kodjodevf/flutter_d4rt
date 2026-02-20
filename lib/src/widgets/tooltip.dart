@@ -1,5 +1,6 @@
 import 'package:d4rt/d4rt.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_d4rt/utils/extensions/map.dart';
 import 'package:flutter_d4rt/utils/extensions/widget.dart';
 
 /// Returns the BridgedClass for the Flutter Tooltip widget.
@@ -32,15 +33,10 @@ BridgedClass getTooltipWidgetBridgingDefinition() {
         final child = visitor.toWidgets(namedArgs['child']);
 
         // Handle onTriggered callback
-        final onTriggered = namedArgs['onTriggered'];
-        VoidCallback? onTriggeredCallback;
-        if (onTriggered != null) {
-          if (onTriggered is InterpretedFunction) {
-            onTriggeredCallback = () => onTriggered.call(visitor, []);
-          } else if (onTriggered is Function) {
-            onTriggeredCallback = onTriggered as VoidCallback?;
-          }
-        }
+        final onTriggered = namedArgs.handleVoidCallback(
+          'onTriggered',
+          visitor,
+        );
 
         return Tooltip(
           key: key,
@@ -61,7 +57,7 @@ BridgedClass getTooltipWidgetBridgingDefinition() {
           enableTapToDismiss: enableTapToDismiss,
           triggerMode: triggerMode,
           enableFeedback: enableFeedback,
-          onTriggered: onTriggeredCallback,
+          onTriggered: onTriggered,
           child: child,
         );
       },

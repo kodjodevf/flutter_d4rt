@@ -3,6 +3,7 @@ import 'dart:ui' show BoxHeightStyle, BoxWidthStyle;
 import 'package:d4rt/d4rt.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_d4rt/utils/extensions/map.dart';
 
 /// Returns the BridgedClass for the Flutter SelectableText widget.
 BridgedClass getSelectableTextBridgingDefinition() {
@@ -46,15 +47,7 @@ BridgedClass getSelectableTextBridgingDefinition() {
             TextWidthBasis.parent;
 
         // Handle onTap callback
-        final onTap = namedArgs['onTap'];
-        VoidCallback? onTapCallback;
-        if (onTap != null) {
-          if (onTap is InterpretedFunction) {
-            onTapCallback = () => onTap.call(visitor, []);
-          } else if (onTap is Function) {
-            onTapCallback = onTap as VoidCallback?;
-          }
-        }
+        final onTap = namedArgs.handleVoidCallback('onTap', visitor);
 
         return SelectableText(
           data,
@@ -77,7 +70,7 @@ BridgedClass getSelectableTextBridgingDefinition() {
           selectionWidthStyle: selectionWidthStyle,
           enableInteractiveSelection: enableInteractiveSelection,
           selectionControls: selectionControls,
-          onTap: onTapCallback,
+          onTap: onTap,
           scrollPhysics: scrollPhysics,
           textWidthBasis: textWidthBasis,
         );
@@ -123,15 +116,7 @@ BridgedClass getSelectableTextBridgingDefinition() {
             TextWidthBasis.parent;
 
         // Handle onTap callback
-        final onTap = namedArgs['onTap'];
-        VoidCallback? onTapCallback;
-        if (onTap != null) {
-          if (onTap is InterpretedFunction) {
-            onTapCallback = () => onTap.call(visitor, []);
-          } else if (onTap is Function) {
-            onTapCallback = onTap as VoidCallback?;
-          }
-        }
+        final onTap = namedArgs.handleVoidCallback('onTap', visitor);
 
         return SelectableText.rich(
           textSpan,
@@ -154,7 +139,7 @@ BridgedClass getSelectableTextBridgingDefinition() {
           selectionWidthStyle: selectionWidthStyle,
           enableInteractiveSelection: enableInteractiveSelection,
           selectionControls: selectionControls,
-          onTap: onTapCallback,
+          onTap: onTap,
           scrollPhysics: scrollPhysics,
           textWidthBasis: textWidthBasis,
         );

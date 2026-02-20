@@ -120,15 +120,10 @@ BridgedClass getUserAccountsDrawerHeaderBridgingDefinition() {
         final accountEmail = visitor.toWidgets(namedArgs['accountEmail']);
 
         // Handle onDetailsPressed callback
-        final onDetailsPressed = namedArgs['onDetailsPressed'];
-        VoidCallback? onDetailsPressedCallback;
-        if (onDetailsPressed != null) {
-          if (onDetailsPressed is InterpretedFunction) {
-            onDetailsPressedCallback = () => onDetailsPressed.call(visitor, []);
-          } else if (onDetailsPressed is Function) {
-            onDetailsPressedCallback = onDetailsPressed as VoidCallback?;
-          }
-        }
+        final onDetailsPressed = namedArgs.handleVoidCallback(
+          'onDetailsPressed',
+          visitor,
+        );
 
         final arrowColor = namedArgs.get<Color?>('arrowColor');
 
@@ -140,7 +135,7 @@ BridgedClass getUserAccountsDrawerHeaderBridgingDefinition() {
           otherAccountsPictures: otherPictures,
           accountName: accountName,
           accountEmail: accountEmail,
-          onDetailsPressed: onDetailsPressedCallback,
+          onDetailsPressed: onDetailsPressed,
           arrowColor: arrowColor ?? Colors.white,
         );
       },

@@ -3,18 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_d4rt/utils/extensions/map.dart';
 import 'package:flutter_d4rt/utils/extensions/widget.dart';
 
-// Helper function for bool callback handling
-void Function(bool)? _handleBoolCallback(
-  InterpreterVisitor visitor,
-  dynamic callback,
-) {
-  if (callback == null) return null;
-  if (callback is InterpretedFunction) {
-    return (bool value) => callback.call(visitor, [value]);
-  }
-  return callback as void Function(bool)?;
-}
-
 /// Returns the BridgedClass for the Flutter ExpansionTile widget.
 BridgedClass getExpansionTileBridgingDefinition() {
   return BridgedClass(
@@ -23,9 +11,9 @@ BridgedClass getExpansionTileBridgingDefinition() {
     constructors: {
       '': (visitor, positionalArgs, namedArgs) {
         final key = namedArgs.get<Key?>('key');
-        final onExpansionChanged = _handleBoolCallback(
+        final onExpansionChanged = namedArgs.handleValueCallback<bool>(
+          'onExpansionChanged',
           visitor,
-          namedArgs['onExpansionChanged'],
         );
         final initiallyExpanded =
             namedArgs.get<bool?>('initiallyExpanded') ?? false;

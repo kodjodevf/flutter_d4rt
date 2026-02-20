@@ -27,7 +27,10 @@ BridgedClass getTooltipBridgingDefinition() {
         final showDuration = namedArgs.get<Duration?>('showDuration');
         final triggerMode = namedArgs.get<TooltipTriggerMode?>('triggerMode');
         final enableFeedback = namedArgs.get<bool?>('enableFeedback');
-        final onTriggered = namedArgs.get<VoidCallback?>('onTriggered');
+        final onTriggered = namedArgs.handleVoidCallback(
+          'onTriggered',
+          visitor,
+        );
         final richMessage = namedArgs.get<InlineSpan?>('richMessage');
         final child = visitor.toWidgets(namedArgs['child']);
 
@@ -289,7 +292,10 @@ BridgedClass getDataRowBridgingDefinition() {
         final onSelectChanged = namedArgs.get<ValueChanged<bool?>?>(
           'onSelectChanged',
         );
-        final onLongPress = namedArgs.get<VoidCallback?>('onLongPress');
+        final onLongPress = namedArgs.handleVoidCallback(
+          'onLongPress',
+          visitor,
+        );
         final color = namedArgs.get<MaterialStateProperty<Color?>?>('color');
         final cellsRaw = namedArgs['cells'];
         final cells = cellsRaw is List
@@ -303,7 +309,6 @@ BridgedClass getDataRowBridgingDefinition() {
                 );
               }).toList()
             : <DataCell>[];
-        print('ooo');
         return DataRow(
           key: key,
           selected: selected,
@@ -319,7 +324,10 @@ BridgedClass getDataRowBridgingDefinition() {
         final onSelectChanged = namedArgs.get<ValueChanged<bool?>?>(
           'onSelectChanged',
         );
-        final onLongPress = namedArgs.get<VoidCallback?>('onLongPress');
+        final onLongPress = namedArgs.handleVoidCallback(
+          'onLongPress',
+          visitor,
+        );
         final color = namedArgs.get<MaterialStateProperty<Color?>?>('color');
         final cellsRaw = namedArgs['cells'];
         final cells = cellsRaw is List
@@ -369,11 +377,20 @@ BridgedClass getDataCellBridgingDefinition() {
         }
         final placeholder = namedArgs.get<bool?>('placeholder') ?? false;
         final showEditIcon = namedArgs.get<bool?>('showEditIcon') ?? false;
-        final onTap = namedArgs.get<VoidCallback?>('onTap');
-        final onLongPress = namedArgs.get<VoidCallback?>('onLongPress');
+        final onTap = namedArgs.handleVoidCallback('onTap', visitor);
+        final onLongPress = namedArgs.handleVoidCallback(
+          'onLongPress',
+          visitor,
+        );
         final onTapDown = namedArgs.get<GestureTapDownCallback?>('onTapDown');
-        final onDoubleTap = namedArgs.get<VoidCallback?>('onDoubleTap');
-        final onTapCancel = namedArgs.get<VoidCallback?>('onTapCancel');
+        final onDoubleTap = namedArgs.handleVoidCallback(
+          'onDoubleTap',
+          visitor,
+        );
+        final onTapCancel = namedArgs.handleVoidCallback(
+          'onTapCancel',
+          visitor,
+        );
 
         return DataCell(
           child,

@@ -1,5 +1,6 @@
 import 'package:d4rt/d4rt.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_d4rt/utils/extensions/map.dart';
 import 'package:flutter_d4rt/utils/extensions/widget.dart';
 
 /// Returns the BridgedClass for the Flutter InkWell widget.
@@ -13,71 +14,34 @@ BridgedClass getInkWellBridgingDefinition() {
         final child = visitor.toWidgets(namedArgs['child']);
 
         // Handle onTap callback
-        final onTap = namedArgs['onTap'];
-        VoidCallback? onTapCallback;
-        if (onTap != null) {
-          if (onTap is InterpretedFunction) {
-            onTapCallback = () => onTap.call(visitor, []);
-          } else if (onTap is Function) {
-            onTapCallback = onTap as VoidCallback?;
-          }
-        }
+        final onTap = namedArgs.handleVoidCallback('onTap', visitor);
 
         // Handle onDoubleTap callback
-        final onDoubleTap = namedArgs['onDoubleTap'];
-        VoidCallback? onDoubleTapCallback;
-        if (onDoubleTap != null) {
-          if (onDoubleTap is InterpretedFunction) {
-            onDoubleTapCallback = () => onDoubleTap.call(visitor, []);
-          } else if (onDoubleTap is Function) {
-            onDoubleTapCallback = onDoubleTap as VoidCallback?;
-          }
-        }
+        final onDoubleTap = namedArgs.handleVoidCallback(
+          'onDoubleTap',
+          visitor,
+        );
 
         // Handle onLongPress callback
-        final onLongPress = namedArgs['onLongPress'];
-        VoidCallback? onLongPressCallback;
-        if (onLongPress != null) {
-          if (onLongPress is InterpretedFunction) {
-            onLongPressCallback = () => onLongPress.call(visitor, []);
-          } else if (onLongPress is Function) {
-            onLongPressCallback = onLongPress as VoidCallback?;
-          }
-        }
+        final onLongPress = namedArgs.handleVoidCallback(
+          'onLongPress',
+          visitor,
+        );
 
         // Handle onTapDown callback
-        final onTapDown = namedArgs['onTapDown'];
-        void Function(TapDownDetails)? onTapDownCallback;
-        if (onTapDown != null) {
-          if (onTapDown is InterpretedFunction) {
-            onTapDownCallback = (TapDownDetails details) =>
-                onTapDown.call(visitor, [details]);
-          } else if (onTapDown is Function) {
-            onTapDownCallback = onTapDown as void Function(TapDownDetails)?;
-          }
-        }
+        final onTapDown = namedArgs.handleValueCallback<TapDownDetails>(
+          'onTapDown',
+          visitor,
+        );
 
         // Handle onTapCancel callback
-        final onTapCancel = namedArgs['onTapCancel'];
-        VoidCallback? onTapCancelCallback;
-        if (onTapCancel != null) {
-          if (onTapCancel is InterpretedFunction) {
-            onTapCancelCallback = () => onTapCancel.call(visitor, []);
-          } else if (onTapCancel is Function) {
-            onTapCancelCallback = onTapCancel as VoidCallback?;
-          }
-        }
+        final onTapCancel = namedArgs.handleVoidCallback(
+          'onTapCancel',
+          visitor,
+        );
 
         // Handle onHover callback
-        final onHover = namedArgs['onHover'];
-        void Function(bool)? onHoverCallback;
-        if (onHover != null) {
-          if (onHover is InterpretedFunction) {
-            onHoverCallback = (bool value) => onHover.call(visitor, [value]);
-          } else if (onHover is Function) {
-            onHoverCallback = onHover as void Function(bool)?;
-          }
-        }
+        final onHover = namedArgs.handleValueCallback<bool>('onHover', visitor);
 
         final mouseCursor = namedArgs.get<MouseCursor?>('mouseCursor');
         final focusColor = namedArgs.get<Color?>('focusColor');
@@ -102,12 +66,12 @@ BridgedClass getInkWellBridgingDefinition() {
 
         return InkWell(
           key: key,
-          onTap: onTapCallback,
-          onDoubleTap: onDoubleTapCallback,
-          onLongPress: onLongPressCallback,
-          onTapDown: onTapDownCallback,
-          onTapCancel: onTapCancelCallback,
-          onHover: onHoverCallback,
+          onTap: onTap,
+          onDoubleTap: onDoubleTap,
+          onLongPress: onLongPress,
+          onTapDown: onTapDown,
+          onTapCancel: onTapCancel,
+          onHover: onHover,
           mouseCursor: mouseCursor,
           focusColor: focusColor,
           hoverColor: hoverColor,

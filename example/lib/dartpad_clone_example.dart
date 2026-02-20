@@ -2,13 +2,46 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_d4rt/flutter_d4rt.dart';
 
+/// Flutter DartPad Clone Pro - Version Enrichie
+///
+/// Fonctionnalités principales :
+/// - Historique avec Undo/Redo (Cmd+Z / Cmd+Shift+Z)
+/// - Recherche & Remplacement (Cmd+F)
+/// - Configuration (FontSize, WordWrap, LineNumbers)
+/// - Export du code (Plain Text, JSON)
+/// - 16 samples de code avancés
+/// - Statistiques en temps réel (lignes, mots, caractères)
+/// - Raccourcis clavier complets
+/// - Formatage automatique du code
+/// - Gestion robuste des erreurs
+
 void main() {
   runApp(const DartPadApp());
 }
 
-// Intent for keyboard shortcuts
+// Keyboard shortcuts intents
 class _RunCodeIntent extends Intent {
   const _RunCodeIntent();
+}
+
+class _FormatCodeIntent extends Intent {
+  const _FormatCodeIntent();
+}
+
+class _UndoIntent extends Intent {
+  const _UndoIntent();
+}
+
+class _RedoIntent extends Intent {
+  const _RedoIntent();
+}
+
+class _FindIntent extends Intent {
+  const _FindIntent();
+}
+
+class _SaveIntent extends Intent {
+  const _SaveIntent();
 }
 
 class DartPadApp extends StatelessWidget {
@@ -41,6 +74,7 @@ class DartPadScreen extends StatefulWidget {
 
 class _DartPadScreenState extends State<DartPadScreen> {
   late TextEditingController _codeController;
+  late TextEditingController _searchController;
   String _currentCode = _defaultCode;
   bool _isRunning = false;
   String? _error;
@@ -48,6 +82,26 @@ class _DartPadScreenState extends State<DartPadScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int _currentLine = 1;
   int _currentColumn = 1;
+
+  // History management
+  final List<String> _history = [];
+  int _historyIndex = -1;
+
+  // Search/Replace
+  bool _showSearchBar = false;
+  int _searchResultIndex = 0;
+  List<int> _searchMatches = [];
+
+  // Settings
+  bool _showSettings = false;
+  int _fontSize = 14;
+  bool _wordWrap = true;
+  bool _showLineNumbers = true;
+
+  // Statistics
+  int _characterCount = 0;
+  int _lineCount = 1;
+  int _wordCount = 0;
 
   static const String _defaultCode = '''import 'package:flutter/material.dart';
 
@@ -115,7 +169,12 @@ class _MyWidgetState extends State<MyWidget> {
   void initState() {
     super.initState();
     _codeController = TextEditingController(text: _currentCode);
+    _searchController = TextEditingController();
     _codeController.addListener(_onTextChanged);
+    _searchController.addListener(_onSearchChanged);
+    _history.add(_currentCode);
+    _historyIndex = 0;
+    _updateStatistics();
     _runCode(); // Auto-run on start
   }
 
@@ -123,7 +182,164 @@ class _MyWidgetState extends State<MyWidget> {
     setState(() {
       _currentCode = _codeController.text;
       _updateCursorPosition();
+      _updateStatistics();
+      _trackHistory();
     });
+  }
+
+  void _updateStatistics() {
+    final text = _codeController.text;
+    setState(() {
+      _characterCount = text.length;
+      _lineCount = text.split('\n').length;
+      _wordCount = text.split(RegExp(r'\s+')).where((w) => w.isNotEmpty).length;
+    });
+  }
+
+  void _trackHistory() {
+    if (_historyIndex < _history.length - 1) {
+      _history.removeRange(_historyIndex + 1, _history.length);
+    }
+    if (_history.isEmpty || _history.last != _currentCode) {
+      _history.add(_currentCode);
+      _historyIndex = _history.length - 1;
+    }
+  }
+
+  void _undo() {
+    if (_historyIndex > 0) {
+      _historyIndex--;
+      _codeController.text = _history[_historyIndex];
+      _currentCode = _history[_historyIndex];
+      _updateStatistics();
+    }
+  }
+
+  void _redo() {
+    if (_historyIndex < _history.length - 1) {
+      _historyIndex++;
+      _codeController.text = _history[_historyIndex];
+      _currentCode = _history[_historyIndex];
+      _updateStatistics();
+    }
+  }
+
+  void _onSearchChanged() {
+    _performSearch();
+  }
+
+  void _performSearch() {
+    final searchTerm = _searchController.text.toLowerCase();
+    final codeText = _codeController.text.toLowerCase();
+
+    if (searchTerm.isEmpty) {
+      setState(() {
+        _searchMatches = [];
+        _searchResultIndex = 0;
+      });
+      return;
+    }
+
+    _searchMatches = [];
+    int startIndex = 0;
+
+    while (true) {
+      final index = codeText.indexOf(searchTerm, startIndex);
+      if (index == -1) break;
+      _searchMatches.add(index);
+      startIndex = index + 1;
+    }
+
+    if (_searchMatches.isNotEmpty &&
+        _searchResultIndex >= _searchMatches.length) {
+      _searchResultIndex = 0;
+    }
+
+    setState(() {});
+  }
+
+  void _findNext() {
+    if (_searchMatches.isNotEmpty) {
+      setState(() {
+        _searchResultIndex = (_searchResultIndex + 1) % _searchMatches.length;
+      });
+      _highlightSearchResult();
+    }
+  }
+
+  void _findPrevious() {
+    if (_searchMatches.isNotEmpty) {
+      setState(() {
+        _searchResultIndex =
+            (_searchResultIndex - 1 + _searchMatches.length) %
+            _searchMatches.length;
+      });
+      _highlightSearchResult();
+    }
+  }
+
+  void _highlightSearchResult() {
+    if (_searchMatches.isEmpty) return;
+    final startPos = _searchMatches[_searchResultIndex];
+    final endPos = startPos + _searchController.text.length;
+    _codeController.selection = TextSelection(
+      baseOffset: startPos,
+      extentOffset: endPos,
+    );
+  }
+
+  void _replaceAll() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        final replaceController = TextEditingController();
+        return AlertDialog(
+          title: Text('Replace All'),
+          content: TextField(
+            controller: replaceController,
+            decoration: InputDecoration(
+              labelText: 'Replace with',
+              hintText: 'Replacement text',
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Cancel'),
+            ),
+            FilledButton(
+              onPressed: () {
+                final searchTerm = _searchController.text;
+                final replaceTerm = replaceController.text;
+
+                if (searchTerm.isNotEmpty) {
+                  setState(() {
+                    _codeController.text = _codeController.text.replaceAll(
+                      searchTerm,
+                      replaceTerm,
+                    );
+                    _currentCode = _codeController.text;
+                    _trackHistory();
+                    _updateStatistics();
+                  });
+                }
+                Navigator.pop(context);
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      'Replaced ${_searchMatches.length} occurrences',
+                    ),
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                );
+              },
+              child: Text('Replace All'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _updateCursorPosition() {
@@ -141,6 +357,7 @@ class _MyWidgetState extends State<MyWidget> {
   @override
   void dispose() {
     _codeController.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 
@@ -248,6 +465,67 @@ class _MyWidgetState extends State<MyWidget> {
     );
   }
 
+  void _exportCode() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Export Code'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('What format would you like to export?'),
+            SizedBox(height: 16),
+            SizedBox(
+              width: double.maxFinite,
+              child: Wrap(
+                spacing: 8,
+                children: [
+                  FilledButton.tonal(
+                    onPressed: () {
+                      Clipboard.setData(
+                        ClipboardData(text: _codeController.text),
+                      );
+                      Navigator.pop(context);
+                      _showSnackBar('Code copied as plain text', Colors.green);
+                    },
+                    child: Text('Plain Text'),
+                  ),
+                  FilledButton.tonal(
+                    onPressed: () {
+                      final json =
+                          '{"code": "${_codeController.text.replaceAll('"', '\\"').replaceAll('\n', '\\n')}"}';
+                      Clipboard.setData(ClipboardData(text: json));
+                      Navigator.pop(context);
+                      _showSnackBar('Code copied as JSON', Colors.green);
+                    },
+                    child: Text('JSON'),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('Close'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showSnackBar(String message, Color color) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: color,
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
+
   void _formatCode() {
     try {
       // Simple indentation formatting with improved logic
@@ -258,57 +536,43 @@ class _MyWidgetState extends State<MyWidget> {
       for (String line in lines) {
         final trimmed = line.trim();
 
+        // Skip empty lines
+        if (trimmed.isEmpty) {
+          formattedLines.add('');
+          continue;
+        }
+
         // Handle closing braces first
         if (trimmed.startsWith('}')) {
-          indentLevel = (indentLevel - 1).clamp(0, 20);
+          indentLevel = (indentLevel - 1).clamp(0, 100);
           formattedLines.add('  ' * indentLevel + trimmed);
         }
-        // Handle opening braces
+        // Handle standalone opening braces
+        else if (trimmed == '{') {
+          formattedLines.add('  ' * indentLevel + trimmed);
+          indentLevel++;
+        }
+        // Handle lines ending with opening brace
         else if (trimmed.endsWith('{')) {
           formattedLines.add('  ' * indentLevel + trimmed);
           indentLevel++;
         }
         // Handle other lines
-        else if (trimmed.isNotEmpty) {
+        else {
           formattedLines.add('  ' * indentLevel + trimmed);
-        } else {
-          formattedLines.add('');
         }
       }
 
       setState(() {
         _codeController.text = formattedLines.join('\n');
+        _currentCode = _codeController.text;
+        _trackHistory();
+        _updateStatistics();
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Row(
-            children: [
-              Icon(Icons.auto_fix_high, color: Colors.white, size: 16),
-              SizedBox(width: 8),
-              Text('Code formatted successfully'),
-            ],
-          ),
-          backgroundColor: Colors.blue,
-          duration: Duration(seconds: 1),
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
+      _showSnackBar('Code formatted successfully', Colors.blue);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Row(
-            children: [
-              Icon(Icons.error, color: Colors.white, size: 16),
-              SizedBox(width: 8),
-              Text('Failed to format code'),
-            ],
-          ),
-          backgroundColor: Colors.red,
-          duration: Duration(seconds: 2),
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
+      _showSnackBar('Failed to format code: $e', Colors.red);
     }
   }
 
@@ -396,6 +660,38 @@ class _MyWidgetState extends State<MyWidget> {
             const _RunCodeIntent(),
         LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.enter):
             const _RunCodeIntent(),
+        LogicalKeySet(LogicalKeyboardKey.meta, LogicalKeyboardKey.keyZ):
+            const _UndoIntent(),
+        LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.keyZ):
+            const _UndoIntent(),
+        LogicalKeySet(
+          LogicalKeyboardKey.meta,
+          LogicalKeyboardKey.shift,
+          LogicalKeyboardKey.keyZ,
+        ): const _RedoIntent(),
+        LogicalKeySet(
+          LogicalKeyboardKey.control,
+          LogicalKeyboardKey.shift,
+          LogicalKeyboardKey.keyZ,
+        ): const _RedoIntent(),
+        LogicalKeySet(LogicalKeyboardKey.meta, LogicalKeyboardKey.keyF):
+            const _FindIntent(),
+        LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.keyF):
+            const _FindIntent(),
+        LogicalKeySet(
+          LogicalKeyboardKey.meta,
+          LogicalKeyboardKey.shift,
+          LogicalKeyboardKey.keyF,
+        ): const _FormatCodeIntent(),
+        LogicalKeySet(
+          LogicalKeyboardKey.control,
+          LogicalKeyboardKey.shift,
+          LogicalKeyboardKey.keyF,
+        ): const _FormatCodeIntent(),
+        LogicalKeySet(LogicalKeyboardKey.meta, LogicalKeyboardKey.keyS):
+            const _SaveIntent(),
+        LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.keyS):
+            const _SaveIntent(),
       },
       child: Actions(
         actions: <Type, Action<Intent>>{
@@ -405,18 +701,49 @@ class _MyWidgetState extends State<MyWidget> {
               return null;
             },
           ),
+          _UndoIntent: CallbackAction<_UndoIntent>(
+            onInvoke: (_UndoIntent intent) {
+              _undo();
+              return null;
+            },
+          ),
+          _RedoIntent: CallbackAction<_RedoIntent>(
+            onInvoke: (_RedoIntent intent) {
+              _redo();
+              return null;
+            },
+          ),
+          _FindIntent: CallbackAction<_FindIntent>(
+            onInvoke: (_FindIntent intent) {
+              setState(() => _showSearchBar = !_showSearchBar);
+              return null;
+            },
+          ),
+          _FormatCodeIntent: CallbackAction<_FormatCodeIntent>(
+            onInvoke: (_FormatCodeIntent intent) {
+              _formatCode();
+              return null;
+            },
+          ),
+          _SaveIntent: CallbackAction<_SaveIntent>(
+            onInvoke: (_SaveIntent intent) {
+              _copyCode();
+              return null;
+            },
+          ),
         },
         child: Scaffold(
           key: _scaffoldKey,
           appBar: AppBar(
-            title: const Text('Flutter DartPad Clone'),
+            title: const Text('Flutter DartPad Clone Pro'),
             backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+            elevation: 4,
             actions: [
               IconButton(
                 icon: Icon(
                   _isVerticalSplit ? Icons.view_agenda : Icons.view_column,
                 ),
-                tooltip: 'Toggle Layout',
+                tooltip: 'Toggle Layout (Split orientation)',
                 onPressed: () {
                   setState(() {
                     _isVerticalSplit = !_isVerticalSplit;
@@ -424,9 +751,41 @@ class _MyWidgetState extends State<MyWidget> {
                 },
               ),
               IconButton(
+                icon: const Icon(Icons.history),
+                tooltip: 'History',
+                onPressed: () {
+                  _showSnackBar(
+                    'History: ${_historyIndex + 1}/${_history.length}',
+                    Colors.blue,
+                  );
+                },
+              ),
+              IconButton(
+                icon: const Icon(Icons.undo),
+                tooltip: 'Undo (Cmd+Z)',
+                onPressed: _historyIndex > 0 ? _undo : null,
+              ),
+              IconButton(
+                icon: const Icon(Icons.redo),
+                tooltip: 'Redo (Cmd+Shift+Z)',
+                onPressed: _historyIndex < _history.length - 1 ? _redo : null,
+              ),
+              IconButton(
+                icon: const Icon(Icons.search),
+                tooltip: 'Find & Replace (Cmd+F)',
+                onPressed: () {
+                  setState(() => _showSearchBar = !_showSearchBar);
+                },
+              ),
+              IconButton(
                 icon: const Icon(Icons.copy),
-                tooltip: 'Copy Code (Ctrl+C)',
+                tooltip: 'Copy Code',
                 onPressed: _copyCode,
+              ),
+              IconButton(
+                icon: const Icon(Icons.download),
+                tooltip: 'Export Code',
+                onPressed: _exportCode,
               ),
               IconButton(
                 icon: const Icon(Icons.auto_fix_high),
@@ -434,7 +793,7 @@ class _MyWidgetState extends State<MyWidget> {
                 onPressed: _formatCode,
               ),
               IconButton(
-                icon: const Icon(Icons.code),
+                icon: const Icon(Icons.palette),
                 tooltip: 'Sample Code',
                 onPressed: _showSamples,
               ),
@@ -442,6 +801,11 @@ class _MyWidgetState extends State<MyWidget> {
                 icon: const Icon(Icons.refresh),
                 tooltip: 'Reset to Default',
                 onPressed: _resetCode,
+              ),
+              IconButton(
+                icon: const Icon(Icons.settings),
+                tooltip: 'Settings',
+                onPressed: () => setState(() => _showSettings = !_showSettings),
               ),
               const SizedBox(width: 8),
               FilledButton.icon(
@@ -453,13 +817,15 @@ class _MyWidgetState extends State<MyWidget> {
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
                     : const Icon(Icons.play_arrow),
-                label: Text(_isRunning ? 'Running...' : 'Run (Cmd+Enter)'),
+                label: Text(_isRunning ? 'Running...' : 'Run (Cmd+⏎)'),
               ),
               const SizedBox(width: 16),
             ],
           ),
           body: Column(
             children: [
+              if (_showSearchBar) _buildSearchBar(),
+              if (_showSettings) _buildSettingsPanel(),
               Expanded(
                 child: _isVerticalSplit
                     ? Column(
@@ -481,6 +847,157 @@ class _MyWidgetState extends State<MyWidget> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildSearchBar() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
+        border: Border(
+          bottom: BorderSide(color: Theme.of(context).dividerColor),
+        ),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                hintText: 'Find...',
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                contentPadding: EdgeInsets.symmetric(horizontal: 12),
+              ),
+              onSubmitted: (_) => _findNext(),
+            ),
+          ),
+          SizedBox(width: 8),
+          if (_searchMatches.isNotEmpty)
+            Chip(
+              label: Text('${_searchResultIndex + 1}/${_searchMatches.length}'),
+              backgroundColor: Colors.blue.shade100,
+            ),
+          SizedBox(width: 8),
+          IconButton(
+            icon: Icon(Icons.arrow_upward),
+            onPressed: _searchMatches.isNotEmpty ? _findPrevious : null,
+            tooltip: 'Previous',
+          ),
+          IconButton(
+            icon: Icon(Icons.arrow_downward),
+            onPressed: _searchMatches.isNotEmpty ? _findNext : null,
+            tooltip: 'Next',
+          ),
+          IconButton(
+            icon: Icon(Icons.find_replace),
+            onPressed: _searchMatches.isNotEmpty ? _replaceAll : null,
+            tooltip: 'Replace All',
+          ),
+          IconButton(
+            icon: Icon(Icons.close),
+            onPressed: () => setState(() => _showSearchBar = false),
+            tooltip: 'Close',
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSettingsPanel() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
+        border: Border(
+          bottom: BorderSide(color: Theme.of(context).dividerColor),
+        ),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Wrap(
+              spacing: 24,
+              runSpacing: 16,
+              children: [
+                Column(
+                  children: [
+                    Text(
+                      'Font Size',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 8),
+                    Row(
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.remove),
+                          onPressed: _fontSize > 10
+                              ? () => setState(() => _fontSize--)
+                              : null,
+                        ),
+                        SizedBox(
+                          width: 50,
+                          child: TextField(
+                            textAlign: TextAlign.center,
+                            readOnly: true,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              isDense: true,
+                            ),
+                            controller: TextEditingController(
+                              text: '$_fontSize',
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.add),
+                          onPressed: _fontSize < 32
+                              ? () => setState(() => _fontSize++)
+                              : null,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    Text(
+                      'Word Wrap',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 8),
+                    Switch(
+                      value: _wordWrap,
+                      onChanged: (value) => setState(() => _wordWrap = value),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    Text(
+                      'Line Numbers',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 8),
+                    Switch(
+                      value: _showLineNumbers,
+                      onChanged: (value) =>
+                          setState(() => _showLineNumbers = value),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          IconButton(
+            icon: Icon(Icons.close),
+            onPressed: () => setState(() => _showSettings = false),
+          ),
+        ],
       ),
     );
   }
@@ -545,51 +1062,48 @@ class _MyWidgetState extends State<MyWidget> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Numérotation des lignes
-                Container(
-                  width: 50,
-                  color: Colors.grey[100],
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 48, // Hauteur de la barre d'outils
-                        color: Colors.grey[200],
-                      ),
-                      Expanded(
-                        child: SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: List.generate(
-                              _currentCode.split('\n').length,
-                              (index) => Container(
-                                height: 19.6, // 14 * 1.4 (fontSize * height)
-                                padding: EdgeInsets.only(right: 8),
-                                alignment: Alignment.centerRight,
-                                child: Text(
-                                  '${index + 1}',
-                                  style: TextStyle(
-                                    fontFamily: 'monospace',
-                                    fontSize: 12,
-                                    color: Colors.grey[600],
-                                    height: 1.4,
+                // Line numbers
+                if (_showLineNumbers)
+                  Container(
+                    width: 50,
+                    color: Colors.grey[100],
+                    child: Column(
+                      children: [
+                        Container(height: 48, color: Colors.grey[200]),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: List.generate(
+                                _currentCode.split('\n').length,
+                                (index) => Container(
+                                  height: _fontSize * 1.4,
+                                  padding: EdgeInsets.only(right: 8),
+                                  alignment: Alignment.centerRight,
+                                  child: Text(
+                                    '${index + 1}',
+                                    style: TextStyle(
+                                      fontFamily: 'monospace',
+                                      fontSize: (_fontSize - 2).toDouble(),
+                                      color: Colors.grey[600],
+                                      height: 1.4,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                // Éditeur de code
+                // Code editor
                 Expanded(
                   child: TextField(
                     controller: _codeController,
-                    maxLines: null,
-                    expands: true,
+                    maxLines: _wordWrap ? null : 1,
+                    expands: _wordWrap,
                     onTap: () {
-                      // Mettre à jour la position après un délai pour que la sélection soit mise à jour
                       Future.delayed(
                         Duration(milliseconds: 10),
                         _updateCursorPosition,
@@ -597,7 +1111,7 @@ class _MyWidgetState extends State<MyWidget> {
                     },
                     style: TextStyle(
                       fontFamily: 'monospace',
-                      fontSize: 14,
+                      fontSize: _fontSize.toDouble(),
                       height: 1.4,
                     ),
                     decoration: const InputDecoration(
@@ -707,7 +1221,7 @@ class _MyWidgetState extends State<MyWidget> {
 
   Widget _buildStatusBar() {
     return Container(
-      height: 24,
+      height: 32,
       color: Colors.blueGrey[100],
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: Row(
@@ -715,8 +1229,17 @@ class _MyWidgetState extends State<MyWidget> {
           Icon(Icons.code, size: 16, color: Colors.blueGrey[600]),
           const SizedBox(width: 8),
           Text(
-            'Line $_currentLine, Column $_currentColumn',
+            'Ln $_currentLine, Col $_currentColumn',
             style: TextStyle(fontSize: 12, color: Colors.blueGrey[700]),
+          ),
+          const SizedBox(width: 16),
+          Container(width: 1, color: Colors.blueGrey[300]),
+          const SizedBox(width: 16),
+          Icon(Icons.description, size: 14, color: Colors.blueGrey[600]),
+          const SizedBox(width: 4),
+          Text(
+            'Lines: $_lineCount | Words: $_wordCount | Chars: $_characterCount',
+            style: TextStyle(fontSize: 11, color: Colors.blueGrey[700]),
           ),
           const Spacer(),
           if (_isRunning) ...[
@@ -1390,6 +1913,455 @@ class _MyWidgetState extends State<MyWidget> {
                     child: Text('Reset'),
                   ),
                 ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}''',
+    },
+    {
+      'title': 'Navigation Example',
+      'description': 'Page navigation and routing',
+      'code': '''import 'package:flutter/material.dart';
+
+class MyWidget extends StatelessWidget {
+  const MyWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: HomePage(),
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Home'),
+        backgroundColor: Colors.amber,
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => SecondPage()),
+            );
+          },
+          child: Text('Go to Second Page'),
+        ),
+      ),
+    );
+  }
+}
+
+class SecondPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Second Page'),
+        backgroundColor: Colors.amber,
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text('Back'),
+        ),
+      ),
+    );
+  }
+}''',
+    },
+    {
+      'title': 'Grid Layout Example',
+      'description': 'Grid view with items',
+      'code': '''import 'package:flutter/material.dart';
+
+class MyWidget extends StatelessWidget {
+  const MyWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Grid View'),
+          backgroundColor: Colors.cyan,
+        ),
+        body: GridView.builder(
+          padding: EdgeInsets.all(16),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            crossAxisSpacing: 12,
+            mainAxisSpacing: 12,
+          ),
+          itemCount: 12,
+          itemBuilder: (context, index) {
+            return Container(
+              decoration: BoxDecoration(
+                color: Colors.cyan.withOpacity(0.7),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Center(
+                child: Text(
+                  '\${index + 1}',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}''',
+    },
+    {
+      'title': 'Checkbox & Switch Example',
+      'description': 'User input widgets',
+      'code': '''import 'package:flutter/material.dart';
+
+class MyWidget extends StatefulWidget {
+  const MyWidget({super.key});
+
+  @override
+  State<MyWidget> createState() => _MyWidgetState();
+}
+
+class _MyWidgetState extends State<MyWidget> {
+  bool _isChecked = false;
+  bool _isSwitched = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Input Widgets'),
+          backgroundColor: Colors.pink,
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Checkbox(
+                    value: _isChecked,
+                    onChanged: (value) {
+                      setState(() => _isChecked = value ?? false);
+                    },
+                  ),
+                  Text('Checkbox'),
+                ],
+              ),
+              SizedBox(height: 24),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Switch(
+                    value: _isSwitched,
+                    onChanged: (value) {
+                      setState(() => _isSwitched = value);
+                    },
+                  ),
+                  Text('Toggle'),
+                ],
+              ),
+              SizedBox(height: 24),
+              Text(
+                'Checked: \$_isChecked, Switched: \$_isSwitched',
+                style: TextStyle(fontSize: 16),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}''',
+    },
+    {
+      'title': 'Card & Dialog Example',
+      'description': 'Material design cards and dialogs',
+      'code': '''import 'package:flutter/material.dart';
+
+class MyWidget extends StatelessWidget {
+  const MyWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Cards & Dialogs'),
+          backgroundColor: Colors.lime,
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Card(
+                elevation: 8,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.all(24),
+                  child: Column(
+                    children: [
+                      Icon(Icons.card_giftcard, size: 64, color: Colors.lime),
+                      SizedBox(height: 16),
+                      Text(
+                        'Material Card',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      Text('This is a card with elevation'),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 32),
+              ElevatedButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text('Hello'),
+                      content: Text('This is a dialog'),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Text('OK'),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+                child: Text('Show Dialog'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}''',
+    },
+    {
+      'title': 'Gradient & CustomPaint',
+      'description': 'Advanced styling with gradients',
+      'code': '''import 'package:flutter/material.dart';
+
+class MyWidget extends StatelessWidget {
+  const MyWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Colors.purple, Colors.blue, Colors.cyan],
+            ),
+          ),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 200,
+                  height: 200,
+                  decoration: BoxDecoration(
+                    gradient: RadialGradient(
+                      colors: [Colors.yellow, Colors.orange],
+                    ),
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Gradient',
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}''',
+    },
+    {
+      'title': 'Tab Navigation Example',
+      'description': 'Tab bar with multiple tabs',
+      'code': '''import 'package:flutter/material.dart';
+
+class MyWidget extends StatelessWidget {
+  const MyWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: DefaultTabController(
+        length: 3,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text('Tab Navigation'),
+            backgroundColor: Colors.indigo,
+            bottom: TabBar(
+              tabs: [
+                Tab(icon: Icon(Icons.home), text: 'Home'),
+                Tab(icon: Icon(Icons.search), text: 'Search'),
+                Tab(icon: Icon(Icons.settings), text: 'Settings'),
+              ],
+            ),
+          ),
+          body: TabBarView(
+            children: [
+              Center(child: Text('Home Tab')),
+              Center(child: Text('Search Tab')),
+              Center(child: Text('Settings Tab')),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}''',
+    },
+    {
+      'title': 'Floating Action Button Menu',
+      'description': 'Advanced FAB with menu',
+      'code': '''import 'package:flutter/material.dart';
+
+class MyWidget extends StatefulWidget {
+  const MyWidget({super.key});
+
+  @override
+  State<MyWidget> createState() => _MyWidgetState();
+}
+
+class _MyWidgetState extends State<MyWidget> {
+  bool _isExpanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('FAB Menu'),
+          backgroundColor: Colors.teal,
+        ),
+        body: Center(
+          child: Text('FAB Menu Example'),
+        ),
+        floatingActionButton: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            if (_isExpanded) ...[
+              FloatingActionButton(
+                mini: true,
+                onPressed: null,
+                child: Icon(Icons.edit),
+              ),
+              SizedBox(height: 12),
+              FloatingActionButton(
+                mini: true,
+                onPressed: null,
+                child: Icon(Icons.delete),
+              ),
+              SizedBox(height: 12),
+              FloatingActionButton(
+                mini: true,
+                onPressed: null,
+                child: Icon(Icons.share),
+              ),
+              SizedBox(height: 12),
+            ],
+            FloatingActionButton(
+              onPressed: () {
+                setState(() => _isExpanded = !_isExpanded);
+              },
+              child: Icon(Icons.add),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}''',
+    },
+    {
+      'title': 'Snackbar & Toast Example',
+      'description': 'User notifications with snackbars',
+      'code': '''import 'package:flutter/material.dart';
+
+class MyWidget extends StatelessWidget {
+  const MyWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Snackbars'),
+          backgroundColor: Colors.brown,
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Simple Snackbar'),
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
+                },
+                child: Text('Show Snackbar'),
+              ),
+              SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Snackbar with Action'),
+                      action: SnackBarAction(
+                        label: 'Undo',
+                        onPressed: () {},
+                      ),
+                    ),
+                  );
+                },
+                child: Text('Show with Action'),
               ),
             ],
           ),

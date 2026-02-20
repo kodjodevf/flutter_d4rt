@@ -1,21 +1,10 @@
 import 'package:d4rt/d4rt.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter_d4rt/utils/extensions/map.dart';
 import 'package:flutter_d4rt/utils/extensions/widget.dart';
 
 /// Input and focus management widgets bridging definitions
-
-// Helper functions for callback handling
-void Function(bool)? _handleBoolCallback(
-  InterpreterVisitor visitor,
-  dynamic callback,
-) {
-  if (callback == null) return null;
-  if (callback is InterpretedFunction) {
-    return (bool value) => callback.call(visitor, [value]);
-  }
-  return callback as void Function(bool)?;
-}
 
 KeyEventResult Function(FocusNode, KeyEvent)? _handleKeyEventCallback(
   InterpreterVisitor visitor,
@@ -31,127 +20,6 @@ KeyEventResult Function(FocusNode, KeyEvent)? _handleKeyEventCallback(
   return callback as KeyEventResult Function(FocusNode, KeyEvent)?;
 }
 
-void Function(PointerDownEvent)? _handlePointerDownCallback(
-  InterpreterVisitor visitor,
-  dynamic callback,
-) {
-  if (callback == null) return null;
-  if (callback is InterpretedFunction) {
-    return (PointerDownEvent event) => callback.call(visitor, [event]);
-  }
-  return callback as void Function(PointerDownEvent)?;
-}
-
-void Function(PointerMoveEvent)? _handlePointerMoveCallback(
-  InterpreterVisitor visitor,
-  dynamic callback,
-) {
-  if (callback == null) return null;
-  if (callback is InterpretedFunction) {
-    return (PointerMoveEvent event) => callback.call(visitor, [event]);
-  }
-  return callback as void Function(PointerMoveEvent)?;
-}
-
-void Function(PointerUpEvent)? _handlePointerUpCallback(
-  InterpreterVisitor visitor,
-  dynamic callback,
-) {
-  if (callback == null) return null;
-  if (callback is InterpretedFunction) {
-    return (PointerUpEvent event) => callback.call(visitor, [event]);
-  }
-  return callback as void Function(PointerUpEvent)?;
-}
-
-void Function(PointerHoverEvent)? _handlePointerHoverCallback(
-  InterpreterVisitor visitor,
-  dynamic callback,
-) {
-  if (callback == null) return null;
-  if (callback is InterpretedFunction) {
-    return (PointerHoverEvent event) => callback.call(visitor, [event]);
-  }
-  return callback as void Function(PointerHoverEvent)?;
-}
-
-void Function(PointerCancelEvent)? _handlePointerCancelCallback(
-  InterpreterVisitor visitor,
-  dynamic callback,
-) {
-  if (callback == null) return null;
-  if (callback is InterpretedFunction) {
-    return (PointerCancelEvent event) => callback.call(visitor, [event]);
-  }
-  return callback as void Function(PointerCancelEvent)?;
-}
-
-void Function(PointerPanZoomStartEvent)? _handlePointerPanZoomStartCallback(
-  InterpreterVisitor visitor,
-  dynamic callback,
-) {
-  if (callback == null) return null;
-  if (callback is InterpretedFunction) {
-    return (PointerPanZoomStartEvent event) => callback.call(visitor, [event]);
-  }
-  return callback as void Function(PointerPanZoomStartEvent)?;
-}
-
-void Function(PointerPanZoomUpdateEvent)? _handlePointerPanZoomUpdateCallback(
-  InterpreterVisitor visitor,
-  dynamic callback,
-) {
-  if (callback == null) return null;
-  if (callback is InterpretedFunction) {
-    return (PointerPanZoomUpdateEvent event) => callback.call(visitor, [event]);
-  }
-  return callback as void Function(PointerPanZoomUpdateEvent)?;
-}
-
-void Function(PointerPanZoomEndEvent)? _handlePointerPanZoomEndCallback(
-  InterpreterVisitor visitor,
-  dynamic callback,
-) {
-  if (callback == null) return null;
-  if (callback is InterpretedFunction) {
-    return (PointerPanZoomEndEvent event) => callback.call(visitor, [event]);
-  }
-  return callback as void Function(PointerPanZoomEndEvent)?;
-}
-
-void Function(PointerSignalEvent)? _handlePointerSignalCallback(
-  InterpreterVisitor visitor,
-  dynamic callback,
-) {
-  if (callback == null) return null;
-  if (callback is InterpretedFunction) {
-    return (PointerSignalEvent event) => callback.call(visitor, [event]);
-  }
-  return callback as void Function(PointerSignalEvent)?;
-}
-
-void Function(PointerEnterEvent)? _handlePointerEnterCallback(
-  InterpreterVisitor visitor,
-  dynamic callback,
-) {
-  if (callback == null) return null;
-  if (callback is InterpretedFunction) {
-    return (PointerEnterEvent event) => callback.call(visitor, [event]);
-  }
-  return callback as void Function(PointerEnterEvent)?;
-}
-
-void Function(PointerExitEvent)? _handlePointerExitCallback(
-  InterpreterVisitor visitor,
-  dynamic callback,
-) {
-  if (callback == null) return null;
-  if (callback is InterpretedFunction) {
-    return (PointerExitEvent event) => callback.call(visitor, [event]);
-  }
-  return callback as void Function(PointerExitEvent)?;
-}
-
 // Focus bridging
 BridgedClass getFocusBridgingDefinition() {
   return BridgedClass(
@@ -163,9 +31,9 @@ BridgedClass getFocusBridgingDefinition() {
           key: namedArgs.get<Key?>('key'),
           focusNode: namedArgs['focusNode'] as FocusNode?,
           autofocus: namedArgs['autofocus'] as bool? ?? false,
-          onFocusChange: _handleBoolCallback(
+          onFocusChange: namedArgs.handleValueCallback<bool>(
+            'onFocusChange',
             visitor,
-            namedArgs['onFocusChange'],
           ),
           onKeyEvent: _handleKeyEventCallback(visitor, namedArgs['onKeyEvent']),
           canRequestFocus: namedArgs['canRequestFocus'] as bool? ?? true,
@@ -200,9 +68,9 @@ BridgedClass getFocusScopeBridgingDefinition() {
           key: namedArgs.get<Key?>('key'),
           node: namedArgs['node'] as FocusScopeNode?,
           autofocus: namedArgs['autofocus'] as bool? ?? false,
-          onFocusChange: _handleBoolCallback(
+          onFocusChange: namedArgs.handleValueCallback<bool>(
+            'onFocusChange',
             visitor,
-            namedArgs['onFocusChange'],
           ),
           canRequestFocus: namedArgs['canRequestFocus'] as bool? ?? true,
           skipTraversal: namedArgs['skipTraversal'] as bool? ?? false,
@@ -230,41 +98,44 @@ BridgedClass getListenerBridgingDefinition() {
       '': (visitor, positionalArgs, namedArgs) {
         return Listener(
           key: namedArgs.get<Key?>('key'),
-          onPointerDown: _handlePointerDownCallback(
+          onPointerDown: namedArgs.handleValueCallback<PointerDownEvent>(
+            'onPointerDown',
             visitor,
-            namedArgs['onPointerDown'],
           ),
-          onPointerMove: _handlePointerMoveCallback(
+          onPointerMove: namedArgs.handleValueCallback<PointerMoveEvent>(
+            'onPointerMove',
             visitor,
-            namedArgs['onPointerMove'],
           ),
-          onPointerUp: _handlePointerUpCallback(
+          onPointerUp: namedArgs.handleValueCallback<PointerUpEvent>(
+            'onPointerUp',
             visitor,
-            namedArgs['onPointerUp'],
           ),
-          onPointerHover: _handlePointerHoverCallback(
+          onPointerHover: namedArgs.handleValueCallback<PointerHoverEvent>(
+            'onPointerHover',
             visitor,
-            namedArgs['onPointerHover'],
           ),
-          onPointerCancel: _handlePointerCancelCallback(
+          onPointerCancel: namedArgs.handleValueCallback<PointerCancelEvent>(
+            'onPointerCancel',
             visitor,
-            namedArgs['onPointerCancel'],
           ),
-          onPointerPanZoomStart: _handlePointerPanZoomStartCallback(
+          onPointerPanZoomStart: namedArgs
+              .handleValueCallback<PointerPanZoomStartEvent>(
+                'onPointerPanZoomStart',
+                visitor,
+              ),
+          onPointerPanZoomUpdate: namedArgs
+              .handleValueCallback<PointerPanZoomUpdateEvent>(
+                'onPointerPanZoomUpdate',
+                visitor,
+              ),
+          onPointerPanZoomEnd: namedArgs
+              .handleValueCallback<PointerPanZoomEndEvent>(
+                'onPointerPanZoomEnd',
+                visitor,
+              ),
+          onPointerSignal: namedArgs.handleValueCallback<PointerSignalEvent>(
+            'onPointerSignal',
             visitor,
-            namedArgs['onPointerPanZoomStart'],
-          ),
-          onPointerPanZoomUpdate: _handlePointerPanZoomUpdateCallback(
-            visitor,
-            namedArgs['onPointerPanZoomUpdate'],
-          ),
-          onPointerPanZoomEnd: _handlePointerPanZoomEndCallback(
-            visitor,
-            namedArgs['onPointerPanZoomEnd'],
-          ),
-          onPointerSignal: _handlePointerSignalCallback(
-            visitor,
-            namedArgs['onPointerSignal'],
           ),
           behavior:
               namedArgs['behavior'] as HitTestBehavior? ??
@@ -285,9 +156,18 @@ BridgedClass getMouseRegionBridgingDefinition() {
       '': (visitor, positionalArgs, namedArgs) {
         return MouseRegion(
           key: namedArgs.get<Key?>('key'),
-          onEnter: _handlePointerEnterCallback(visitor, namedArgs['onEnter']),
-          onExit: _handlePointerExitCallback(visitor, namedArgs['onExit']),
-          onHover: _handlePointerHoverCallback(visitor, namedArgs['onHover']),
+          onEnter: namedArgs.handleValueCallback<PointerEnterEvent>(
+            'onEnter',
+            visitor,
+          ),
+          onExit: namedArgs.handleValueCallback<PointerExitEvent>(
+            'onExit',
+            visitor,
+          ),
+          onHover: namedArgs.handleValueCallback<PointerHoverEvent>(
+            'onHover',
+            visitor,
+          ),
           cursor: namedArgs['cursor'] as MouseCursor? ?? MouseCursor.defer,
           opaque: namedArgs['opaque'] as bool? ?? true,
           hitTestBehavior: namedArgs['hitTestBehavior'] as HitTestBehavior?,

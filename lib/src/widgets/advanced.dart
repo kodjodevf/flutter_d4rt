@@ -2,32 +2,10 @@ import 'package:d4rt/d4rt.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_d4rt/utils/double.dart';
+import 'package:flutter_d4rt/utils/extensions/map.dart';
 import 'package:flutter_d4rt/utils/extensions/widget.dart';
 
 /// Advanced display widgets bridging definitions
-
-// Helper functions for callback handling
-void Function()? _handleVoidCallback(
-  InterpreterVisitor visitor,
-  dynamic callback,
-) {
-  if (callback == null) return null;
-  if (callback is InterpretedFunction) {
-    return () => callback.call(visitor, []);
-  }
-  return callback as void Function()?;
-}
-
-void Function(T)? _handleValueCallback<T>(
-  InterpreterVisitor visitor,
-  dynamic callback,
-) {
-  if (callback == null) return null;
-  if (callback is InterpretedFunction) {
-    return (T value) => callback.call(visitor, [value]);
-  }
-  return callback as void Function(T)?;
-}
 
 // Stepper bridging
 BridgedClass getStepperBridgingDefinition() {
@@ -53,15 +31,15 @@ BridgedClass getStepperBridgingDefinition() {
           physics: namedArgs['physics'] as ScrollPhysics?,
           type: namedArgs['type'] as StepperType? ?? StepperType.vertical,
           currentStep: namedArgs['currentStep'] as int? ?? 0,
-          onStepTapped: _handleValueCallback<int>(
+          onStepTapped: namedArgs.handleValueCallback<int>(
+            'onStepTapped',
             visitor,
-            namedArgs['onStepTapped'],
           ),
-          onStepContinue: _handleVoidCallback(
+          onStepContinue: namedArgs.handleVoidCallback(
+            'onStepContinue',
             visitor,
-            namedArgs['onStepContinue'],
           ),
-          onStepCancel: _handleVoidCallback(visitor, namedArgs['onStepCancel']),
+          onStepCancel: namedArgs.handleVoidCallback('onStepCancel', visitor),
           controlsBuilder: namedArgs['controlsBuilder'] == null
               ? null
               : (context, details) {
@@ -141,9 +119,9 @@ BridgedClass getDataTableBridgingDefinition() {
           rows: (namedArgs['rows'] as List? ?? []).cast(),
           sortColumnIndex: namedArgs['sortColumnIndex'] as int?,
           sortAscending: namedArgs['sortAscending'] as bool? ?? true,
-          onSelectAll: _handleValueCallback<bool?>(
+          onSelectAll: namedArgs.handleValueCallback<bool?>(
+            'onSelectAll',
             visitor,
-            namedArgs['onSelectAll'],
           ),
           decoration: namedArgs['decoration'] as Decoration?,
           dataRowColor:
@@ -213,8 +191,13 @@ BridgedClass getDataColumnBridgingDefinition() {
           label: label,
           tooltip: namedArgs['tooltip'] as String?,
           numeric: namedArgs['numeric'] as bool? ?? false,
-          // onSort: _handleValueCallback<bool>(visitor, namedArgs['onSort']),
-          // mouseCursor: namedArgs['mouseCursor'] as MouseCursor?,
+          onSort: (columnIndex, ascending) {
+            namedArgs
+                .handle2ValueCallback<bool, int>('onSort', visitor)
+                ?.call(ascending, columnIndex);
+          },
+          mouseCursor:
+              namedArgs['mouseCursor'] as WidgetStateProperty<MouseCursor?>?,
         );
       },
     },
@@ -237,11 +220,11 @@ BridgedClass getDataRowBridgingDefinition() {
         return DataRow(
           key: namedArgs.get<Key?>('key') as LocalKey?,
           selected: namedArgs['selected'] as bool? ?? false,
-          onSelectChanged: _handleValueCallback<bool?>(
+          onSelectChanged: namedArgs.handleValueCallback<bool?>(
+            'onSelectChanged',
             visitor,
-            namedArgs['onSelectChanged'],
           ),
-          onLongPress: _handleVoidCallback(visitor, namedArgs['onLongPress']),
+          onLongPress: namedArgs.handleVoidCallback('onLongPress', visitor),
           color: namedArgs['color'] as WidgetStateProperty<Color?>?,
           cells: (namedArgs['cells'] as List? ?? []).cast(),
           mouseCursor:
@@ -252,11 +235,11 @@ BridgedClass getDataRowBridgingDefinition() {
         return DataRow.byIndex(
           index: namedArgs['index'] as int?,
           selected: namedArgs['selected'] as bool? ?? false,
-          onSelectChanged: _handleValueCallback<bool?>(
+          onSelectChanged: namedArgs.handleValueCallback<bool?>(
+            'onSelectChanged',
             visitor,
-            namedArgs['onSelectChanged'],
           ),
-          onLongPress: _handleVoidCallback(visitor, namedArgs['onLongPress']),
+          onLongPress: namedArgs.handleVoidCallback('onLongPress', visitor),
           color: namedArgs['color'] as WidgetStateProperty<Color?>?,
           cells: (namedArgs['cells'] as List? ?? []).cast(),
           mouseCursor:
@@ -286,14 +269,14 @@ BridgedClass getDataCellBridgingDefinition() {
           child,
           placeholder: namedArgs['placeholder'] as bool? ?? false,
           showEditIcon: namedArgs['showEditIcon'] as bool? ?? false,
-          onTap: _handleVoidCallback(visitor, namedArgs['onTap']),
-          onLongPress: _handleVoidCallback(visitor, namedArgs['onLongPress']),
-          onTapDown: _handleValueCallback<TapDownDetails>(
+          onTap: namedArgs.handleVoidCallback('onTap', visitor),
+          onLongPress: namedArgs.handleVoidCallback('onLongPress', visitor),
+          onTapDown: namedArgs.handleValueCallback<TapDownDetails>(
+            'onTapDown',
             visitor,
-            namedArgs['onTapDown'],
           ),
-          onDoubleTap: _handleVoidCallback(visitor, namedArgs['onDoubleTap']),
-          onTapCancel: _handleVoidCallback(visitor, namedArgs['onTapCancel']),
+          onDoubleTap: namedArgs.handleVoidCallback('onDoubleTap', visitor),
+          onTapCancel: namedArgs.handleVoidCallback('onTapCancel', visitor),
         );
       },
     },
@@ -314,24 +297,21 @@ BridgedClass getReorderableListViewBridgingDefinition() {
       '': (visitor, positionalArgs, namedArgs) {
         final children = visitor.toWidgets(namedArgs['children']);
         // Handle onReorder callback
-        void Function(int, int) onReorder = (oldIndex, newIndex) {};
-        final onReorderValue = namedArgs['onReorder'];
-        if (onReorderValue is InterpretedFunction) {
-          onReorder = (oldIndex, newIndex) {
-            onReorderValue.call(visitor, [oldIndex, newIndex]);
-          };
-        }
+        final onReorder = namedArgs.handle2ValueCallback<int, int>(
+          'onReorder',
+          visitor,
+        );
 
         return ReorderableListView(
           key: namedArgs.get<Key?>('key'),
-          onReorder: onReorder,
-          onReorderStart: _handleValueCallback<int>(
+          onReorder: onReorder!,
+          onReorderStart: namedArgs.handleValueCallback<int>(
+            'onReorderStart',
             visitor,
-            namedArgs['onReorderStart'],
           ),
-          onReorderEnd: _handleValueCallback<int>(
+          onReorderEnd: namedArgs.handleValueCallback<int>(
+            'onReorderEnd',
             visitor,
-            namedArgs['onReorderEnd'],
           ),
           itemExtent: toDouble(namedArgs['itemExtent']),
           itemExtentBuilder: (index, dimensions) {
@@ -389,26 +369,23 @@ BridgedClass getReorderableListViewBridgingDefinition() {
         }
 
         // Handle onReorder callback
-        void Function(int, int) onReorder = (oldIndex, newIndex) {};
-        final onReorderValue = namedArgs['onReorder'];
-        if (onReorderValue is InterpretedFunction) {
-          onReorder = (oldIndex, newIndex) {
-            onReorderValue.call(visitor, [oldIndex, newIndex]);
-          };
-        }
+        final onReorder = namedArgs.handle2ValueCallback<int, int>(
+          'onReorder',
+          visitor,
+        )!;
 
         return ReorderableListView.builder(
           key: namedArgs.get<Key?>('key'),
           itemBuilder: itemBuilder,
           itemCount: namedArgs['itemCount'] as int,
           onReorder: onReorder,
-          onReorderStart: _handleValueCallback<int>(
+          onReorderStart: namedArgs.handleValueCallback<int>(
+            'onReorderStart',
             visitor,
-            namedArgs['onReorderStart'],
           ),
-          onReorderEnd: _handleValueCallback<int>(
+          onReorderEnd: namedArgs.handleValueCallback<int>(
+            'onReorderEnd',
             visitor,
-            namedArgs['onReorderEnd'],
           ),
           itemExtent: toDouble(namedArgs['itemExtent']),
           itemExtentBuilder: (index, dimensions) {

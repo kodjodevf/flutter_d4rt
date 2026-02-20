@@ -2,6 +2,7 @@ import 'package:d4rt/d4rt.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_d4rt/utils/double.dart';
+import 'package:flutter_d4rt/utils/extensions/list.dart';
 
 /// Wrapper class to handle interpreted instances as TickerProvider
 class _InterpretedTickerProviderWrapper implements TickerProvider {
@@ -216,12 +217,12 @@ BridgedClass getAnimationControllerBridgingDefinition() {
         return null;
       },
       'addListener': (visitor, target, positionalArgs, namedArgs) {
-        final listener = positionalArgs.get<VoidCallback>(0)!;
+        final listener = positionalArgs.handleVoidCallback(0, visitor)!;
         (target as dynamic).addListener(listener);
         return null;
       },
       'removeListener': (visitor, target, positionalArgs, namedArgs) {
-        final listener = positionalArgs.get<VoidCallback>(0)!;
+        final listener = positionalArgs.handleVoidCallback(0, visitor)!;
         (target as dynamic).removeListener(listener);
         return null;
       },

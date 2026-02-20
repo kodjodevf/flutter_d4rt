@@ -2,6 +2,7 @@ import 'package:d4rt/d4rt.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_d4rt/utils/double.dart';
+import 'package:flutter_d4rt/utils/extensions/list.dart';
 import 'package:flutter_d4rt/utils/extensions/map.dart';
 import 'package:flutter_d4rt/utils/extensions/widget.dart';
 
@@ -33,7 +34,7 @@ BridgedClass getAnimatedContainerBridgingDefinition() {
             namedArgs.get<Duration>('duration') ??
             const Duration(milliseconds: 200);
         final curve = namedArgs.get<Curve?>('curve') ?? Curves.linear;
-        final onEnd = namedArgs.get<VoidCallback?>('onEnd');
+        final onEnd = namedArgs.handleVoidCallback('onEnd', visitor);
         final child = visitor.toWidgets(namedArgs['child']);
 
         return AnimatedContainer(
@@ -79,7 +80,7 @@ BridgedClass getAnimatedOpacityBridgingDefinition() {
             namedArgs.get<Duration>('duration') ??
             const Duration(milliseconds: 200);
         final curve = namedArgs.get<Curve?>('curve') ?? Curves.linear;
-        final onEnd = namedArgs.get<VoidCallback?>('onEnd');
+        final onEnd = namedArgs.handleVoidCallback('onEnd', visitor);
         final alwaysIncludeSemantics =
             namedArgs.get<bool?>('alwaysIncludeSemantics') ?? false;
         final child = visitor.toWidgets(namedArgs['child']);
@@ -121,7 +122,7 @@ BridgedClass getAnimatedPaddingBridgingDefinition() {
             namedArgs.get<Duration>('duration') ??
             const Duration(milliseconds: 200);
         final curve = namedArgs.get<Curve?>('curve') ?? Curves.linear;
-        final onEnd = namedArgs.get<VoidCallback?>('onEnd');
+        final onEnd = namedArgs.handleVoidCallback('onEnd', visitor);
         final child = visitor.toWidgets(namedArgs['child']);
 
         return AnimatedPadding(
@@ -158,7 +159,7 @@ BridgedClass getAnimatedAlignBridgingDefinition() {
             namedArgs.get<Duration>('duration') ??
             const Duration(milliseconds: 200);
         final curve = namedArgs.get<Curve?>('curve') ?? Curves.linear;
-        final onEnd = namedArgs.get<VoidCallback?>('onEnd');
+        final onEnd = namedArgs.handleVoidCallback('onEnd', visitor);
         final widthFactor = namedArgs.getToDouble('widthFactor');
         final heightFactor = namedArgs.getToDouble('heightFactor');
         final child = visitor.toWidgets(namedArgs['child']);
@@ -310,7 +311,7 @@ BridgedClass getAnimatedPositionedBridgingDefinition() {
             namedArgs.get<Duration>('duration') ??
             const Duration(milliseconds: 200);
         final curve = namedArgs.get<Curve?>('curve') ?? Curves.linear;
-        final onEnd = namedArgs.get<VoidCallback?>('onEnd');
+        final onEnd = namedArgs.handleVoidCallback('onEnd', visitor);
         final child = visitor.toWidgets(namedArgs['child']);
 
         return AnimatedPositioned(
@@ -398,7 +399,7 @@ BridgedClass getAnimatedRotationBridgingDefinition() {
             namedArgs.get<Duration>('duration') ??
             const Duration(milliseconds: 200);
         final curve = namedArgs.get<Curve?>('curve') ?? Curves.linear;
-        final onEnd = namedArgs.get<VoidCallback?>('onEnd');
+        final onEnd = namedArgs.handleVoidCallback('onEnd', visitor);
         final filterQuality = namedArgs.get<FilterQuality?>('filterQuality');
         final child = visitor.toWidgets(namedArgs['child']);
 
@@ -442,7 +443,7 @@ BridgedClass getAnimatedScaleBridgingDefinition() {
             namedArgs.get<Duration>('duration') ??
             const Duration(milliseconds: 200);
         final curve = namedArgs.get<Curve?>('curve') ?? Curves.linear;
-        final onEnd = namedArgs.get<VoidCallback?>('onEnd');
+        final onEnd = namedArgs.handleVoidCallback('onEnd', visitor);
         final filterQuality = namedArgs.get<FilterQuality?>('filterQuality');
         final child = visitor.toWidgets(namedArgs['child']);
 
@@ -484,7 +485,7 @@ BridgedClass getAnimatedSlideBridgingDefinition() {
             namedArgs.get<Duration>('duration') ??
             const Duration(milliseconds: 200);
         final curve = namedArgs.get<Curve?>('curve') ?? Curves.linear;
-        final onEnd = namedArgs.get<VoidCallback?>('onEnd');
+        final onEnd = namedArgs.handleVoidCallback('onEnd', visitor);
         final child = visitor.toWidgets(namedArgs['child']);
 
         return AnimatedSlide(
@@ -531,7 +532,7 @@ BridgedClass getAnimatedDefaultTextStyleBridgingDefinition() {
             namedArgs.get<Duration>('duration') ??
             const Duration(milliseconds: 200);
         final curve = namedArgs.get<Curve?>('curve') ?? Curves.linear;
-        final onEnd = namedArgs.get<VoidCallback?>('onEnd');
+        final onEnd = namedArgs.handleVoidCallback('onEnd', visitor);
         final child = visitor.toWidgets(namedArgs['child']);
 
         return AnimatedDefaultTextStyle(
@@ -992,12 +993,12 @@ BridgedClass getAnimationBridgingDefinition() {
     nativeNames: ['_AnimatedEvaluation'],
     methods: {
       'addListener': (visitor, target, positionalArgs, namedArgs) {
-        final listener = positionalArgs[0] as VoidCallback;
+        final listener = positionalArgs.handleVoidCallback(0, visitor)!;
         (target as Animation).addListener(listener);
         return null;
       },
       'removeListener': (visitor, target, positionalArgs, namedArgs) {
-        final listener = positionalArgs[0] as VoidCallback;
+        final listener = positionalArgs.handleVoidCallback(0, visitor)!;
         (target as Animation).removeListener(listener);
         return null;
       },

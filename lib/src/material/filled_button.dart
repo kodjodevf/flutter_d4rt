@@ -1,21 +1,7 @@
 import 'package:d4rt/d4rt.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_d4rt/utils/extensions/map.dart';
 import 'package:flutter_d4rt/utils/extensions/widget.dart';
-
-// Helper function for VoidCallback handling
-VoidCallback? _handleVoidCallback(
-  InterpreterVisitor visitor,
-  dynamic callback,
-) {
-  if (callback == null) return null;
-  if (callback is InterpretedFunction) {
-    return () => callback.call(visitor, []);
-  }
-  if (callback is Function) {
-    return callback as VoidCallback?;
-  }
-  return null;
-}
 
 /// Returns the BridgedClass for the Flutter FilledButton widget.
 BridgedClass getFilledButtonBridgingDefinition() {
@@ -25,10 +11,10 @@ BridgedClass getFilledButtonBridgingDefinition() {
     constructors: {
       '': (visitor, positionalArgs, namedArgs) {
         final key = namedArgs.get<Key?>('key');
-        final onPressed = _handleVoidCallback(visitor, namedArgs['onPressed']);
-        final onLongPress = _handleVoidCallback(
+        final onPressed = namedArgs.handleVoidCallback('onPressed', visitor);
+        final onLongPress = namedArgs.handleVoidCallback(
+          'onLongPress',
           visitor,
-          namedArgs['onLongPress'],
         );
         final style = namedArgs.get<ButtonStyle?>('style');
         final focusNode = namedArgs.get<FocusNode?>('focusNode');
@@ -53,10 +39,10 @@ BridgedClass getFilledButtonBridgingDefinition() {
       },
       'icon': (visitor, positionalArgs, namedArgs) {
         final key = namedArgs.get<Key?>('key');
-        final onPressed = _handleVoidCallback(visitor, namedArgs['onPressed']);
-        final onLongPress = _handleVoidCallback(
+        final onPressed = namedArgs.handleVoidCallback('onPressed', visitor);
+        final onLongPress = namedArgs.handleVoidCallback(
+          'onLongPress',
           visitor,
-          namedArgs['onLongPress'],
         );
         final style = namedArgs.get<ButtonStyle?>('style');
         final focusNode = namedArgs.get<FocusNode?>('focusNode');
@@ -83,10 +69,10 @@ BridgedClass getFilledButtonBridgingDefinition() {
       },
       'tonal': (visitor, positionalArgs, namedArgs) {
         final key = namedArgs.get<Key?>('key');
-        final onPressed = _handleVoidCallback(visitor, namedArgs['onPressed']);
-        final onLongPress = _handleVoidCallback(
+        final onPressed = namedArgs.handleVoidCallback('onPressed', visitor);
+        final onLongPress = namedArgs.handleVoidCallback(
+          'onLongPress',
           visitor,
-          namedArgs['onLongPress'],
         );
         final style = namedArgs.get<ButtonStyle?>('style');
         final focusNode = namedArgs.get<FocusNode?>('focusNode');
@@ -111,10 +97,10 @@ BridgedClass getFilledButtonBridgingDefinition() {
       },
       'tonalIcon': (visitor, positionalArgs, namedArgs) {
         final key = namedArgs.get<Key?>('key');
-        final onPressed = _handleVoidCallback(visitor, namedArgs['onPressed']);
-        final onLongPress = _handleVoidCallback(
+        final onPressed = namedArgs.handleVoidCallback('onPressed', visitor);
+        final onLongPress = namedArgs.handleVoidCallback(
+          'onLongPress',
           visitor,
-          namedArgs['onLongPress'],
         );
         final style = namedArgs.get<ButtonStyle?>('style');
         final focusNode = namedArgs.get<FocusNode?>('focusNode');

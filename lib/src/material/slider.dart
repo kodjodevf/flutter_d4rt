@@ -104,34 +104,22 @@ BridgedClass getRangeSliderBridgingDefinition() {
         final values = namedArgs.get<RangeValues>('values')!;
 
         // Handle onChanged callback
-        void Function(RangeValues)? onChanged;
-        final onChangedValue = namedArgs['onChanged'];
-        if (onChangedValue is InterpretedFunction) {
-          onChanged = (RangeValues values) =>
-              onChangedValue.call(visitor, [values]);
-        } else if (onChangedValue != null) {
-          onChanged = onChangedValue as void Function(RangeValues)?;
-        }
+        final onChanged = namedArgs.handleValueCallback<RangeValues>(
+          'onChanged',
+          visitor,
+        );
 
         // Handle onChangeStart callback
-        void Function(RangeValues)? onChangeStart;
-        final onChangeStartValue = namedArgs['onChangeStart'];
-        if (onChangeStartValue is InterpretedFunction) {
-          onChangeStart = (RangeValues values) =>
-              onChangeStartValue.call(visitor, [values]);
-        } else if (onChangeStartValue != null) {
-          onChangeStart = onChangeStartValue as void Function(RangeValues)?;
-        }
+        final onChangeStart = namedArgs.handleValueCallback<RangeValues>(
+          'onChangeStart',
+          visitor,
+        );
 
         // Handle onChangeEnd callback
-        void Function(RangeValues)? onChangeEnd;
-        final onChangeEndValue = namedArgs['onChangeEnd'];
-        if (onChangeEndValue is InterpretedFunction) {
-          onChangeEnd = (RangeValues values) =>
-              onChangeEndValue.call(visitor, [values]);
-        } else if (onChangeEndValue != null) {
-          onChangeEnd = onChangeEndValue as void Function(RangeValues)?;
-        }
+        final onChangeEnd = namedArgs.handleValueCallback<RangeValues>(
+          'onChangeEnd',
+          visitor,
+        );
 
         final min = namedArgs.getToDouble('min') ?? 0.0;
         final max = namedArgs.getToDouble('max') ?? 1.0;

@@ -3,18 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_d4rt/utils/extensions/map.dart';
 import 'package:flutter_d4rt/utils/extensions/widget.dart';
 
-// Helper function for VoidCallback handling
-VoidCallback? _handleVoidCallback(
-  InterpreterVisitor visitor,
-  dynamic callback,
-) {
-  if (callback == null) return null;
-  if (callback is InterpretedFunction) {
-    return () => callback.call(visitor, []);
-  }
-  return callback as VoidCallback?;
-}
-
 /// Returns the BridgedClass for the Flutter Chip widget.
 BridgedClass getChipBridgingDefinition() {
   return BridgedClass(
@@ -25,7 +13,7 @@ BridgedClass getChipBridgingDefinition() {
         final key = namedArgs.get<Key?>('key');
         final avatar = visitor.toWidgets(namedArgs['avatar']);
         final deleteIcon = visitor.toWidgets(namedArgs['deleteIcon']);
-        final onDeleted = _handleVoidCallback(visitor, namedArgs['onDeleted']);
+        final onDeleted = namedArgs.handleVoidCallback('onDeleted', visitor);
         final deleteIconColor = namedArgs.get<Color?>('deleteIconColor');
         final deleteButtonTooltipMessage = namedArgs.get<String?>(
           'deleteButtonTooltipMessage',

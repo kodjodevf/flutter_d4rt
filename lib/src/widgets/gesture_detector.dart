@@ -2,32 +2,8 @@ import 'package:d4rt/d4rt.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_d4rt/utils/double.dart';
+import 'package:flutter_d4rt/utils/extensions/map.dart';
 import 'package:flutter_d4rt/utils/extensions/widget.dart';
-
-/// Gesture and interaction widgets bridging definitions
-
-// Helper functions for callback handling
-void Function()? _handleVoidCallback(
-  InterpreterVisitor visitor,
-  dynamic callback,
-) {
-  if (callback == null) return null;
-  if (callback is InterpretedFunction) {
-    return () => callback.call(visitor, []);
-  }
-  return callback as void Function()?;
-}
-
-void Function(T)? _handleParameterCallback<T>(
-  InterpreterVisitor visitor,
-  dynamic callback,
-) {
-  if (callback == null) return null;
-  if (callback is InterpretedFunction) {
-    return (T details) => callback.call(visitor, [details]);
-  }
-  return callback as void Function(T)?;
-}
 
 // GestureDetector bridging
 BridgedClass getGestureDetectorBridgingDefinition() {
@@ -38,139 +14,141 @@ BridgedClass getGestureDetectorBridgingDefinition() {
       '': (visitor, positionalArgs, namedArgs) {
         return GestureDetector(
           key: namedArgs.get<Key?>('key'),
-          onTap: _handleVoidCallback(visitor, namedArgs['onTap']),
-          onTapDown: _handleParameterCallback<TapDownDetails>(
+          onTap: namedArgs.handleVoidCallback('onTap', visitor),
+          onTapDown: namedArgs.handleValueCallback<TapDownDetails>(
+            'onTapDown',
             visitor,
-            namedArgs['onTapDown'],
           ),
-          onTapUp: _handleParameterCallback<TapUpDetails>(
+          onTapUp: namedArgs.handleValueCallback<TapUpDetails>(
+            'onTapUp',
             visitor,
-            namedArgs['onTapUp'],
           ),
-          onTapCancel: _handleVoidCallback(visitor, namedArgs['onTapCancel']),
-          onSecondaryTap: _handleVoidCallback(
+          onTapCancel: namedArgs.handleVoidCallback('onTapCancel', visitor),
+          onSecondaryTap: namedArgs.handleVoidCallback(
+            'onSecondaryTap',
             visitor,
-            namedArgs['onSecondaryTap'],
           ),
-          onSecondaryTapDown: _handleParameterCallback<TapDownDetails>(
+          onSecondaryTapDown: namedArgs.handleValueCallback<TapDownDetails>(
+            'onSecondaryTapDown',
             visitor,
-            namedArgs['onSecondaryTapDown'],
           ),
-          onSecondaryTapUp: _handleParameterCallback<TapUpDetails>(
+          onSecondaryTapUp: namedArgs.handleValueCallback<TapUpDetails>(
+            'onSecondaryTapUp',
             visitor,
-            namedArgs['onSecondaryTapUp'],
           ),
-          onSecondaryTapCancel: _handleVoidCallback(
+          onSecondaryTapCancel: namedArgs.handleVoidCallback(
+            'onSecondaryTapCancel',
             visitor,
-            namedArgs['onSecondaryTapCancel'],
           ),
-          onTertiaryTapDown: _handleParameterCallback<TapDownDetails>(
+          onTertiaryTapDown: namedArgs.handleValueCallback<TapDownDetails>(
+            'onTertiaryTapDown',
             visitor,
-            namedArgs['onTertiaryTapDown'],
           ),
-          onTertiaryTapUp: _handleParameterCallback<TapUpDetails>(
+          onTertiaryTapUp: namedArgs.handleValueCallback<TapUpDetails>(
+            'onTertiaryTapUp',
             visitor,
-            namedArgs['onTertiaryTapUp'],
           ),
-          onTertiaryTapCancel: _handleVoidCallback(
+          onTertiaryTapCancel: namedArgs.handleVoidCallback(
+            'onTertiaryTapCancel',
             visitor,
-            namedArgs['onTertiaryTapCancel'],
           ),
-          onDoubleTapDown: _handleParameterCallback<TapDownDetails>(
+          onDoubleTapDown: namedArgs.handleValueCallback<TapDownDetails>(
+            'onDoubleTapDown',
             visitor,
-            namedArgs['onDoubleTapDown'],
           ),
-          onDoubleTap: _handleVoidCallback(visitor, namedArgs['onDoubleTap']),
-          onDoubleTapCancel: _handleVoidCallback(
+          onDoubleTap: namedArgs.handleVoidCallback('onDoubleTap', visitor),
+          onDoubleTapCancel: namedArgs.handleVoidCallback(
+            'onDoubleTapCancel',
             visitor,
-            namedArgs['onDoubleTapCancel'],
           ),
-          onLongPress: _handleVoidCallback(visitor, namedArgs['onLongPress']),
-          onLongPressStart: _handleParameterCallback<LongPressStartDetails>(
-            visitor,
-            namedArgs['onLongPressStart'],
-          ),
-          onLongPressMoveUpdate:
-              _handleParameterCallback<LongPressMoveUpdateDetails>(
+          onLongPress: namedArgs.handleVoidCallback('onLongPress', visitor),
+          onLongPressStart: namedArgs
+              .handleValueCallback<LongPressStartDetails>(
+                'onLongPressStart',
                 visitor,
-                namedArgs['onLongPressMoveUpdate'],
               ),
-          onLongPressUp: _handleVoidCallback(
+          onLongPressMoveUpdate: namedArgs
+              .handleValueCallback<LongPressMoveUpdateDetails>(
+                'onLongPressMoveUpdate',
+                visitor,
+              ),
+          onLongPressUp: namedArgs.handleVoidCallback('onLongPressUp', visitor),
+          onLongPressEnd: namedArgs.handleValueCallback<LongPressEndDetails>(
+            'onLongPressEnd',
             visitor,
-            namedArgs['onLongPressUp'],
           ),
-          onLongPressEnd: _handleParameterCallback<LongPressEndDetails>(
+          onVerticalDragDown: namedArgs.handleValueCallback<DragDownDetails>(
+            'onVerticalDragDown',
             visitor,
-            namedArgs['onLongPressEnd'],
           ),
-          onVerticalDragDown: _handleParameterCallback<DragDownDetails>(
+          onVerticalDragStart: namedArgs.handleValueCallback<DragStartDetails>(
+            'onVerticalDragStart',
             visitor,
-            namedArgs['onVerticalDragDown'],
           ),
-          onVerticalDragStart: _handleParameterCallback<DragStartDetails>(
+          onVerticalDragUpdate: namedArgs
+              .handleValueCallback<DragUpdateDetails>(
+                'onVerticalDragUpdate',
+                visitor,
+              ),
+          onVerticalDragEnd: namedArgs.handleValueCallback<DragEndDetails>(
+            'onVerticalDragEnd',
             visitor,
-            namedArgs['onVerticalDragStart'],
           ),
-          onVerticalDragUpdate: _handleParameterCallback<DragUpdateDetails>(
+          onVerticalDragCancel: namedArgs.handleVoidCallback(
+            'onVerticalDragCancel',
             visitor,
-            namedArgs['onVerticalDragUpdate'],
           ),
-          onVerticalDragEnd: _handleParameterCallback<DragEndDetails>(
+
+          onHorizontalDragDown: namedArgs.handleValueCallback<DragDownDetails>(
+            'onHorizontalDragDown',
             visitor,
-            namedArgs['onVerticalDragEnd'],
           ),
-          onVerticalDragCancel: _handleVoidCallback(
+          onHorizontalDragStart: namedArgs
+              .handleValueCallback<DragStartDetails>(
+                'onHorizontalDragStart',
+                visitor,
+              ),
+          onHorizontalDragUpdate: namedArgs
+              .handleValueCallback<DragUpdateDetails>(
+                'onHorizontalDragUpdate',
+                visitor,
+              ),
+          onHorizontalDragEnd: namedArgs.handleValueCallback<DragEndDetails>(
+            'onHorizontalDragEnd',
             visitor,
-            namedArgs['onVerticalDragCancel'],
           ),
-          onHorizontalDragDown: _handleParameterCallback<DragDownDetails>(
+          onHorizontalDragCancel: namedArgs.handleVoidCallback(
+            'onHorizontalDragCancel',
             visitor,
-            namedArgs['onHorizontalDragDown'],
           ),
-          onHorizontalDragStart: _handleParameterCallback<DragStartDetails>(
+          onPanDown: namedArgs.handleValueCallback<DragDownDetails>(
+            'onPanDown',
             visitor,
-            namedArgs['onHorizontalDragStart'],
           ),
-          onHorizontalDragUpdate: _handleParameterCallback<DragUpdateDetails>(
+          onPanStart: namedArgs.handleValueCallback<DragStartDetails>(
+            'onPanStart',
             visitor,
-            namedArgs['onHorizontalDragUpdate'],
           ),
-          onHorizontalDragEnd: _handleParameterCallback<DragEndDetails>(
+          onPanUpdate: namedArgs.handleValueCallback<DragUpdateDetails>(
+            'onPanUpdate',
             visitor,
-            namedArgs['onHorizontalDragEnd'],
           ),
-          onHorizontalDragCancel: _handleVoidCallback(
+          onPanEnd: namedArgs.handleValueCallback<DragEndDetails>(
+            'onPanEnd',
             visitor,
-            namedArgs['onHorizontalDragCancel'],
           ),
-          onPanDown: _handleParameterCallback<DragDownDetails>(
+          onPanCancel: namedArgs.handleVoidCallback('onPanCancel', visitor),
+          onScaleStart: namedArgs.handleValueCallback<ScaleStartDetails>(
+            'onScaleStart',
             visitor,
-            namedArgs['onPanDown'],
           ),
-          onPanStart: _handleParameterCallback<DragStartDetails>(
+          onScaleUpdate: namedArgs.handleValueCallback<ScaleUpdateDetails>(
+            'onScaleUpdate',
             visitor,
-            namedArgs['onPanStart'],
           ),
-          onPanUpdate: _handleParameterCallback<DragUpdateDetails>(
+          onScaleEnd: namedArgs.handleValueCallback<ScaleEndDetails>(
+            'onScaleEnd',
             visitor,
-            namedArgs['onPanUpdate'],
-          ),
-          onPanEnd: _handleParameterCallback<DragEndDetails>(
-            visitor,
-            namedArgs['onPanEnd'],
-          ),
-          onPanCancel: _handleVoidCallback(visitor, namedArgs['onPanCancel']),
-          onScaleStart: _handleParameterCallback<ScaleStartDetails>(
-            visitor,
-            namedArgs['onScaleStart'],
-          ),
-          onScaleUpdate: _handleParameterCallback<ScaleUpdateDetails>(
-            visitor,
-            namedArgs['onScaleUpdate'],
-          ),
-          onScaleEnd: _handleParameterCallback<ScaleEndDetails>(
-            visitor,
-            namedArgs['onScaleEnd'],
           ),
           behavior:
               namedArgs['behavior'] as HitTestBehavior? ??
@@ -196,29 +174,26 @@ BridgedClass getInkWellBridgingDefinition() {
       '': (visitor, positionalArgs, namedArgs) {
         return InkWell(
           key: namedArgs.get<Key?>('key'),
-          onTap: _handleVoidCallback(visitor, namedArgs['onTap']),
-          onDoubleTap: _handleVoidCallback(visitor, namedArgs['onDoubleTap']),
-          onLongPress: _handleVoidCallback(visitor, namedArgs['onLongPress']),
-          onTapDown: _handleParameterCallback<TapDownDetails>(
+          onTap: namedArgs.handleVoidCallback('onTap', visitor),
+          onDoubleTap: namedArgs.handleVoidCallback('onDoubleTap', visitor),
+          onLongPress: namedArgs.handleVoidCallback('onLongPress', visitor),
+          onTapDown: namedArgs.handleValueCallback<TapDownDetails>(
+            'onTapDown',
             visitor,
-            namedArgs['onTapDown'],
           ),
-          onTapUp: _handleParameterCallback<TapUpDetails>(
+          onTapUp: namedArgs.handleValueCallback<TapUpDetails>(
+            'onTapUp',
             visitor,
-            namedArgs['onTapUp'],
           ),
-          onTapCancel: _handleVoidCallback(visitor, namedArgs['onTapCancel']),
-          onHighlightChanged: _handleParameterCallback<bool>(
+          onTapCancel: namedArgs.handleVoidCallback('onTapCancel', visitor),
+          onHighlightChanged: namedArgs.handleValueCallback<bool>(
+            'onHighlightChanged',
             visitor,
-            namedArgs['onHighlightChanged'],
           ),
-          onHover: _handleParameterCallback<bool>(
+          onHover: namedArgs.handleValueCallback<bool>('onHover', visitor),
+          onFocusChange: namedArgs.handleValueCallback<bool>(
+            'onFocusChange',
             visitor,
-            namedArgs['onHover'],
-          ),
-          onFocusChange: _handleParameterCallback<bool>(
-            visitor,
-            namedArgs['onFocusChange'],
           ),
           mouseCursor: namedArgs['mouseCursor'] as MouseCursor?,
           focusColor: namedArgs['focusColor'] as Color?,
@@ -254,29 +229,26 @@ BridgedClass getInkResponseBridgingDefinition() {
       '': (visitor, positionalArgs, namedArgs) {
         return InkResponse(
           key: namedArgs.get<Key?>('key'),
-          onTap: _handleVoidCallback(visitor, namedArgs['onTap']),
-          onTapDown: _handleParameterCallback<TapDownDetails>(
+          onTap: namedArgs.handleVoidCallback('onTap', visitor),
+          onTapDown: namedArgs.handleValueCallback<TapDownDetails>(
+            'onTapDown',
             visitor,
-            namedArgs['onTapDown'],
           ),
-          onTapUp: _handleParameterCallback<TapUpDetails>(
+          onTapUp: namedArgs.handleValueCallback<TapUpDetails>(
+            'onTapUp',
             visitor,
-            namedArgs['onTapUp'],
           ),
-          onTapCancel: _handleVoidCallback(visitor, namedArgs['onTapCancel']),
-          onDoubleTap: _handleVoidCallback(visitor, namedArgs['onDoubleTap']),
-          onLongPress: _handleVoidCallback(visitor, namedArgs['onLongPress']),
-          onHighlightChanged: _handleParameterCallback<bool>(
+          onTapCancel: namedArgs.handleVoidCallback('onTapCancel', visitor),
+          onDoubleTap: namedArgs.handleVoidCallback('onDoubleTap', visitor),
+          onLongPress: namedArgs.handleVoidCallback('onLongPress', visitor),
+          onHighlightChanged: namedArgs.handleValueCallback<bool>(
+            'onHighlightChanged',
             visitor,
-            namedArgs['onHighlightChanged'],
           ),
-          onHover: _handleParameterCallback<bool>(
+          onHover: namedArgs.handleValueCallback<bool>('onHover', visitor),
+          onFocusChange: namedArgs.handleValueCallback<bool>(
+            'onFocusChange',
             visitor,
-            namedArgs['onHover'],
-          ),
-          onFocusChange: _handleParameterCallback<bool>(
-            visitor,
-            namedArgs['onFocusChange'],
           ),
           mouseCursor: namedArgs['mouseCursor'] as MouseCursor?,
           containedInkWell: namedArgs['containedInkWell'] as bool? ?? false,
@@ -327,32 +299,22 @@ BridgedClass getDraggableBridgingDefinition() {
               childDragAnchorStrategy,
           affinity: namedArgs['affinity'] as Axis?,
           maxSimultaneousDrags: namedArgs['maxSimultaneousDrags'] as int?,
-          onDragStarted: _handleVoidCallback(
+          onDragStarted: namedArgs.handleVoidCallback('onDragStarted', visitor),
+          onDragUpdate: namedArgs.handleValueCallback<DragUpdateDetails>(
+            'onDragUpdate',
             visitor,
-            namedArgs['onDragStarted'],
           ),
-          onDragUpdate: _handleParameterCallback<DragUpdateDetails>(
+          onDraggableCanceled: namedArgs.handle2ValueCallback<Velocity, Offset>(
+            'onDraggableCanceled',
             visitor,
-            namedArgs['onDragUpdate'],
           ),
-          onDraggableCanceled: (() {
-            if (namedArgs['onDraggableCanceled'] == null) return null;
-            if (namedArgs['onDraggableCanceled'] is InterpretedFunction) {
-              final func =
-                  namedArgs['onDraggableCanceled'] as InterpretedFunction;
-              return (Velocity velocity, Offset offset) =>
-                  func.call(visitor, [velocity, offset]);
-            }
-            return namedArgs['onDraggableCanceled']
-                as void Function(Velocity, Offset)?;
-          })(),
-          onDragEnd: _handleParameterCallback<DraggableDetails>(
+          onDragEnd: namedArgs.handleValueCallback<DraggableDetails>(
+            'onDragEnd',
             visitor,
-            namedArgs['onDragEnd'],
           ),
-          onDragCompleted: _handleVoidCallback(
+          onDragCompleted: namedArgs.handleVoidCallback(
+            'onDragCompleted',
             visitor,
-            namedArgs['onDragCompleted'],
           ),
           ignoringFeedbackSemantics:
               namedArgs['ignoringFeedbackSemantics'] as bool? ?? true,
@@ -394,28 +356,14 @@ BridgedClass getDragTargetBridgingDefinition() {
             final func = namedArgs['onAccept'] as InterpretedFunction;
             func.call(visitor, [data]);
           },
-          onAcceptWithDetails: (() {
-            if (namedArgs['onAcceptWithDetails'] == null) return null;
-            if (namedArgs['onAcceptWithDetails'] is InterpretedFunction) {
-              final func =
-                  namedArgs['onAcceptWithDetails'] as InterpretedFunction;
-              return (DragTargetDetails details) =>
-                  func.call(visitor, [details]);
-            }
-            return namedArgs['onAcceptWithDetails']
-                as void Function(DragTargetDetails)?;
-          })(),
-          onLeave: (() {
-            if (namedArgs['onLeave'] == null) return null;
-            if (namedArgs['onLeave'] is InterpretedFunction) {
-              final func = namedArgs['onLeave'] as InterpretedFunction;
-              return (dynamic data) => func.call(visitor, [data]);
-            }
-            return namedArgs['onLeave'] as void Function(dynamic)?;
-          })(),
-          onMove: _handleParameterCallback<DragTargetDetails>(
+          onAcceptWithDetails: namedArgs.handleValueCallback<DragTargetDetails>(
+            'onAcceptWithDetails',
             visitor,
-            namedArgs['onMove'],
+          ),
+          onLeave: namedArgs.handleValueCallback<Object?>('onLeave', visitor),
+          onMove: namedArgs.handleValueCallback<DragTargetDetails>(
+            'onMove',
+            visitor,
           ),
           hitTestBehavior:
               namedArgs['hitTestBehavior'] as HitTestBehavior? ??
@@ -446,32 +394,22 @@ BridgedClass getLongPressDraggableBridgingDefinition() {
               namedArgs['dragAnchorStrategy'] as DragAnchorStrategy? ??
               childDragAnchorStrategy,
           maxSimultaneousDrags: namedArgs['maxSimultaneousDrags'] as int?,
-          onDragStarted: _handleVoidCallback(
+          onDragStarted: namedArgs.handleVoidCallback('onDragStarted', visitor),
+          onDragUpdate: namedArgs.handleValueCallback<DragUpdateDetails>(
+            'onDragUpdate',
             visitor,
-            namedArgs['onDragStarted'],
           ),
-          onDragUpdate: _handleParameterCallback<DragUpdateDetails>(
+          onDraggableCanceled: namedArgs.handle2ValueCallback<Velocity, Offset>(
+            'onDraggableCanceled',
             visitor,
-            namedArgs['onDragUpdate'],
           ),
-          onDraggableCanceled: (() {
-            if (namedArgs['onDraggableCanceled'] == null) return null;
-            if (namedArgs['onDraggableCanceled'] is InterpretedFunction) {
-              final func =
-                  namedArgs['onDraggableCanceled'] as InterpretedFunction;
-              return (Velocity velocity, Offset offset) =>
-                  func.call(visitor, [velocity, offset]);
-            }
-            return namedArgs['onDraggableCanceled']
-                as void Function(Velocity, Offset)?;
-          })(),
-          onDragEnd: _handleParameterCallback<DraggableDetails>(
+          onDragEnd: namedArgs.handleValueCallback<DraggableDetails>(
+            'onDragEnd',
             visitor,
-            namedArgs['onDragEnd'],
           ),
-          onDragCompleted: _handleVoidCallback(
+          onDragCompleted: namedArgs.handleVoidCallback(
+            'onDragCompleted',
             visitor,
-            namedArgs['onDragCompleted'],
           ),
           hapticFeedbackOnStart:
               namedArgs['hapticFeedbackOnStart'] as bool? ?? true,

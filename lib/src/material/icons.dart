@@ -50,6 +50,7 @@ BridgedClass getIconsBridgingDefinition() {
       'check': (visitor) => Icons.check,
       'clear': (visitor) => Icons.clear,
       'done': (visitor) => Icons.done,
+      'card_giftcard': (visitor) => Icons.card_giftcard,
       'cancel': (visitor) => Icons.cancel,
       'info': (visitor) => Icons.info,
       'warning': (visitor) => Icons.warning,

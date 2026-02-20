@@ -3,18 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_d4rt/utils/extensions/map.dart';
 import '../../utils/extensions/widget.dart';
 
-// Helper function for VoidCallback handling
-VoidCallback? _handleVoidCallback(
-  InterpreterVisitor visitor,
-  dynamic callback,
-) {
-  if (callback == null) return null;
-  if (callback is InterpretedFunction) {
-    return () => callback.call(visitor, []);
-  }
-  return callback as VoidCallback?;
-}
-
 /// Returns the BridgedClass for the Flutter FloatingActionButton widget.
 BridgedClass getFloatingActionButtonBridgingDefinition() {
   return BridgedClass(
@@ -23,7 +11,7 @@ BridgedClass getFloatingActionButtonBridgingDefinition() {
     constructors: {
       '': (visitor, positionalArgs, namedArgs) {
         final key = namedArgs.get<Key?>('key');
-        final onPressed = _handleVoidCallback(visitor, namedArgs['onPressed']);
+        final onPressed = namedArgs.handleVoidCallback('onPressed', visitor);
         final tooltip = namedArgs.get<String?>('tooltip');
         final backgroundColor = namedArgs.get<Color?>('backgroundColor');
         final foregroundColor = namedArgs.get<Color?>('foregroundColor');
@@ -44,7 +32,7 @@ BridgedClass getFloatingActionButtonBridgingDefinition() {
       },
       'small': (visitor, positionalArgs, namedArgs) {
         final key = namedArgs.get<Key?>('key');
-        final onPressed = _handleVoidCallback(visitor, namedArgs['onPressed']);
+        final onPressed = namedArgs.handleVoidCallback('onPressed', visitor);
         final tooltip = namedArgs.get<String?>('tooltip');
         final backgroundColor = namedArgs.get<Color?>('backgroundColor');
         final foregroundColor = namedArgs.get<Color?>('foregroundColor');

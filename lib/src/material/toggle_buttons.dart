@@ -1,5 +1,6 @@
 import 'package:d4rt/d4rt.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_d4rt/utils/extensions/map.dart';
 import 'package:flutter_d4rt/utils/extensions/widget.dart';
 
 /// Returns the BridgedClass for the Flutter ToggleButtons widget.
@@ -24,15 +25,10 @@ BridgedClass getToggleButtonsBridgingDefinition() {
         }
 
         // Handle onPressed callback
-        final onPressed = namedArgs['onPressed'];
-        void Function(int)? onPressedCallback;
-        if (onPressed != null) {
-          if (onPressed is InterpretedFunction) {
-            onPressedCallback = (int index) => onPressed.call(visitor, [index]);
-          } else if (onPressed is Function) {
-            onPressedCallback = onPressed as void Function(int)?;
-          }
-        }
+        final onPressed = namedArgs.handleValueCallback<int>(
+          'onPressed',
+          visitor,
+        );
 
         final color = namedArgs.get<Color?>('color');
         final selectedColor = namedArgs.get<Color?>('selectedColor');
@@ -62,7 +58,7 @@ BridgedClass getToggleButtonsBridgingDefinition() {
         return ToggleButtons(
           key: key,
           isSelected: isSelected,
-          onPressed: onPressedCallback,
+          onPressed: onPressed,
           color: color,
           selectedColor: selectedColor,
           disabledColor: disabledColor,

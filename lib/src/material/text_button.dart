@@ -1,19 +1,8 @@
 import 'package:d4rt/d4rt.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_d4rt/utils/double.dart';
+import 'package:flutter_d4rt/utils/extensions/map.dart';
 import 'package:flutter_d4rt/utils/extensions/widget.dart';
-
-// Helper function for VoidCallback handling
-VoidCallback? _handleVoidCallback(
-  InterpreterVisitor visitor,
-  dynamic callback,
-) {
-  if (callback == null) return null;
-  if (callback is InterpretedFunction) {
-    return () => callback.call(visitor, []);
-  }
-  return callback as VoidCallback?;
-}
 
 /// Returns the BridgedClass for the Flutter TextButton widget.
 BridgedClass getTextButtonBridgingDefinition() {
@@ -23,7 +12,7 @@ BridgedClass getTextButtonBridgingDefinition() {
     constructors: {
       '': (visitor, positionalArgs, namedArgs) {
         final key = namedArgs.get<Key?>('key');
-        final onPressed = _handleVoidCallback(visitor, namedArgs['onPressed']);
+        final onPressed = namedArgs.handleVoidCallback('onPressed', visitor);
         final style = namedArgs.get<ButtonStyle?>('style');
         final child = visitor.toWidgets(namedArgs['child']);
 
@@ -36,7 +25,7 @@ BridgedClass getTextButtonBridgingDefinition() {
       },
       'icon': (visitor, positionalArgs, namedArgs) {
         final key = namedArgs.get<Key?>('key');
-        final onPressed = _handleVoidCallback(visitor, namedArgs['onPressed']);
+        final onPressed = namedArgs.handleVoidCallback('onPressed', visitor);
         final style = namedArgs.get<ButtonStyle?>('style');
         final icon = visitor.toWidgets(namedArgs['icon']);
         final label = visitor.toWidgets(namedArgs['label']);

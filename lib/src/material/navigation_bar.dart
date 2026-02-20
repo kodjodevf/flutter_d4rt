@@ -1,5 +1,6 @@
 import 'package:d4rt/d4rt.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_d4rt/utils/extensions/map.dart';
 import 'package:flutter_d4rt/utils/extensions/widget.dart';
 
 /// Returns the BridgedClass for the Flutter NavigationBar widget.
@@ -14,17 +15,10 @@ BridgedClass getNavigationBarBridgingDefinition() {
         final selectedIndex = namedArgs.get<int?>('selectedIndex') ?? 0;
 
         // Handle onDestinationSelected callback
-        final onDestinationSelected = namedArgs['onDestinationSelected'];
-        void Function(int)? onDestinationSelectedCallback;
-        if (onDestinationSelected != null) {
-          if (onDestinationSelected is InterpretedFunction) {
-            onDestinationSelectedCallback = (int index) =>
-                onDestinationSelected.call(visitor, [index]);
-          } else if (onDestinationSelected is Function) {
-            onDestinationSelectedCallback =
-                onDestinationSelected as void Function(int)?;
-          }
-        }
+        final onDestinationSelected = namedArgs.handleValueCallback<int?>(
+          'onDestinationSelected',
+          visitor,
+        );
 
         final backgroundColor = namedArgs.get<Color?>('backgroundColor');
         final elevation = namedArgs.get<double?>('elevation');
@@ -51,7 +45,7 @@ BridgedClass getNavigationBarBridgingDefinition() {
           key: key,
           animationDuration: animationDuration,
           selectedIndex: selectedIndex,
-          onDestinationSelected: onDestinationSelectedCallback,
+          onDestinationSelected: onDestinationSelected,
           backgroundColor: backgroundColor,
           elevation: elevation,
           shadowColor: shadowColor,

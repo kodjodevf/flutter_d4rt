@@ -1,30 +1,8 @@
 import 'package:d4rt/d4rt.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_d4rt/utils/double.dart';
+import 'package:flutter_d4rt/utils/extensions/map.dart';
 import 'package:flutter_d4rt/utils/extensions/widget.dart';
-
-// Helper function for value change callbacks
-void Function(bool?)? _handleBoolValueCallback(
-  InterpreterVisitor visitor,
-  dynamic callback,
-) {
-  if (callback == null) return null;
-  if (callback is InterpretedFunction) {
-    return (bool? value) => callback.call(visitor, [value]);
-  }
-  return callback as void Function(bool?)?;
-}
-
-void Function(T?)? _handleGenericValueCallback<T>(
-  InterpreterVisitor visitor,
-  dynamic callback,
-) {
-  if (callback == null) return null;
-  if (callback is InterpretedFunction) {
-    return (T? value) => callback.call(visitor, [value]);
-  }
-  return callback as void Function(T?)?;
-}
 
 /// Returns the BridgedClass for the Flutter CheckboxListTile widget.
 BridgedClass getCheckboxListTileBridgingDefinition() {
@@ -35,9 +13,9 @@ BridgedClass getCheckboxListTileBridgingDefinition() {
       '': (visitor, positionalArgs, namedArgs) {
         final key = namedArgs.get<Key?>('key');
         final value = namedArgs.get<bool?>('value');
-        final onChanged = _handleBoolValueCallback(
+        final onChanged = namedArgs.handleValueCallback<bool?>(
+          'onChanged',
           visitor,
-          namedArgs['onChanged'],
         );
         final activeColor = namedArgs.get<Color?>('activeColor');
         final fillColor = namedArgs.get<WidgetStateProperty<Color?>?>(
@@ -124,10 +102,7 @@ BridgedClass getRadioListTileBridgingDefinition() {
         final key = namedArgs.get<Key?>('key');
         final value = namedArgs['value']; // Generic type T
         final groupValue = namedArgs['groupValue']; // Generic type T
-        final onChanged = _handleGenericValueCallback(
-          visitor,
-          namedArgs['onChanged'],
-        );
+        final onChanged = namedArgs.handleValueCallback('onChanged', visitor);
         final toggleable = namedArgs.get<bool?>('toggleable') ?? false;
         final activeColor = namedArgs.get<Color?>('activeColor');
         final fillColor = namedArgs.get<WidgetStateProperty<Color?>?>(
@@ -211,9 +186,9 @@ BridgedClass getSwitchListTileBridgingDefinition() {
       '': (visitor, positionalArgs, namedArgs) {
         final key = namedArgs.get<Key?>('key');
         final value = namedArgs.get<bool?>('value') ?? false;
-        final onChanged = _handleBoolValueCallback(
+        final onChanged = namedArgs.handleValueCallback<bool?>(
+          'onChanged',
           visitor,
-          namedArgs['onChanged'],
         );
         final activeColor = namedArgs.get<Color?>('activeColor');
         final activeTrackColor = namedArgs.get<Color?>('activeTrackColor');

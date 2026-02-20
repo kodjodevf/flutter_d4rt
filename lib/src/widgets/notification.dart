@@ -1,32 +1,8 @@
 import 'package:d4rt/d4rt.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_d4rt/utils/double.dart';
+import 'package:flutter_d4rt/utils/extensions/map.dart';
 import 'package:flutter_d4rt/utils/extensions/widget.dart';
-
-/// Notification and overlay widgets bridging definitions
-
-// Helper functions for callback handling
-void Function()? _handleVoidCallback(
-  InterpreterVisitor visitor,
-  dynamic callback,
-) {
-  if (callback == null) return null;
-  if (callback is InterpretedFunction) {
-    return () => callback.call(visitor, []);
-  }
-  return callback as void Function()?;
-}
-
-void Function(T)? _handleValueCallback<T>(
-  InterpreterVisitor visitor,
-  dynamic callback,
-) {
-  if (callback == null) return null;
-  if (callback is InterpretedFunction) {
-    return (T value) => callback.call(visitor, [value]);
-  }
-  return callback as void Function(T)?;
-}
 
 // AlertDialog bridging
 BridgedClass getAlertDialogBridgingDefinition() {
@@ -170,7 +146,7 @@ BridgedClass getSimpleDialogOptionBridgingDefinition() {
 
         return SimpleDialogOption(
           key: key,
-          onPressed: _handleVoidCallback(visitor, namedArgs['onPressed']),
+          onPressed: namedArgs.handleVoidCallback('onPressed', visitor),
           padding: namedArgs['padding'] as EdgeInsets?,
           child: child,
         );
@@ -203,13 +179,12 @@ BridgedClass getBottomSheetBridgingDefinition() {
 
         return BottomSheet(
           key: namedArgs.get<Key?>('key'),
-          onClosing:
-              _handleVoidCallback(visitor, namedArgs['onClosing']) ?? () {},
+          onClosing: namedArgs.handleVoidCallback('onClosing', visitor)!,
           builder: builder,
           enableDrag: namedArgs['enableDrag'] as bool? ?? true,
-          onDragStart: _handleValueCallback<DragStartDetails>(
+          onDragStart: namedArgs.handleValueCallback<DragStartDetails>(
+            'onDragStart',
             visitor,
-            namedArgs['onDragStart'],
           ),
           onDragEnd: (details, {required isClosing}) {
             final callback = namedArgs['onDragEnd'];
@@ -271,7 +246,7 @@ BridgedClass getTooltipBridgingDefinition() {
           enableTapToDismiss: namedArgs['enableTapToDismiss'] as bool? ?? true,
           triggerMode: namedArgs['triggerMode'] as TooltipTriggerMode?,
           enableFeedback: namedArgs['enableFeedback'] as bool?,
-          onTriggered: _handleVoidCallback(visitor, namedArgs['onTriggered']),
+          onTriggered: namedArgs.handleVoidCallback('onTriggered', visitor),
           child: child,
         );
       },

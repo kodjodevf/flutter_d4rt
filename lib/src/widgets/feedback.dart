@@ -1,32 +1,8 @@
 import 'package:d4rt/d4rt.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_d4rt/utils/double.dart';
+import 'package:flutter_d4rt/utils/extensions/map.dart';
 import 'package:flutter_d4rt/utils/extensions/widget.dart';
-
-/// Feedback and state widgets bridging definitions
-
-// Helper functions for callback handling
-void Function()? _handleVoidCallback(
-  InterpreterVisitor visitor,
-  dynamic callback,
-) {
-  if (callback == null) return null;
-  if (callback is InterpretedFunction) {
-    return () => callback.call(visitor, []);
-  }
-  return callback as void Function()?;
-}
-
-void Function(T)? _handleValueCallback<T>(
-  InterpreterVisitor visitor,
-  dynamic callback,
-) {
-  if (callback == null) return null;
-  if (callback is InterpretedFunction) {
-    return (T value) => callback.call(visitor, [value]);
-  }
-  return callback as void Function(T)?;
-}
 
 // RefreshIndicator bridging
 BridgedClass getRefreshIndicatorBridgingDefinition() {
@@ -240,7 +216,7 @@ BridgedClass getActionChipBridgingDefinition() {
           label: label,
           labelStyle: namedArgs['labelStyle'] as TextStyle?,
           labelPadding: namedArgs['labelPadding'] as EdgeInsetsGeometry?,
-          onPressed: _handleVoidCallback(visitor, namedArgs['onPressed']),
+          onPressed: namedArgs.handleVoidCallback('onPressed', visitor),
           pressElevation: toDouble(namedArgs['pressElevation']),
           tooltip: namedArgs['tooltip'] as String?,
           side: namedArgs['side'] as BorderSide?,
@@ -307,9 +283,9 @@ BridgedClass getFilterChipBridgingDefinition() {
           labelStyle: namedArgs['labelStyle'] as TextStyle?,
           labelPadding: namedArgs['labelPadding'] as EdgeInsetsGeometry?,
           selected: namedArgs['selected'] as bool? ?? false,
-          onSelected: _handleValueCallback<bool>(
+          onSelected: namedArgs.handleValueCallback<bool>(
+            'onSelected',
             visitor,
-            namedArgs['onSelected'],
           ),
           pressElevation: toDouble(namedArgs['pressElevation']),
           disabledColor: namedArgs['disabledColor'] as Color?,
@@ -389,9 +365,9 @@ BridgedClass getChoiceChipBridgingDefinition() {
           label: label,
           labelStyle: namedArgs['labelStyle'] as TextStyle?,
           labelPadding: namedArgs['labelPadding'] as EdgeInsetsGeometry?,
-          onSelected: _handleValueCallback<bool>(
+          onSelected: namedArgs.handleValueCallback<bool>(
+            'onSelected',
             visitor,
-            namedArgs['onSelected'],
           ),
           pressElevation: toDouble(namedArgs['pressElevation']),
           disabledColor: namedArgs['disabledColor'] as Color?,

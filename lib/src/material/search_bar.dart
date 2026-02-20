@@ -1,5 +1,6 @@
 import 'package:d4rt/d4rt.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_d4rt/utils/extensions/map.dart';
 import 'package:flutter_d4rt/utils/extensions/widget.dart';
 
 /// Returns the BridgedClass for the Flutter SearchBar widget.
@@ -33,39 +34,19 @@ BridgedClass getSearchBarBridgingDefinition() {
         }
 
         // Handle onTap callback
-        final onTap = namedArgs['onTap'];
-        VoidCallback? onTapCallback;
-        if (onTap != null) {
-          if (onTap is InterpretedFunction) {
-            onTapCallback = () => onTap.call(visitor, []);
-          } else if (onTap is Function) {
-            onTapCallback = onTap as VoidCallback?;
-          }
-        }
+        final onTap = namedArgs.handleVoidCallback('onTap', visitor);
 
         // Handle onChanged callback
-        final onChanged = namedArgs['onChanged'];
-        void Function(String)? onChangedCallback;
-        if (onChanged != null) {
-          if (onChanged is InterpretedFunction) {
-            onChangedCallback = (String value) =>
-                onChanged.call(visitor, [value]);
-          } else if (onChanged is Function) {
-            onChangedCallback = onChanged as void Function(String)?;
-          }
-        }
+        final onChanged = namedArgs.handleValueCallback<String?>(
+          'onChanged',
+          visitor,
+        );
 
         // Handle onSubmitted callback
-        final onSubmitted = namedArgs['onSubmitted'];
-        void Function(String)? onSubmittedCallback;
-        if (onSubmitted != null) {
-          if (onSubmitted is InterpretedFunction) {
-            onSubmittedCallback = (String value) =>
-                onSubmitted.call(visitor, [value]);
-          } else if (onSubmitted is Function) {
-            onSubmittedCallback = onSubmitted as void Function(String)?;
-          }
-        }
+        final onSubmitted = namedArgs.handleValueCallback<String?>(
+          'onSubmitted',
+          visitor,
+        );
 
         final constraints = namedArgs.get<BoxConstraints?>('constraints');
         final elevation = namedArgs.get<MaterialStateProperty<double?>?>(
@@ -105,9 +86,9 @@ BridgedClass getSearchBarBridgingDefinition() {
           textStyle: textStyle,
           leading: leading,
           trailing: trailingWidgets,
-          onTap: onTapCallback,
-          onChanged: onChangedCallback,
-          onSubmitted: onSubmittedCallback,
+          onTap: onTap,
+          onChanged: onChanged,
+          onSubmitted: onSubmitted,
           constraints: constraints,
           elevation: elevation,
           backgroundColor: backgroundColor,

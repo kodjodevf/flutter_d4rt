@@ -2,6 +2,7 @@ import 'package:d4rt/d4rt.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_d4rt/utils/double.dart';
+import 'package:flutter_d4rt/utils/extensions/map.dart';
 import 'package:flutter_d4rt/utils/extensions/widget.dart';
 
 /// ScrollView widgets bridging definitions
@@ -19,17 +20,6 @@ Widget Function(BuildContext, int)? _handleItemBuilder(
     };
   }
   return callback as Widget Function(BuildContext, int)?;
-}
-
-void Function(int)? _handleIndexCallback(
-  InterpreterVisitor visitor,
-  dynamic callback,
-) {
-  if (callback == null) return null;
-  if (callback is InterpretedFunction) {
-    return (int index) => callback.call(visitor, [index]);
-  }
-  return callback as void Function(int)?;
 }
 
 // SingleChildScrollView bridging
@@ -295,9 +285,9 @@ BridgedClass getPageViewBridgingDefinition() {
           controller: namedArgs['controller'] as PageController?,
           physics: namedArgs['physics'] as ScrollPhysics?,
           pageSnapping: namedArgs['pageSnapping'] as bool? ?? true,
-          onPageChanged: _handleIndexCallback(
+          onPageChanged: namedArgs.handleValueCallback<int>(
+            'onPageChanged',
             visitor,
-            namedArgs['onPageChanged'],
           ),
           dragStartBehavior:
               namedArgs['dragStartBehavior'] as DragStartBehavior? ??
@@ -318,9 +308,9 @@ BridgedClass getPageViewBridgingDefinition() {
           controller: namedArgs['controller'] as PageController?,
           physics: namedArgs['physics'] as ScrollPhysics?,
           pageSnapping: namedArgs['pageSnapping'] as bool? ?? true,
-          onPageChanged: _handleIndexCallback(
+          onPageChanged: namedArgs.handleValueCallback<int>(
+            'onPageChanged',
             visitor,
-            namedArgs['onPageChanged'],
           ),
           itemBuilder: _handleItemBuilder(visitor, namedArgs['itemBuilder'])!,
           itemCount: namedArgs['itemCount'] as int?,

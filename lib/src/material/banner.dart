@@ -1,5 +1,6 @@
 import 'package:d4rt/d4rt.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_d4rt/utils/extensions/map.dart';
 import 'package:flutter_d4rt/utils/extensions/widget.dart';
 
 /// Returns the BridgedClass for the Flutter MaterialBanner widget.
@@ -24,7 +25,7 @@ BridgedClass getMaterialBannerBridgingDefinition() {
             namedArgs.get<OverflowBarAlignment?>('overflowAlignment') ??
             OverflowBarAlignment.end;
         final animation = namedArgs.get<Animation<double>?>('animation');
-        final onVisible = namedArgs.get<VoidCallback?>('onVisible');
+        final onVisible = namedArgs.handleVoidCallback('onVisible', visitor);
         // Improved widget conversion with null safety
         Widget? content;
         final contentValue = namedArgs['content'];

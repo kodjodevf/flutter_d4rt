@@ -20,39 +20,6 @@ Future<bool> Function()? _handleWillPopCallback(
   return callback as Future<bool> Function()?;
 }
 
-VoidCallback? _handleVoidCallback(
-  InterpreterVisitor visitor,
-  dynamic callback,
-) {
-  if (callback == null) return null;
-  if (callback is InterpretedFunction) {
-    return () => callback.call(visitor, []);
-  }
-  return callback as VoidCallback?;
-}
-
-void Function(String)? _handleStringCallback(
-  InterpreterVisitor visitor,
-  dynamic callback,
-) {
-  if (callback == null) return null;
-  if (callback is InterpretedFunction) {
-    return (String value) => callback.call(visitor, [value]);
-  }
-  return callback as void Function(String)?;
-}
-
-void Function(String?)? _handleNullableStringCallback(
-  InterpreterVisitor visitor,
-  dynamic callback,
-) {
-  if (callback == null) return null;
-  if (callback is InterpretedFunction) {
-    return (String? value) => callback.call(visitor, [value]);
-  }
-  return callback as void Function(String?)?;
-}
-
 String? Function(String?)? _handleValidatorCallback(
   InterpreterVisitor visitor,
   dynamic callback,
@@ -82,7 +49,7 @@ BridgedClass getFormBridgingDefinition() {
           visitor,
           namedArgs['onWillPop'],
         );
-        final onChanged = _handleVoidCallback(visitor, namedArgs['onChanged']);
+        final onChanged = namedArgs.handleVoidCallback('onChanged', visitor);
         final child = visitor.toWidgets(namedArgs['child']);
 
         return Form(
@@ -135,22 +102,22 @@ BridgedClass getTextFormFieldBridgingDefinition() {
         final minLines = namedArgs.get<int?>('minLines');
         final expands = namedArgs.get<bool?>('expands') ?? false;
         final maxLength = namedArgs.get<int?>('maxLength');
-        final onChanged = _handleStringCallback(
+        final onChanged = namedArgs.handleValueCallback<String>(
+          'onChanged',
           visitor,
-          namedArgs['onChanged'],
         );
-        final onTap = _handleVoidCallback(visitor, namedArgs['onTap']);
-        final onEditingComplete = _handleVoidCallback(
+        final onTap = namedArgs.handleVoidCallback('onTap', visitor);
+        final onEditingComplete = namedArgs.handleVoidCallback(
+          'onEditingComplete',
           visitor,
-          namedArgs['onEditingComplete'],
         );
-        final onFieldSubmitted = _handleStringCallback(
+        final onFieldSubmitted = namedArgs.handleValueCallback<String>(
+          'onFieldSubmitted',
           visitor,
-          namedArgs['onFieldSubmitted'],
         );
-        final onSaved = _handleNullableStringCallback(
+        final onSaved = namedArgs.handleValueCallback<String?>(
+          'onSaved',
           visitor,
-          namedArgs['onSaved'],
         );
         final validator = _handleValidatorCallback(
           visitor,
@@ -229,11 +196,13 @@ BridgedClass getDropdownButtonFormFieldBridgingDefinition() {
         final key = namedArgs.get<Key?>('key');
         final value = namedArgs['value'];
         final decoration = namedArgs.get<InputDecoration?>('decoration');
-        final onChanged = namedArgs.get<void Function(dynamic)?>('onChanged');
-        final onSaved = namedArgs.get<void Function(dynamic)?>('onSaved');
-        final validator = namedArgs.get<String? Function(dynamic)?>(
-          'validator',
-        );
+        final onChanged = namedArgs.handleValueCallback('onChanged', visitor);
+        final onSaved = namedArgs.handleValueCallback('onSaved', visitor);
+        final validator = namedArgs
+            .handleValueCallbackWithReturnType<String?, dynamic>(
+              'validator',
+              visitor,
+            );
         final autovalidateMode = namedArgs.get<AutovalidateMode?>(
           'autovalidateMode',
         );

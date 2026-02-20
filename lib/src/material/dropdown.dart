@@ -15,17 +15,6 @@ ValueChanged<dynamic>? _handleDynamicValueCallback(
   return callback as ValueChanged<dynamic>?;
 }
 
-VoidCallback? _handleVoidCallback(
-  InterpreterVisitor visitor,
-  dynamic callback,
-) {
-  if (callback == null) return null;
-  if (callback is InterpretedFunction) {
-    return () => callback.call(visitor, []);
-  }
-  return callback as VoidCallback?;
-}
-
 /// Returns the BridgedClass for the Flutter DropdownButton widget.
 BridgedClass getDropdownButtonBridgingDefinition() {
   return BridgedClass(
@@ -45,7 +34,7 @@ BridgedClass getDropdownButtonBridgingDefinition() {
           visitor,
           namedArgs['onChanged'],
         );
-        final onTap = _handleVoidCallback(visitor, namedArgs['onTap']);
+        final onTap = namedArgs.handleVoidCallback('onTap', visitor);
         final elevation = namedArgs.get<int?>('elevation') ?? 8;
         final style = namedArgs.get<TextStyle?>('style');
         final underline = visitor.toWidgets(namedArgs['underline']);
@@ -124,7 +113,7 @@ BridgedClass getDropdownMenuItemBridgingDefinition() {
       '': (visitor, positionalArgs, namedArgs) {
         final key = namedArgs.get<Key?>('key');
         final value = namedArgs['value'];
-        final onTap = namedArgs.get<VoidCallback?>('onTap');
+        final onTap = namedArgs.handleVoidCallback('onTap', visitor);
         final enabled = namedArgs.get<bool?>('enabled') ?? true;
         final alignment =
             namedArgs.get<AlignmentGeometry?>('alignment') ??

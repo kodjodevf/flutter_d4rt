@@ -5,18 +5,6 @@ import 'package:flutter_d4rt/utils/extensions/widget.dart';
 
 /// ScaffoldMessenger bridging definition for flutter_d4rt
 
-// Helper functions for callback handling
-void Function()? _handleVoidCallback(
-  InterpreterVisitor visitor,
-  dynamic callback,
-) {
-  if (callback == null) return null;
-  if (callback is InterpretedFunction) {
-    return () => callback.call(visitor, []);
-  }
-  return callback as void Function()?;
-}
-
 /// Returns the BridgedClass for the Flutter ScaffoldMessenger widget.
 BridgedClass getScaffoldMessengerBridgingDefinition() {
   return BridgedClass(
@@ -191,7 +179,7 @@ BridgedClass getMaterialBannerBridgingDefinition() {
             namedArgs.get<OverflowBarAlignment?>('overflowAlignment') ??
             OverflowBarAlignment.end;
         final animation = namedArgs.get<Animation<double>?>('animation');
-        final onVisible = _handleVoidCallback(visitor, namedArgs['onVisible']);
+        final onVisible = namedArgs.handleVoidCallback('onVisible', visitor);
 
         return MaterialBanner(
           key: key,

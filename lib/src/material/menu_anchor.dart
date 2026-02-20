@@ -1,5 +1,6 @@
 import 'package:d4rt/d4rt.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_d4rt/utils/extensions/map.dart';
 import 'package:flutter_d4rt/utils/extensions/widget.dart';
 
 /// Returns the BridgedClass for the Flutter MenuAnchor widget.
@@ -19,26 +20,10 @@ BridgedClass getMenuAnchorBridgingDefinition() {
             namedArgs.get<bool?>('anchorTapClosesMenu') ?? false;
 
         // Handle onOpen callback
-        final onOpen = namedArgs['onOpen'];
-        VoidCallback? onOpenCallback;
-        if (onOpen != null) {
-          if (onOpen is InterpretedFunction) {
-            onOpenCallback = () => onOpen.call(visitor, []);
-          } else if (onOpen is Function) {
-            onOpenCallback = onOpen as VoidCallback?;
-          }
-        }
+        final onOpen = namedArgs.handleVoidCallback('onOpen', visitor);
 
         // Handle onClose callback
-        final onClose = namedArgs['onClose'];
-        VoidCallback? onCloseCallback;
-        if (onClose != null) {
-          if (onClose is InterpretedFunction) {
-            onCloseCallback = () => onClose.call(visitor, []);
-          } else if (onClose is Function) {
-            onCloseCallback = onClose as VoidCallback?;
-          }
-        }
+        final onClose = namedArgs.handleVoidCallback('onClose', visitor);
 
         final crossAxisUnconstrained =
             namedArgs.get<bool?>('crossAxisUnconstrained') ?? true;
@@ -75,8 +60,8 @@ BridgedClass getMenuAnchorBridgingDefinition() {
           alignmentOffset: alignmentOffset,
           clipBehavior: clipBehavior,
           anchorTapClosesMenu: anchorTapClosesMenu,
-          onOpen: onOpenCallback,
-          onClose: onCloseCallback,
+          onOpen: onOpen,
+          onClose: onClose,
           crossAxisUnconstrained: crossAxisUnconstrained,
           builder: builderCallback,
           menuChildren: menuChildren,
@@ -113,39 +98,20 @@ BridgedClass getMenuItemButtonBridgingDefinition() {
         final key = namedArgs.get<Key?>('key');
 
         // Handle onPressed callback
-        final onPressed = namedArgs['onPressed'];
-        VoidCallback? onPressedCallback;
-        if (onPressed != null) {
-          if (onPressed is InterpretedFunction) {
-            onPressedCallback = () => onPressed.call(visitor, []);
-          } else {
-            onPressedCallback = onPressed as VoidCallback?;
-          }
-        }
+        final onPressed = namedArgs.handleVoidCallback('onPressed', visitor);
 
         // Handle onHover callback
-        final onHover = namedArgs['onHover'];
-        void Function(bool)? onHoverCallback;
-        if (onHover != null) {
-          if (onHover is InterpretedFunction) {
-            onHoverCallback = (bool value) => onHover.call(visitor, [value]);
-          } else {
-            onHoverCallback = onHover as void Function(bool)?;
-          }
-        }
+        final onHover = namedArgs.handleValueCallback<bool?>(
+          'onHover',
+          visitor,
+        );
 
         final requestFocusOnHover =
             namedArgs.get<bool?>('requestFocusOnHover') ?? true;
-        final onFocusChange = namedArgs['onFocusChange'];
-        void Function(bool)? onFocusChangeCallback;
-        if (onFocusChange != null) {
-          if (onFocusChange is InterpretedFunction) {
-            onFocusChangeCallback = (bool value) =>
-                onFocusChange.call(visitor, [value]);
-          } else {
-            onFocusChangeCallback = onFocusChange as void Function(bool)?;
-          }
-        }
+        final onFocusChange = namedArgs.handleValueCallback<bool?>(
+          'onFocusChange',
+          visitor,
+        );
 
         final focusNode = namedArgs.get<FocusNode?>('focusNode');
         final shortcut = namedArgs.get<MenuSerializableShortcut?>('shortcut');
@@ -158,10 +124,10 @@ BridgedClass getMenuItemButtonBridgingDefinition() {
 
         return MenuItemButton(
           key: key,
-          onPressed: onPressedCallback,
-          onHover: onHoverCallback,
+          onPressed: onPressed,
+          onHover: onHover,
           requestFocusOnHover: requestFocusOnHover,
-          onFocusChange: onFocusChangeCallback,
+          onFocusChange: onFocusChange,
           focusNode: focusNode,
           shortcut: shortcut,
           semanticsLabel: semanticsLabel,

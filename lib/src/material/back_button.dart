@@ -1,5 +1,6 @@
 import 'package:d4rt/d4rt.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_d4rt/utils/extensions/map.dart';
 
 /// Returns the BridgedClass for the Flutter BackButton widget.
 BridgedClass getBackButtonBridgingDefinition() {
@@ -13,21 +14,13 @@ BridgedClass getBackButtonBridgingDefinition() {
         final style = namedArgs.get<ButtonStyle?>('style');
 
         // Handle onPressed callback
-        final onPressed = namedArgs['onPressed'];
-        VoidCallback? onPressedCallback;
-        if (onPressed != null) {
-          if (onPressed is InterpretedFunction) {
-            onPressedCallback = () => onPressed.call(visitor, []);
-          } else if (onPressed is Function) {
-            onPressedCallback = onPressed as VoidCallback?;
-          }
-        }
+        final onPressed = namedArgs.handleVoidCallback('onPressed', visitor);
 
         return BackButton(
           key: key,
           color: color,
           style: style,
-          onPressed: onPressedCallback,
+          onPressed: onPressed,
         );
       },
     },
@@ -51,21 +44,13 @@ BridgedClass getCloseButtonBridgingDefinition() {
         final style = namedArgs.get<ButtonStyle?>('style');
 
         // Handle onPressed callback
-        final onPressed = namedArgs['onPressed'];
-        VoidCallback? onPressedCallback;
-        if (onPressed != null) {
-          if (onPressed is InterpretedFunction) {
-            onPressedCallback = () => onPressed.call(visitor, []);
-          } else if (onPressed is Function) {
-            onPressedCallback = onPressed as VoidCallback?;
-          }
-        }
+        final onPressed = namedArgs.handleVoidCallback('onPressed', visitor);
 
         return CloseButton(
           key: key,
           color: color,
           style: style,
-          onPressed: onPressedCallback,
+          onPressed: onPressed,
         );
       },
     },

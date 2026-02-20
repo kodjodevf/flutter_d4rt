@@ -35,8 +35,14 @@ BridgedClass getStepperBridgingDefinition() {
             ? currentStep
             : 0;
         final onStepTapped = namedArgs.get<ValueChanged<int?>?>('onStepTapped');
-        final onStepContinue = namedArgs.get<VoidCallback?>('onStepContinue');
-        final onStepCancel = namedArgs.get<VoidCallback?>('onStepCancel');
+        final onStepContinue = namedArgs.handleVoidCallback(
+          'onStepContinue',
+          visitor,
+        );
+        final onStepCancel = namedArgs.handleVoidCallback(
+          'onStepCancel',
+          visitor,
+        );
         final controlsBuilder = namedArgs.get<ControlsWidgetBuilder?>(
           'controlsBuilder',
         );
@@ -150,7 +156,7 @@ BridgedClass getDismissibleBridgingDefinition() {
           'onDismissed',
         );
         final onUpdate = namedArgs.get<DismissUpdateCallback?>('onUpdate');
-        final onResize = namedArgs.get<VoidCallback?>('onResize');
+        final onResize = namedArgs.handleVoidCallback('onResize', visitor);
         final direction =
             namedArgs.get<DismissDirection?>('direction') ??
             DismissDirection.horizontal;
