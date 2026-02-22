@@ -58,6 +58,51 @@ BridgedClass getMaterialAppBridgingDefinition() {
           color: color,
           routes: routes ?? {},
           initialRoute: initialRoute,
+          actions: namedArgs.get<dynamic>('actions'),
+          themeAnimationCurve:
+              namedArgs.get<Curve?>('themeAnimationCurve') ?? Curves.linear,
+          themeAnimationDuration:
+              namedArgs.get<Duration?>('themeAnimationDuration') ??
+              kThemeAnimationDuration,
+          themeAnimationStyle: namedArgs.get<AnimationStyle?>(
+            'themeAnimationStyle',
+          ),
+          builder: namedArgs.get<InterpretedFunction?>('builder') == null
+              ? null
+              : (context, child) {
+                  final result = namedArgs
+                      .get<InterpretedFunction?>('builder')
+                      ?.call(visitor, [context, child]);
+                  return visitor.toWidgets(result);
+                },
+          scrollBehavior: namedArgs.get<ScrollBehavior?>('scrollBehavior'),
+          navigatorKey: namedArgs.get<GlobalKey<NavigatorState>?>(
+            'navigatorKey',
+          ),
+          checkerboardOffscreenLayers:
+              namedArgs.get<bool?>('checkerboardOffscreenLayers') ?? false,
+          checkerboardRasterCacheImages:
+              namedArgs.get<bool?>('checkerboardRasterCacheImages') ?? false,
+          highContrastDarkTheme: namedArgs.get<ThemeData?>(
+            'highContrastDarkTheme',
+          ),
+          debugShowMaterialGrid:
+              namedArgs.get<bool?>('debugShowMaterialGrid') ?? false,
+          localizationsDelegates: namedArgs
+              .get<Iterable<LocalizationsDelegate<dynamic>>?>(
+                'localizationsDelegates',
+              ),
+          showSemanticsDebugger:
+              namedArgs.get<bool?>('showSemanticsDebugger') ?? false,
+          restorationScopeId: namedArgs.get<String?>('restorationScopeId'),
+          scaffoldMessengerKey: namedArgs
+              .get<GlobalKey<ScaffoldMessengerState>?>('scaffoldMessengerKey'),
+          locale: namedArgs.get<Locale?>('locale'),
+          supportedLocales:
+              namedArgs.get<Iterable<Locale>?>('supportedLocales') ??
+              [Locale('en', 'US')],
+          showPerformanceOverlay:
+              namedArgs.get<bool?>('showPerformanceOverlay') ?? false,
         );
       },
     },

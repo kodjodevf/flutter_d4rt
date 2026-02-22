@@ -326,3 +326,44 @@ BridgedClass getPageViewBridgingDefinition() {
     },
   );
 }
+
+BridgedClass getSliverGridDelegateWithFixedCrossAxisCountBridgingDefinition() {
+  return BridgedClass(
+    nativeType: SliverGridDelegateWithFixedCrossAxisCount,
+    name: 'SliverGridDelegateWithFixedCrossAxisCount',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        return SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: namedArgs.get<int>('crossAxisCount')!,
+          mainAxisSpacing:
+              toDouble(namedArgs.get<dynamic>('mainAxisSpacing')) ?? 0.0,
+          crossAxisSpacing:
+              toDouble(namedArgs.get<dynamic>('crossAxisSpacing')) ?? 0.0,
+          childAspectRatio:
+              toDouble(namedArgs.get<dynamic>('childAspectRatio')) ?? 1.0,
+        );
+      },
+    },
+  );
+}
+
+BridgedClass getSliverGridDelegateWithMaxCrossAxisExtentBridgingDefinition() {
+  return BridgedClass(
+    nativeType: SliverGridDelegateWithMaxCrossAxisExtent,
+    name: 'SliverGridDelegateWithMaxCrossAxisExtent',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        return SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: namedArgs.getToDouble('maxCrossAxisExtent')!,
+          mainAxisExtent: namedArgs.getToDouble('mainAxisExtent'),
+          mainAxisSpacing:
+              toDouble(namedArgs.get<dynamic>('mainAxisSpacing')) ?? 0.0,
+          crossAxisSpacing:
+              toDouble(namedArgs.get<dynamic>('crossAxisSpacing')) ?? 0.0,
+          childAspectRatio:
+              toDouble(namedArgs.get<dynamic>('childAspectRatio')) ?? 1.0,
+        );
+      },
+    },
+  );
+}

@@ -304,6 +304,14 @@ void registerWidgetsBridges(D4rt interpreter) {
     scrolling.getPageViewBridgingDefinition(),
     'package:flutter/widgets_.dart',
   );
+  interpreter.registerBridgedClass(
+    scrolling.getSliverGridDelegateWithFixedCrossAxisCountBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    scrolling.getSliverGridDelegateWithMaxCrossAxisExtentBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
 
   // Register interactive widgets
   interpreter.registerBridgedClass(

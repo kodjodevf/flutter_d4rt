@@ -113,14 +113,14 @@ BridgedClass getLinearGradientBridgingDefinition() {
         final end =
             namedArgs.get<AlignmentGeometry>('end') ?? Alignment.centerRight;
         final colors = namedArgs.get<List>('colors')!;
-        final stops = namedArgs.get<List>("stops")!;
+        final stops = namedArgs.get<List?>("stops");
         final tileMode = namedArgs.get<TileMode?>('tileMode') ?? TileMode.clamp;
         final transform = namedArgs.get<GradientTransform?>('transform');
         return LinearGradient(
           begin: begin,
           end: end,
           colors: colors.cast(),
-          stops: stops.cast(),
+          stops: stops?.cast(),
           tileMode: tileMode,
           transform: transform,
         );

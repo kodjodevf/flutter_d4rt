@@ -20,6 +20,7 @@ BridgedClass getAppBarBridgingDefinition() {
         final leading = visitor.toWidgets(namedArgs['leading']);
         final automaticallyImplyLeading =
             namedArgs.get<bool?>('automaticallyImplyLeading') ?? true;
+        final bottom = visitor.toWidgets(namedArgs['bottom']);
 
         final actions = visitor.toWidgets(namedArgs['actions']);
 
@@ -33,6 +34,42 @@ BridgedClass getAppBarBridgingDefinition() {
           leading: leading,
           automaticallyImplyLeading: automaticallyImplyLeading,
           actions: actions,
+          bottom: bottom,
+          actionsIconTheme: namedArgs.get<IconThemeData?>('actionsIconTheme'),
+          actionsPadding: namedArgs.get<EdgeInsetsGeometry?>('actionsPadding'),
+          animateColor: namedArgs.get<bool?>('animateColor') ?? false,
+          automaticallyImplyActions:
+              namedArgs.get<bool?>('automaticallyImplyActions') ?? false,
+          leadingWidth: namedArgs.getToDouble('leadingWidth'),
+          excludeHeaderSemantics:
+              namedArgs.get<bool?>('excludeHeaderSemantics') ?? false,
+          titleSpacing: namedArgs.getToDouble('titleSpacing'),
+          toolbarOpacity: namedArgs.getToDouble('toolbarOpacity') ?? 1.0,
+          titleTextStyle: namedArgs.get<TextStyle?>('titleTextStyle'),
+          toolbarTextStyle: namedArgs.get<TextStyle?>('toolbarTextStyle'),
+          toolbarHeight: namedArgs.getToDouble('toolbarHeight'),
+          iconTheme: namedArgs.get<IconThemeData?>('iconTheme'),
+          surfaceTintColor: namedArgs.get<Color?>('surfaceTintColor'),
+          forceMaterialTransparency:
+              namedArgs.get<bool?>('forceMaterialTransparency') ?? false,
+          scrolledUnderElevation: namedArgs.getToDouble(
+            'scrolledUnderElevation',
+          ),
+          clipBehavior: namedArgs.get<Clip?>('clipBehavior'),
+          shadowColor: namedArgs.get<Color?>('shadowColor'),
+          bottomOpacity: namedArgs.getToDouble('bottomOpacity') ?? 1.0,
+          notificationPredicate:
+              namedArgs.get<ScrollNotificationPredicate?>(
+                'notificationPredicate',
+              ) ??
+              defaultScrollNotificationPredicate,
+          useDefaultSemanticsOrder:
+              namedArgs.get<bool?>('useDefaultSemanticsOrder') ?? true,
+          shape: namedArgs.get<ShapeBorder?>('shape'),
+          systemOverlayStyle: namedArgs.get<SystemUiOverlayStyle?>(
+            'systemOverlayStyle',
+          ),
+          flexibleSpace: namedArgs.get<Widget?>('flexibleSpace'),
         );
       },
     },
