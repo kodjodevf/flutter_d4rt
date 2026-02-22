@@ -78,7 +78,7 @@ class _DartPadScreenState extends State<DartPadScreen> {
   String _currentCode = _defaultCode;
   bool _isRunning = false;
   String? _error;
-  bool _isVerticalSplit = true;
+  bool _isVerticalSplit = false;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int _currentLine = 1;
   int _currentColumn = 1;
@@ -793,7 +793,7 @@ class _MyWidgetState extends State<MyWidget> {
                 onPressed: _formatCode,
               ),
               IconButton(
-                icon: const Icon(Icons.palette),
+                icon: const Icon(Icons.code),
                 tooltip: 'Sample Code',
                 onPressed: _showSamples,
               ),
