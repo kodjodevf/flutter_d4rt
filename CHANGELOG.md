@@ -1,4 +1,133 @@
 # Changelog
+
+## [0.0.6] - 2026-02-22
+
+### Added
+
+#### Enhanced DartPad Clone Example
+- **Code History Management**: Full undo/redo functionality (Cmd+Z / Ctrl+Z)
+  - Complete history stack with navigation
+  - Redo support (Cmd+Shift+Z / Ctrl+Shift+Z)
+  - Visual history status indicator
+  - Automatic history tracking on every change
+
+- **Advanced Search & Replace**: Comprehensive find and replace system
+  - Find & Replace dialog (Cmd+F / Ctrl+F)
+  - Next/Previous navigation between search results
+  - Match counter showing current position (N/Total)
+  - Replace All functionality for bulk replacements
+  - Automatic result highlighting and selection
+
+- **Settings Panel**: Customizable editor preferences
+  - Dynamic font size adjustment (10-32pt range with +/- controls)
+  - Word wrap toggle for flexible text wrapping
+  - Line numbers visibility toggle
+  - Real-time editor updates with visual feedback
+
+- **Real-time Statistics**: Code analysis display in status bar
+  - Line count tracking
+  - Word count calculation
+  - Character count monitoring
+  - Live updates on every keystroke
+
+- **Code Export Options**: Multiple export formats
+  - Copy to clipboard (Cmd+S / Ctrl+S)
+  - Export as Plain Text
+  - Export as JSON format
+  - One-click export with confirmation
+
+- **Comprehensive Keyboard Shortcuts**:
+  - Cmd/Ctrl+Enter: Run code
+  - Cmd/Ctrl+Z: Undo
+  - Cmd/Ctrl+Shift+Z: Redo
+  - Cmd/Ctrl+F: Find & Replace
+  - Cmd/Ctrl+Shift+F: Format code
+  - Cmd/Ctrl+S: Save/Copy code
+
+- **16 Code Samples** for learning and quick starts:
+  - Hello World - Simple text display
+  - Counter App - Stateful widget example
+  - ListView Example - Scrollable list with builder
+  - Form Example - Input forms with validation
+  - Animated Container - Smooth animations
+  - StreamBuilder Example - Real-time data streams
+  - FutureBuilder Example - Asynchronous data loading
+  - Timer Example - Countdown timer with controls
+  - Navigation Example - Page routing and navigation
+  - Grid Layout Example - Responsive grid view
+  - Checkbox & Switch Example - Input controls
+  - Card & Dialog Example - Material Design components
+  - Gradient & CustomPaint - Advanced styling with gradients
+  - Tab Navigation Example - Tabbed interface
+  - Floating Action Button Menu - Expandable FAB menu
+  - Snackbar & Toast Example - User notifications
+
+- **Enhanced Editor Features**:
+  - Dynamic line number sizing based on font size
+  - Flexible word wrap options
+  - Improved code formatting with better brace handling
+  - Smart indentation detection (up to 100 levels)
+  - Automatic formatting history tracking
+
+- **Improved Toolbar**:
+  - 15+ action buttons with clear tooltips
+  - Status indicators (Running/Ready/Error)
+  - Split layout toggle (horizontal/vertical)
+  - Organized action groups
+  - Material 3 design compliance
+
+- **Better Error Handling**:
+  - Try-catch blocks with descriptive messages
+  - User-friendly error notifications
+  - Error state indication in status bar
+  - Error details in separate panel below editor
+
+#### Widget Bridging Improvements
+- **Callback Handling Refactor**: Fixed premature callback execution
+  - Callbacks now execute only on user interaction, not widget creation
+  - Eliminated unwanted print statements during widget initialization
+  - Improved InterpretedFunction callback wrapping
+  - Better closure handling in button and gesture widgets
+
+- **New Widget Bridging Definitions**: Added support for additional Flutter widgets
+  - Enhanced existing widget bridges with better parameter handling
+  - Improved type safety in callback definitions
+  - More consistent method signatures across bridges
+  - Better support for nested widget hierarchies
+
+### Technical Improvements
+
+#### Code Quality
+- **Callback System**: Refactored VoidCallback handling to prevent early execution
+- **Widget Bridging**: Improved consistency across all widget bridge definitions
+- **Error Messages**: More descriptive and actionable error reporting
+- **Code Organization**: Better structured example code with comprehensive comments
+
+#### Performance
+- **Editor Responsiveness**: Optimized real-time statistics calculations
+- **Search Performance**: Efficient string matching algorithm for large documents
+- **History Management**: Memory-efficient history stack implementation
+- **Widget Initialization**: Faster widget creation with fixed callback system
+
+#### Developer Experience
+- **Documentation**: Added inline comments explaining complex features
+- **Example Quality**: High-quality, well-commented code samples
+- **Tooltip Clarity**: Enhanced tooltips with keyboard shortcut information
+- **Feedback System**: Immediate visual feedback for all user actions
+
+### Bug Fixes
+- Fixed callback printing issue in ElevatedButton and other interactive widgets
+- Corrected premature InterpretedFunction execution on widget creation
+- Improved parameter validation in widget bridge constructors
+- Fixed line number height calculation with dynamic font sizes
+- Better error state management across editor operations
+
+### Breaking Changes
+- None
+
+### Deprecations
+- None
+
 ## [0.0.5] - 2025-09-11
 
 - update d4rt dependency to version 0.1.5
