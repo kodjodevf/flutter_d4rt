@@ -163,3 +163,90 @@ BridgedClass getCupertinoActionSheetActionBridgingDefinition() {
     },
   );
 }
+
+/// Returns the BridgedClass for showCupertinoDialog.
+BridgedClass getShowCupertinoDialogBridgingDefinition() {
+  return BridgedClass(
+    nativeType: Object,
+    name: 'showCupertinoDialog',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final context = namedArgs.get<BuildContext>('context') ??
+            (positionalArgs.isNotEmpty
+                ? positionalArgs[0] as BuildContext
+                : null);
+        final builderRaw = namedArgs['builder'];
+        final barrierDismissible =
+            namedArgs.get<bool?>('barrierDismissible') ?? false;
+        final useRootNavigator =
+            namedArgs.get<bool?>('useRootNavigator') ?? true;
+        final routeSettings = namedArgs.get<RouteSettings?>('routeSettings');
+
+        WidgetBuilder? builder;
+        if (builderRaw is InterpretedFunction) {
+          builder = (context) {
+            final result = builderRaw.call(visitor, [context]);
+            return visitor.toWidget(result) ?? const SizedBox();
+          };
+        }
+
+        if (context == null || builder == null) {
+          return Future.value(null);
+        }
+
+        return showCupertinoDialog(
+          context: context,
+          builder: builder,
+          barrierDismissible: barrierDismissible,
+          useRootNavigator: useRootNavigator,
+          routeSettings: routeSettings,
+        );
+      },
+    },
+  );
+}
+
+/// Returns the BridgedClass for showCupertinoModalPopup.
+BridgedClass getShowCupertinoModalPopupBridgingDefinition() {
+  return BridgedClass(
+    nativeType: Object,
+    name: 'showCupertinoModalPopup',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final context = namedArgs.get<BuildContext>('context') ??
+            (positionalArgs.isNotEmpty
+                ? positionalArgs[0] as BuildContext
+                : null);
+        final builderRaw = namedArgs['builder'];
+        final barrierDismissible =
+            namedArgs.get<bool?>('barrierDismissible') ?? true;
+        final useRootNavigator =
+            namedArgs.get<bool?>('useRootNavigator') ?? true;
+        final semanticsDismissible =
+            namedArgs.get<bool?>('semanticsDismissible') ?? false;
+        final routeSettings = namedArgs.get<RouteSettings?>('routeSettings');
+
+        WidgetBuilder? builder;
+        if (builderRaw is InterpretedFunction) {
+          builder = (context) {
+            final result = builderRaw.call(visitor, [context]);
+            return visitor.toWidget(result) ?? const SizedBox();
+          };
+        }
+
+        if (context == null || builder == null) {
+          return Future.value(null);
+        }
+
+        return showCupertinoModalPopup(
+          context: context,
+          builder: builder,
+          barrierDismissible: barrierDismissible,
+          useRootNavigator: useRootNavigator,
+          semanticsDismissible: semanticsDismissible,
+          routeSettings: routeSettings,
+        );
+      },
+    },
+  );
+}

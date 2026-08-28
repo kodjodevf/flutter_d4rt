@@ -16,16 +16,9 @@ BridgedClass getStepperBridgingDefinition() {
     name: 'Stepper',
     constructors: {
       '': (visitor, positionalArgs, namedArgs) {
-        // Handle steps list conversion
-        List<Step> steps = [];
-        final stepsValue = namedArgs['steps'];
-        if (stepsValue is List) {
-          for (final stepValue in stepsValue) {
-            if (stepValue is Step) {
-              steps.add(stepValue);
-            }
-          }
-        }
+        final rawSteps = visitor.toElements(namedArgs['steps']);
+        final List<Step> steps =
+            (rawSteps is List) ? rawSteps.whereType<Step>().toList() : [];
 
         return Stepper(
           key: namedArgs.get<Key?>('key'),
@@ -117,8 +110,10 @@ BridgedClass getDataTableBridgingDefinition() {
       '': (visitor, positionalArgs, namedArgs) {
         return DataTable(
           key: namedArgs.get<Key?>('key'),
-          columns: (namedArgs['columns'] as List? ?? []).cast(),
-          rows: (namedArgs['rows'] as List? ?? []).cast(),
+          columns: (visitor.toElements(namedArgs['columns']) as List? ?? [])
+              .cast<DataColumn>(),
+          rows: (visitor.toElements(namedArgs['rows']) as List? ?? [])
+              .cast<DataRow>(),
           sortColumnIndex: namedArgs['sortColumnIndex'] as int?,
           sortAscending: namedArgs['sortAscending'] as bool? ?? true,
           onSelectAll: namedArgs.handleValueCallback<bool?>(
@@ -228,7 +223,8 @@ BridgedClass getDataRowBridgingDefinition() {
           ),
           onLongPress: namedArgs.handleVoidCallback('onLongPress', visitor),
           color: namedArgs['color'] as WidgetStateProperty<Color?>?,
-          cells: (namedArgs['cells'] as List? ?? []).cast(),
+          cells: (visitor.toElements(namedArgs['cells']) as List? ?? [])
+              .cast<DataCell>(),
           mouseCursor:
               namedArgs['mouseCursor'] as WidgetStateProperty<MouseCursor?>?,
         );
@@ -243,7 +239,8 @@ BridgedClass getDataRowBridgingDefinition() {
           ),
           onLongPress: namedArgs.handleVoidCallback('onLongPress', visitor),
           color: namedArgs['color'] as WidgetStateProperty<Color?>?,
-          cells: (namedArgs['cells'] as List? ?? []).cast(),
+          cells: (visitor.toElements(namedArgs['cells']) as List? ?? [])
+              .cast<DataCell>(),
           mouseCursor:
               namedArgs['mouseCursor'] as WidgetStateProperty<MouseCursor?>?,
         );
@@ -265,7 +262,11 @@ BridgedClass getDataCellBridgingDefinition() {
     name: 'DataCell',
     constructors: {
       '': (visitor, positionalArgs, namedArgs) {
-        final child = visitor.toWidgets(namedArgs['child']);
+        final child = visitor.toWidget(namedArgs['child']) ??
+            (positionalArgs.isNotEmpty
+                ? visitor.toWidget(positionalArgs[0])
+                : null) ??
+            const SizedBox();
 
         return DataCell(
           child,

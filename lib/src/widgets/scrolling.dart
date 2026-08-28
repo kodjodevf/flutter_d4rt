@@ -82,7 +82,7 @@ BridgedClass getListViewBridgingDefinition() {
               DragStartBehavior.start,
           clipBehavior: namedArgs['clipBehavior'] as Clip? ?? Clip.hardEdge,
           restorationId: namedArgs['restorationId'] as String?,
-          children: (namedArgs['children'] as List? ?? []).cast(),
+          children: visitor.toWidgetList(namedArgs['children']),
         );
       },
       'builder': (visitor, positionalArgs, namedArgs) {
@@ -177,7 +177,7 @@ BridgedClass getGridViewBridgingDefinition() {
               DragStartBehavior.start,
           clipBehavior: namedArgs['clipBehavior'] as Clip? ?? Clip.hardEdge,
           restorationId: namedArgs['restorationId'] as String?,
-          children: (namedArgs['children'] as List? ?? []).cast(),
+          children: visitor.toWidgetList(namedArgs['children']),
         );
       },
       'builder': (visitor, positionalArgs, namedArgs) {
@@ -235,7 +235,7 @@ BridgedClass getGridViewBridgingDefinition() {
               DragStartBehavior.start,
           clipBehavior: namedArgs['clipBehavior'] as Clip? ?? Clip.hardEdge,
           restorationId: namedArgs['restorationId'] as String?,
-          children: (namedArgs['children'] as List? ?? []).cast(),
+          children: visitor.toWidgetList(namedArgs['children']),
         );
       },
       'extent': (visitor, positionalArgs, namedArgs) {
@@ -265,7 +265,7 @@ BridgedClass getGridViewBridgingDefinition() {
               DragStartBehavior.start,
           clipBehavior: namedArgs['clipBehavior'] as Clip? ?? Clip.hardEdge,
           restorationId: namedArgs['restorationId'] as String?,
-          children: (namedArgs['children'] as List? ?? []).cast(),
+          children: visitor.toWidgetList(namedArgs['children']),
         );
       },
     },
@@ -298,7 +298,7 @@ BridgedClass getPageViewBridgingDefinition() {
               namedArgs['allowImplicitScrolling'] as bool? ?? false,
           restorationId: namedArgs['restorationId'] as String?,
           clipBehavior: namedArgs['clipBehavior'] as Clip? ?? Clip.hardEdge,
-          children: (namedArgs['children'] as List? ?? []).cast(),
+          children: visitor.toWidgetList(namedArgs['children']),
         );
       },
       'builder': (visitor, positionalArgs, namedArgs) {

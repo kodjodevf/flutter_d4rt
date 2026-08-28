@@ -98,4 +98,12 @@ void registerCupertinoBridges(D4rt interpreter) {
     getCupertinoTabViewBridgingDefinition(),
     'package:flutter/cupertino_.dart',
   );
+  interpreter.registerBridgedClass(
+    getShowCupertinoDialogBridgingDefinition(),
+    'package:flutter/cupertino_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getShowCupertinoModalPopupBridgingDefinition(),
+    'package:flutter/cupertino_.dart',
+  );
 }

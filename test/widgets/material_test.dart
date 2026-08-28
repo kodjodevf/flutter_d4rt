@@ -680,7 +680,7 @@ void main() {
         ''';
 
         final widget = interpreter.execute(code, 'build');
-        expect(widget, isA<MaterialApp>());
+        expect(widget, isA<DataTable>());
       });
 
       test('should create DataTable with sorting', () {
@@ -705,7 +705,7 @@ void main() {
         ''';
 
         final widget = interpreter.execute(code, 'build');
-        expect(widget, isA<MaterialApp>());
+        expect(widget, isA<DataTable>());
       });
     });
 
@@ -731,7 +731,7 @@ void main() {
         ''';
 
         final widget = interpreter.execute(code, 'build');
-        expect(widget, isA<MaterialApp>());
+        expect(widget, isA<Stepper>());
       });
     });
   });

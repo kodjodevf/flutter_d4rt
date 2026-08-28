@@ -28,7 +28,8 @@ BridgedClass getNavigatorBridgingDefinition() {
       '': (visitor, positionalArgs, namedArgs) {
         return Navigator(
           key: namedArgs.get<Key?>('key'),
-          pages: (namedArgs['pages'] as List? ?? []).cast(),
+          pages: (visitor.toElements(namedArgs['pages']) as List? ?? [])
+              .cast<Page<dynamic>>(),
           onPopPage: (route, result) {
             return (namedArgs['onPopPage'] as InterpretedFunction).call(
                   visitor,
@@ -64,7 +65,9 @@ BridgedClass getNavigatorBridgingDefinition() {
           reportsRouteUpdateToEngine:
               namedArgs['reportsRouteUpdateToEngine'] as bool? ?? false,
           clipBehavior: namedArgs['clipBehavior'] as Clip? ?? Clip.hardEdge,
-          observers: (namedArgs['observers'] as List? ?? []).cast(),
+          observers:
+              (visitor.toElements(namedArgs['observers']) as List? ?? [])
+                  .cast<NavigatorObserver>(),
           requestFocus: namedArgs['requestFocus'] as bool? ?? true,
           routeDirectionalTraversalEdgeBehavior:
               namedArgs.get<TraversalEdgeBehavior?>(

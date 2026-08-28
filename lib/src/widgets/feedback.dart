@@ -116,6 +116,26 @@ BridgedClass getRefreshIndicatorBridgingDefinition() {
   );
 }
 
+Animation<Color?>? _extractValueColor(dynamic raw) {
+  if (raw == null) return null;
+  final obj = raw is BridgedInstance ? raw.nativeObject : raw;
+  if (obj is Animation<Color?>) {
+    return obj;
+  }
+  if (obj is Animation<Color>) {
+    return obj;
+  }
+  if (obj is AlwaysStoppedAnimation) {
+    return AlwaysStoppedAnimation<Color?>(obj.value as Color?);
+  }
+  if (obj is Animation) {
+    return obj.drive(
+      Animatable.fromCallback((value) => value as Color?),
+    );
+  }
+  return null;
+}
+
 // LinearProgressIndicator bridging (enhanced)
 BridgedClass getLinearProgressIndicatorBridgingDefinition() {
   return BridgedClass(
@@ -128,7 +148,7 @@ BridgedClass getLinearProgressIndicatorBridgingDefinition() {
           value: toDouble(namedArgs['value']),
           backgroundColor: namedArgs['backgroundColor'] as Color?,
           color: namedArgs['color'] as Color?,
-          valueColor: namedArgs['valueColor'] as Animation<Color?>?,
+          valueColor: _extractValueColor(namedArgs['valueColor']),
           minHeight: toDouble(namedArgs['minHeight']),
           semanticsLabel: namedArgs['semanticsLabel'] as String?,
           semanticsValue: namedArgs['semanticsValue'] as String?,

@@ -2,6 +2,26 @@ import 'package:d4rt/d4rt.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_d4rt/utils/extensions/map.dart';
 
+Animation<Color?>? _extractValueColor(dynamic raw) {
+  if (raw == null) return null;
+  final obj = raw is BridgedInstance ? raw.nativeObject : raw;
+  if (obj is Animation<Color?>) {
+    return obj;
+  }
+  if (obj is Animation<Color>) {
+    return obj;
+  }
+  if (obj is AlwaysStoppedAnimation) {
+    return AlwaysStoppedAnimation<Color?>(obj.value as Color?);
+  }
+  if (obj is Animation) {
+    return obj.drive(
+      Animatable.fromCallback((value) => value as Color?),
+    );
+  }
+  return null;
+}
+
 /// Returns the BridgedClass for the Flutter CircularProgressIndicator widget.
 BridgedClass getCircularProgressIndicatorBridgingDefinition() {
   return BridgedClass(
@@ -13,7 +33,7 @@ BridgedClass getCircularProgressIndicatorBridgingDefinition() {
         final value = namedArgs.getToDouble('value');
         final backgroundColor = namedArgs.get<Color?>('backgroundColor');
         final color = namedArgs.get<Color?>('color');
-        final valueColor = namedArgs.get<Animation<Color?>?>('valueColor');
+        final valueColor = _extractValueColor(namedArgs['valueColor']);
         final strokeWidth = namedArgs.getToDouble('strokeWidth') ?? 4.0;
         final semanticsLabel = namedArgs.get<String?>('semanticsLabel');
         final semanticsValue = namedArgs.get<String?>('semanticsValue');
@@ -33,7 +53,7 @@ BridgedClass getCircularProgressIndicatorBridgingDefinition() {
         final key = namedArgs.get<Key?>('key');
         final value = namedArgs.getToDouble('value');
         final backgroundColor = namedArgs.get<Color?>('backgroundColor');
-        final valueColor = namedArgs.get<Animation<Color?>?>('valueColor');
+        final valueColor = _extractValueColor(namedArgs['valueColor']);
         final strokeWidth = namedArgs.getToDouble('strokeWidth') ?? 4.0;
         final semanticsLabel = namedArgs.get<String?>('semanticsLabel');
         final semanticsValue = namedArgs.get<String?>('semanticsValue');
@@ -53,6 +73,7 @@ BridgedClass getCircularProgressIndicatorBridgingDefinition() {
       'value': (visitor, target) => (target as CircularProgressIndicator).value,
       'backgroundColor': (visitor, target) =>
           (target as CircularProgressIndicator).backgroundColor,
+      'color': (visitor, target) => (target as CircularProgressIndicator).color,
       'valueColor': (visitor, target) =>
           (target as CircularProgressIndicator).valueColor,
       'strokeWidth': (visitor, target) =>
@@ -76,10 +97,11 @@ BridgedClass getLinearProgressIndicatorBridgingDefinition() {
         final value = namedArgs.getToDouble('value');
         final backgroundColor = namedArgs.get<Color?>('backgroundColor');
         final color = namedArgs.get<Color?>('color');
-        final valueColor = namedArgs.get<Animation<Color?>?>('valueColor');
+        final valueColor = _extractValueColor(namedArgs['valueColor']);
         final minHeight = namedArgs.getToDouble('minHeight');
         final semanticsLabel = namedArgs.get<String?>('semanticsLabel');
         final semanticsValue = namedArgs.get<String?>('semanticsValue');
+        final borderRadius = namedArgs.get<BorderRadiusGeometry?>('borderRadius');
 
         return LinearProgressIndicator(
           key: key,
@@ -90,6 +112,7 @@ BridgedClass getLinearProgressIndicatorBridgingDefinition() {
           minHeight: minHeight,
           semanticsLabel: semanticsLabel,
           semanticsValue: semanticsValue,
+          borderRadius: borderRadius,
         );
       },
     },

@@ -64,15 +64,20 @@ void main() {
         const code = '''
           import 'package:flutter/material.dart';
 
-          DataRow build() {
-            return DataRow(cells: [
-              DataCell(child: Text('John')),
-            ]);
+          Widget build() {
+            return DataTable(
+              columns: [DataColumn(label: Text('Col'))],
+              rows: [
+                DataRow(cells: [
+                  DataCell(child: Text('John')),
+                ]),
+              ],
+            );
           }
         ''';
 
-        final dataRow = interpreter.execute(code, 'build');
-        expect(dataRow, isA<MaterialApp>());
+        final widget = interpreter.execute(code, 'build');
+        expect(widget, isA<DataTable>());
       });
     });
 
@@ -96,7 +101,7 @@ void main() {
         ''';
 
         final widget = interpreter.execute(code, 'build');
-        expect(widget, isA<MaterialApp>());
+        expect(widget, isA<DataTable>());
       });
     });
 
@@ -122,7 +127,7 @@ void main() {
         ''';
 
         final widget = interpreter.execute(code, 'build');
-        expect(widget, isA<MaterialApp>());
+        expect(widget, isA<Stepper>());
       });
     });
 

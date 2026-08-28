@@ -259,7 +259,7 @@ BridgedClass getCupertinoPickerBridgingDefinition() {
           selectionOverlay:
               visitor.toWidgets(namedArgs['selectionOverlay']) ??
               const CupertinoPickerDefaultSelectionOverlay(),
-          children: (namedArgs['children'] as List? ?? []).cast(),
+          children: visitor.toWidgetList(namedArgs['children']),
         );
       },
       'builder': (visitor, positionalArgs, namedArgs) {
