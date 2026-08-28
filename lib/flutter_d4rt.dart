@@ -56,6 +56,9 @@ class FlutterRunInterpreter {
   /// The core D4rt interpreter instance used for code execution.
   late final D4rt _interpreter;
 
+  /// Returns the underlying D4rt interpreter.
+  D4rt get interpreter => _interpreter;
+
   /// Flag indicating whether the interpreter has been initialized.
   bool _isInitialized = false;
 

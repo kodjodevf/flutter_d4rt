@@ -35,6 +35,7 @@ import 'package:flutter_d4rt/src/widgets/spacer.dart' as spacer;
 import 'package:flutter_d4rt/src/widgets/table.dart' as table;
 import 'package:flutter_d4rt/src/widgets/flow.dart' as flow;
 import 'package:flutter_d4rt/src/material/bottom_navigation_bar_item.dart' as nav_item;
+import 'package:flutter_d4rt/src/foundation/change_notifier.dart' as foundation_cn;
 
 void registerWidgetsBridges(D4rt interpreter) {
   interpreter.registerBridgedClass(
@@ -405,6 +406,22 @@ void registerWidgetsBridges(D4rt interpreter) {
   );
   interpreter.registerBridgedClass(
     getTweenAnimationBuilderBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    foundation_cn.getChangeNotifierBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    foundation_cn.getValueNotifierBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    foundation_cn.getListenableBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    foundation_cn.getValueListenableBridgingDefinition(),
     'package:flutter/widgets_.dart',
   );
 

@@ -73,6 +73,36 @@ BridgedClass getValueListenableBridgingDefinition() {
   );
 }
 
+ChangeNotifierBridge? _extractChangeNotifier(dynamic target) {
+  if (target is ChangeNotifierBridge) return target;
+  if (target is InterpretedInstance) {
+    if (target.bridgedSuperObject is ChangeNotifierBridge) {
+      return target.bridgedSuperObject as ChangeNotifierBridge;
+    }
+  }
+  if (target is BridgedInstance) {
+    if (target.nativeObject is ChangeNotifierBridge) {
+      return target.nativeObject as ChangeNotifierBridge;
+    }
+  }
+  return null;
+}
+
+ValueNotifierBridge? _extractValueNotifier(dynamic target) {
+  if (target is ValueNotifierBridge) return target;
+  if (target is InterpretedInstance) {
+    if (target.bridgedSuperObject is ValueNotifierBridge) {
+      return target.bridgedSuperObject as ValueNotifierBridge;
+    }
+  }
+  if (target is BridgedInstance) {
+    if (target.nativeObject is ValueNotifierBridge) {
+      return target.nativeObject as ValueNotifierBridge;
+    }
+  }
+  return null;
+}
+
 /// Returns the BridgedClass for the Flutter ChangeNotifier class.
 BridgedClass getChangeNotifierBridgingDefinition() {
   return BridgedClass(
@@ -89,14 +119,19 @@ BridgedClass getChangeNotifierBridgingDefinition() {
     },
     getters: {
       'hashCode': (visitor, target) =>
-          (target as ChangeNotifierBridge).hashCode,
+          _extractChangeNotifier(target)?.hashCode ?? target.hashCode,
+      'hasListeners': (visitor, target) =>
+          _extractChangeNotifier(target)?.hasListeners ?? false,
     },
     methods: {
+      'hasListeners': (visitor, target, positionalArgs, namedArgs) =>
+          _extractChangeNotifier(target)?.hasListeners ?? false,
       'addListener': (visitor, target, positionalArgs, namedArgs) {
         final listener = positionalArgs.get<InterpretedFunction>(0);
         if (listener != null) {
-          (target as ChangeNotifierBridge).addListener(
-            () => listener.call(visitor, [], {}),
+          _extractChangeNotifier(target)?.addInterpretedListener(
+            listener,
+            visitor,
           );
         }
         return null;
@@ -104,24 +139,24 @@ BridgedClass getChangeNotifierBridgingDefinition() {
       'removeListener': (visitor, target, positionalArgs, namedArgs) {
         final listener = positionalArgs.get<InterpretedFunction>(0);
         if (listener != null) {
-          (target as ChangeNotifierBridge).removeListener(
-            () => listener.call(visitor, [], {}),
-          );
+          _extractChangeNotifier(target)?.removeInterpretedListener(listener);
         }
         return null;
       },
       'notifyListeners': (visitor, target, positionalArgs, namedArgs) {
-        (target as ChangeNotifierBridge).notifyListeners();
+        _extractChangeNotifier(target)?.notifyListeners();
         return null;
       },
       'dispose': (visitor, target, positionalArgs, namedArgs) {
-        (target as ChangeNotifierBridge).dispose();
+        _extractChangeNotifier(target)?.dispose();
         return null;
       },
       'debugAssertNotDisposed': (visitor, target, positionalArgs, namedArgs) {
-        return ChangeNotifier.debugAssertNotDisposed(
-          target as ChangeNotifierBridge,
-        );
+        final bridge = _extractChangeNotifier(target);
+        if (bridge != null) {
+          return ChangeNotifier.debugAssertNotDisposed(bridge);
+        }
+        return true;
       },
     },
   );
@@ -144,19 +179,27 @@ BridgedClass getValueNotifierBridgingDefinition() {
       },
     },
     getters: {
-      'value': (visitor, target) => (target as ValueNotifierBridge).value,
+      'value': (visitor, target) => _extractValueNotifier(target)?.value,
+      'hasListeners': (visitor, target) =>
+          _extractValueNotifier(target)?.hasListeners ?? false,
     },
     setters: {
       'value': (visitor, target, value) {
-        (target as ValueNotifierBridge).value = value;
+        final bridge = _extractValueNotifier(target);
+        if (bridge != null) {
+          bridge.value = value;
+        }
       },
     },
     methods: {
+      'hasListeners': (visitor, target, positionalArgs, namedArgs) =>
+          _extractValueNotifier(target)?.hasListeners ?? false,
       'addListener': (visitor, target, positionalArgs, namedArgs) {
         final listener = positionalArgs.get<InterpretedFunction>(0);
         if (listener != null) {
-          (target as ValueNotifierBridge).addListener(
-            () => listener.call(visitor, [], {}),
+          _extractValueNotifier(target)?.addInterpretedListener(
+            listener,
+            visitor,
           );
         }
         return null;
@@ -164,22 +207,20 @@ BridgedClass getValueNotifierBridgingDefinition() {
       'removeListener': (visitor, target, positionalArgs, namedArgs) {
         final listener = positionalArgs.get<InterpretedFunction>(0);
         if (listener != null) {
-          (target as ValueNotifierBridge).removeListener(
-            () => listener.call(visitor, [], {}),
-          );
+          _extractValueNotifier(target)?.removeInterpretedListener(listener);
         }
         return null;
       },
       'notifyListeners': (visitor, target, positionalArgs, namedArgs) {
-        (target as ValueNotifierBridge).notifyListeners();
+        _extractValueNotifier(target)?.notifyListeners();
         return null;
       },
       'dispose': (visitor, target, positionalArgs, namedArgs) {
-        (target as ValueNotifierBridge).dispose();
+        _extractValueNotifier(target)?.dispose();
         return null;
       },
       'toString': (visitor, target, positionalArgs, namedArgs) {
-        return (target as ValueNotifierBridge).toString();
+        return _extractValueNotifier(target)?.toString() ?? target.toString();
       },
     },
   );
@@ -314,24 +355,43 @@ BridgedClass getListenableBuilderBridgingDefinition() {
 class ChangeNotifierBridge extends ChangeNotifier {
   final InterpreterVisitor visitor;
   final InterpretedInstance? instance;
+  final Map<InterpretedFunction, VoidCallback> _listenersMap = {};
 
   ChangeNotifierBridge({required this.visitor, this.instance}) {
     instance?.bridgedSuperObject = this;
   }
 
   @override
-  void notifyListeners() {
-    super.notifyListeners();
-    if (instance != null) {
-      final fn = instance!.klass.findInstanceMethod('notifyListeners');
-      if (fn != null) {
-        fn.bind(instance!).call(visitor, [], {});
-      }
+  bool get hasListeners => super.hasListeners;
+
+  void addInterpretedListener(
+    InterpretedFunction listener,
+    InterpreterVisitor visitor,
+  ) {
+    if (_listenersMap.containsKey(listener)) return;
+    void callback() {
+      listener.call(visitor, [], {});
+    }
+
+    _listenersMap[listener] = callback;
+    addListener(callback);
+  }
+
+  void removeInterpretedListener(InterpretedFunction listener) {
+    final callback = _listenersMap.remove(listener);
+    if (callback != null) {
+      removeListener(callback);
     }
   }
 
   @override
+  void notifyListeners() {
+    super.notifyListeners();
+  }
+
+  @override
   void dispose() {
+    _listenersMap.clear();
     super.dispose();
     if (instance != null) {
       final fn = instance!.klass.findInstanceMethod('dispose');
@@ -352,6 +412,7 @@ class ChangeNotifierBridge extends ChangeNotifier {
 class ValueNotifierBridge<T> extends ValueNotifier<T> {
   final InterpreterVisitor visitor;
   final InterpretedInstance? instance;
+  final Map<InterpretedFunction, VoidCallback> _listenersMap = {};
 
   ValueNotifierBridge({
     required this.visitor,
@@ -384,18 +445,36 @@ class ValueNotifierBridge<T> extends ValueNotifier<T> {
   }
 
   @override
-  void notifyListeners() {
-    super.notifyListeners();
-    if (instance != null) {
-      final fn = instance!.klass.findInstanceMethod('notifyListeners');
-      if (fn != null) {
-        fn.bind(instance!).call(visitor, [], {});
-      }
+  bool get hasListeners => super.hasListeners;
+
+  void addInterpretedListener(
+    InterpretedFunction listener,
+    InterpreterVisitor visitor,
+  ) {
+    if (_listenersMap.containsKey(listener)) return;
+    void callback() {
+      listener.call(visitor, [], {});
+    }
+
+    _listenersMap[listener] = callback;
+    addListener(callback);
+  }
+
+  void removeInterpretedListener(InterpretedFunction listener) {
+    final callback = _listenersMap.remove(listener);
+    if (callback != null) {
+      removeListener(callback);
     }
   }
 
   @override
+  void notifyListeners() {
+    super.notifyListeners();
+  }
+
+  @override
   void dispose() {
+    _listenersMap.clear();
     super.dispose();
     if (instance != null) {
       final fn = instance!.klass.findInstanceMethod('dispose');

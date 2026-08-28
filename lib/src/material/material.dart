@@ -63,6 +63,7 @@ import 'package:flutter_d4rt/src/material/grid_tile.dart';
 import 'package:flutter_d4rt/src/material/back_button.dart';
 import 'package:flutter_d4rt/src/material/states.dart';
 import 'package:flutter_d4rt/src/material/reorderable_list.dart';
+import 'package:flutter_d4rt/src/foundation/change_notifier.dart' as foundation_cn;
 
 // dart format off
 
@@ -679,6 +680,22 @@ void registerMaterialBridges(D4rt interpreter) {
   );
   interpreter.registerBridgedClass(
     getReorderableListViewBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
+    foundation_cn.getChangeNotifierBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
+    foundation_cn.getValueNotifierBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
+    foundation_cn.getListenableBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
+    foundation_cn.getValueListenableBridgingDefinition(),
     'package:flutter/material_.dart',
   );
 }

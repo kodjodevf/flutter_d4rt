@@ -21,6 +21,8 @@ final String code = '''
 class ThemeController extends ChangeNotifier {
   ThemeMode _themeMode = ThemeMode.system;
 
+  ThemeController() : super();
+
   ThemeMode get themeMode => _themeMode;
 
   void setThemeMode(ThemeMode mode) {
@@ -38,6 +40,8 @@ class ThemeController extends ChangeNotifier {
         break;
       case ThemeMode.dark:
         _themeMode = ThemeMode.system;
+        break;
+        _themeMode = ThemeMode.light;
         break;
     }
     notifyListeners();
