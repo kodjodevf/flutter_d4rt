@@ -261,11 +261,23 @@ void registerMaterialBridges(D4rt interpreter) {
     'package:flutter/material_.dart',
   );
   interpreter.registerBridgedClass(
+    getPopupMenuEntryBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
     getPopupMenuItemBridgingDefinition(),
     'package:flutter/material_.dart',
   );
   interpreter.registerBridgedClass(
+    getCheckedPopupMenuItemBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
     getPopupMenuDividerBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedEnum(
+    getPopupMenuPositionBridgingDefinition(),
     'package:flutter/material_.dart',
   );
 

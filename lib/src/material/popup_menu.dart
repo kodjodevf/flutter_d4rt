@@ -118,3 +118,65 @@ BridgedClass getPopupMenuDividerBridgingDefinition() {
     },
   );
 }
+
+/// Returns the BridgedClass for the Flutter PopupMenuEntry abstract class.
+BridgedClass getPopupMenuEntryBridgingDefinition() {
+  return BridgedClass(
+    nativeType: PopupMenuEntry,
+    name: 'PopupMenuEntry',
+    constructors: {},
+    isSubtypeOfFunc: (value) => value is PopupMenuEntry,
+  );
+}
+
+/// Returns the BridgedClass for the Flutter CheckedPopupMenuItem widget.
+BridgedClass getCheckedPopupMenuItemBridgingDefinition() {
+  return BridgedClass(
+    nativeType: CheckedPopupMenuItem,
+    name: 'CheckedPopupMenuItem',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final key = namedArgs.get<Key?>('key');
+        final value = namedArgs['value'];
+        final checked = namedArgs.get<bool?>('checked') ?? false;
+        final enabled = namedArgs.get<bool?>('enabled') ?? true;
+        final padding = namedArgs.get<EdgeInsetsGeometry?>('padding');
+        final height = namedArgs.getToDouble('height');
+        final mouseCursor = namedArgs.get<MouseCursor?>('mouseCursor');
+        final child = visitor.toWidgets(namedArgs['child']);
+
+        return CheckedPopupMenuItem(
+          key: key,
+          value: value,
+          checked: checked,
+          enabled: enabled,
+          padding: padding as EdgeInsets?,
+          height: height ?? kMinInteractiveDimension,
+          mouseCursor: mouseCursor,
+          child: child,
+        );
+      },
+    },
+    getters: {
+      'checked': (visitor, target) => (target as CheckedPopupMenuItem).checked,
+      'value': (visitor, target) => (target as CheckedPopupMenuItem).value,
+      'enabled': (visitor, target) => (target as CheckedPopupMenuItem).enabled,
+      'height': (visitor, target) => (target as CheckedPopupMenuItem).height,
+      'padding': (visitor, target) => (target as CheckedPopupMenuItem).padding,
+      'key': (visitor, target) => (target as CheckedPopupMenuItem).key,
+    },
+  );
+}
+
+/// Returns the BridgedEnumDefinition for the Flutter PopupMenuPosition enum.
+BridgedEnumDefinition getPopupMenuPositionBridgingDefinition() {
+  return BridgedEnumDefinition<PopupMenuPosition>(
+    name: 'PopupMenuPosition',
+    values: PopupMenuPosition.values,
+    getters: {
+      'name': (visitor, target) => (target as PopupMenuPosition).name,
+      'index': (visitor, target) => (target as PopupMenuPosition).index,
+    },
+  );
+}
+

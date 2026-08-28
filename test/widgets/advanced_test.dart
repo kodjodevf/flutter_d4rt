@@ -383,6 +383,35 @@ void main() {
         expect(widget, isA<Widget>());
       });
 
+      test('should create PopupMenuButton with explicit PopupMenuEntry type and CheckedPopupMenuItem', () {
+        const code = '''
+          import 'package:flutter/material.dart';
+          
+          Widget build() {
+            return PopupMenuButton<String>(
+              position: PopupMenuPosition.under,
+              onSelected: (value) {},
+              itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                PopupMenuItem<String>(
+                  value: 'opt1',
+                  child: Text('Option 1'),
+                ),
+                CheckedPopupMenuItem<String>(
+                  value: 'opt2',
+                  checked: true,
+                  child: Text('Option 2'),
+                ),
+                PopupMenuDivider(),
+              ],
+            );
+          }
+        ''';
+
+        final widget = interpreter.execute(code, 'build');
+        expect(widget, isA<Widget>());
+      });
+
+
       test('should create ExpansionTile', () {
         const code = '''
           import 'package:flutter/material.dart';
