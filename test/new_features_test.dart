@@ -344,4 +344,81 @@ void main() {
 
     expect(result, isA<Widget>());
   });
+
+  test('Test FilledButton and IconButton styleFrom bridging', () {
+    const code = '''
+      import 'package:flutter/material.dart';
+
+      Widget testButtonStyles() {
+        final filledStyle = FilledButton.styleFrom(
+          backgroundColor: Colors.teal,
+          foregroundColor: Colors.white,
+          elevation: 4.0,
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        );
+
+        final iconStyle = IconButton.styleFrom(
+          backgroundColor: Colors.indigo,
+          foregroundColor: Colors.white,
+          elevation: 2.0,
+        );
+
+        final filledBtn = FilledButton(
+          onPressed: () {},
+          style: filledStyle,
+          child: Text('Filled Button'),
+        );
+
+        final iconBtn = IconButton(
+          onPressed: () {},
+          icon: Icon(Icons.star),
+          style: iconStyle,
+        );
+
+        return Row(
+          children: [
+            filledBtn,
+            iconBtn,
+          ],
+        );
+      }
+    ''';
+
+    final result = interpreter.interpreter.execute(
+      source: code,
+      name: 'testButtonStyles',
+      sources: interpreter.preloadedSources,
+    );
+
+    expect(result, isA<Widget>());
+  });
+
+  test('Test action icons including delete_outline bridging', () {
+    const code = '''
+      import 'package:flutter/material.dart';
+
+      List testIcons() {
+        return [
+          Icons.delete_outline,
+          Icons.delete_outlined,
+          Icons.edit_outlined,
+          Icons.favorite_outline,
+          Icons.info_outline,
+          Icons.help_outline,
+          Icons.error_outline,
+          Icons.warning_amber_outlined,
+        ];
+      }
+    ''';
+
+    final result = interpreter.interpreter.execute(
+      source: code,
+      name: 'testIcons',
+      sources: interpreter.preloadedSources,
+    );
+
+    expect(result, isA<List>());
+    expect((result as List).length, equals(8));
+  });
 }

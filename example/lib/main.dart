@@ -1,20 +1,133 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_d4rt/flutter_d4rt.dart';
+import 'cupertino_example.dart';
+import 'dartpad_clone_example.dart';
 
 void main() {
-  runApp(const MyAppTest());
+  runApp(const UnifiedShowcaseApp());
 }
 
-class MyAppTest extends StatelessWidget {
-  const MyAppTest({super.key});
+class UnifiedShowcaseApp extends StatefulWidget {
+  const UnifiedShowcaseApp({super.key});
+
+  @override
+  State<UnifiedShowcaseApp> createState() => _UnifiedShowcaseAppState();
+}
+
+class _UnifiedShowcaseAppState extends State<UnifiedShowcaseApp> {
+  ThemeMode _themeMode = ThemeMode.system;
+  int _currentIndex = 0;
+
+  void _toggleTheme() {
+    setState(() {
+      _themeMode = _themeMode == ThemeMode.dark
+          ? ThemeMode.light
+          : ThemeMode.dark;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return InterpretedWidget(code: code, entryPoint: 'MyApp');
+    final isDark = _themeMode == ThemeMode.dark;
+
+    return MaterialApp(
+      title: 'Flutter d4rt',
+      debugShowCheckedModeBanner: false,
+      themeMode: _themeMode,
+      theme: ThemeData(
+        useMaterial3: true,
+        brightness: Brightness.light,
+        colorSchemeSeed: Colors.indigo,
+        scaffoldBackgroundColor: const Color(0xFFF8F9FD),
+      ),
+      darkTheme: ThemeData(
+        useMaterial3: true,
+        brightness: Brightness.dark,
+        colorSchemeSeed: Colors.indigo,
+        scaffoldBackgroundColor: const Color(0xFF12141C),
+      ),
+      home: Scaffold(
+        body: IndexedStack(
+          index: _currentIndex,
+          children: [
+            DartPadScreen(onToggleTheme: _toggleTheme, isDark: isDark),
+            const MaterialDynamicShowcase(),
+            const CupertinoDynamicShowcase(),
+          ],
+        ),
+        bottomNavigationBar: NavigationBar(
+          selectedIndex: _currentIndex,
+          onDestinationSelected: (index) {
+            setState(() {
+              _currentIndex = index;
+            });
+          },
+          destinations: const [
+            NavigationDestination(
+              icon: Icon(Icons.code_outlined),
+              selectedIcon: Icon(Icons.code),
+              label: 'DartPad Studio',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.layers_outlined),
+              selectedIcon: Icon(Icons.layers),
+              label: 'Material 3 Gallery',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.phone_iphone_outlined),
+              selectedIcon: Icon(Icons.phone_iphone),
+              label: 'Cupertino iOS',
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
-final String code = '''
+class MaterialDynamicShowcase extends StatelessWidget {
+  const MaterialDynamicShowcase({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return InterpretedWidget(
+      code: materialExampleCode,
+      entryPoint: 'MyApp',
+      onError: (err) => Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text(
+            'Runtime Error: $err',
+            style: const TextStyle(color: Colors.red),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CupertinoDynamicShowcase extends StatelessWidget {
+  const CupertinoDynamicShowcase({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return InterpretedWidget(
+      code: cupertinoExampleCode,
+      entryPoint: 'CupertinoRootApp',
+      onError: (err) => Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text(
+            'Runtime Error: $err',
+            style: const TextStyle(color: Colors.red),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+final String materialExampleCode = '''
   import 'package:flutter/material.dart';
 
 // Theme management using ChangeNotifier
@@ -40,8 +153,6 @@ class ThemeController extends ChangeNotifier {
         break;
       case ThemeMode.dark:
         _themeMode = ThemeMode.system;
-        break;
-        _themeMode = ThemeMode.light;
         break;
     }
     notifyListeners();

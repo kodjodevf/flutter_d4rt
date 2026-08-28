@@ -65,6 +65,67 @@ BridgedClass getIconButtonBridgingDefinition() {
         );
       },
     },
+    staticMethods: {
+      'styleFrom': (visitor, positionalArgs, namedArgs) {
+        final foregroundColor = namedArgs.get<Color?>('foregroundColor');
+        final backgroundColor = namedArgs.get<Color?>('backgroundColor');
+        final disabledForegroundColor = namedArgs.get<Color?>(
+          'disabledForegroundColor',
+        );
+        final disabledBackgroundColor = namedArgs.get<Color?>(
+          'disabledBackgroundColor',
+        );
+        final focusColor = namedArgs.get<Color?>('focusColor');
+        final hoverColor = namedArgs.get<Color?>('hoverColor');
+        final highlightColor = namedArgs.get<Color?>('highlightColor');
+        final shadowColor = namedArgs.get<Color?>('shadowColor');
+        final surfaceTintColor = namedArgs.get<Color?>('surfaceTintColor');
+        final elevation = namedArgs.getToDouble('elevation');
+        final minimumSize = namedArgs.get<Size?>('minimumSize');
+        final fixedSize = namedArgs.get<Size?>('fixedSize');
+        final maximumSize = namedArgs.get<Size?>('maximumSize');
+        final iconSize = namedArgs.getToDouble('iconSize');
+        final side = namedArgs.get<BorderSide?>('side');
+        final shape = namedArgs.get<OutlinedBorder?>('shape');
+        final padding = namedArgs.get<EdgeInsetsGeometry?>('padding');
+        final visualDensity = namedArgs.get<VisualDensity?>('visualDensity');
+        final tapTargetSize = namedArgs.get<MaterialTapTargetSize?>(
+          'tapTargetSize',
+        );
+        final animationDuration = namedArgs.get<Duration?>('animationDuration');
+        final enableFeedback = namedArgs.get<bool?>('enableFeedback');
+        final alignment = namedArgs.get<AlignmentGeometry?>('alignment');
+        final splashFactory = namedArgs.get<InteractiveInkFeatureFactory?>(
+          'splashFactory',
+        );
+
+        return IconButton.styleFrom(
+          foregroundColor: foregroundColor,
+          backgroundColor: backgroundColor,
+          disabledForegroundColor: disabledForegroundColor,
+          disabledBackgroundColor: disabledBackgroundColor,
+          focusColor: focusColor,
+          hoverColor: hoverColor,
+          highlightColor: highlightColor,
+          shadowColor: shadowColor,
+          surfaceTintColor: surfaceTintColor,
+          elevation: elevation,
+          minimumSize: minimumSize,
+          fixedSize: fixedSize,
+          maximumSize: maximumSize,
+          iconSize: iconSize,
+          side: side,
+          shape: shape,
+          padding: padding,
+          visualDensity: visualDensity,
+          tapTargetSize: tapTargetSize,
+          animationDuration: animationDuration,
+          enableFeedback: enableFeedback,
+          alignment: alignment,
+          splashFactory: splashFactory,
+        );
+      },
+    },
     getters: {
       'icon': (visitor, target) => (target as IconButton).icon,
       'iconSize': (visitor, target) => (target as IconButton).iconSize,
