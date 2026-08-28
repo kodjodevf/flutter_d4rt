@@ -29,6 +29,7 @@ import 'package:flutter_d4rt/src/widgets/safe_area.dart';
 import 'package:flutter_d4rt/src/widgets/tooltip.dart';
 import 'package:flutter_d4rt/src/widgets/ink_well.dart';
 import 'package:flutter_d4rt/src/widgets/selectable_text.dart';
+import 'package:flutter_d4rt/src/services/mouse_cursor.dart';
 import 'package:flutter_d4rt/src/widgets/slivers.dart' as slivers;
 import 'package:flutter_d4rt/src/widgets/spacer.dart' as spacer;
 import 'package:flutter_d4rt/src/widgets/table.dart' as table;
@@ -394,6 +395,18 @@ void registerWidgetsBridges(D4rt interpreter) {
     getSizeTransitionBridgingDefinition(),
     'package:flutter/widgets_.dart',
   );
+  interpreter.registerBridgedClass(
+    getListenableBuilderBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getValueListenableBuilderBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getTweenAnimationBuilderBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
 
   interpreter.registerBridgedClass(
     getCubicBridgingDefinition(),
@@ -533,6 +546,26 @@ void registerWidgetsBridges(D4rt interpreter) {
   );
   interpreter.registerBridgedEnum(
     interactive.getDismissDirectionBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedEnum(
+    interactive.getPanAxisBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    interactive.getInteractiveViewerBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    interactive.getMouseRegionBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getMouseCursorBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getSystemMouseCursorsBridgingDefinition(),
     'package:flutter/widgets_.dart',
   );
 

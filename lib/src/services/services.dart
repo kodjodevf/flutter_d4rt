@@ -3,6 +3,7 @@ import 'package:flutter_d4rt/src/services/asset_bundle.dart';
 import 'package:flutter_d4rt/src/services/system_services.dart' as system;
 import 'package:flutter_d4rt/src/services/platform_channels.dart';
 import 'package:flutter_d4rt/src/services/text_input.dart';
+import 'package:flutter_d4rt/src/services/mouse_cursor.dart';
 
 /// Registers all service bridges with the D4rt interpreter
 void registerServicesBridges(D4rt interpreter) {
@@ -154,6 +155,14 @@ void registerServicesBridges(D4rt interpreter) {
   );
   interpreter.registerBridgedClass(
     getLengthLimitingTextInputFormatterBridgingDefinition(),
+    'package:flutter/services_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getMouseCursorBridgingDefinition(),
+    'package:flutter/services_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getSystemMouseCursorsBridgingDefinition(),
     'package:flutter/services_.dart',
   );
 }

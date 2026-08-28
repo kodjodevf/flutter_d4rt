@@ -294,3 +294,129 @@ BridgedEnumDefinition<DismissDirection> getDismissDirectionBridgingDefinition() 
   );
 }
 
+/// Returns the BridgedEnumDefinition for PanAxis
+BridgedEnumDefinition<PanAxis> getPanAxisBridgingDefinition() {
+  return BridgedEnumDefinition<PanAxis>(
+    name: 'PanAxis',
+    values: PanAxis.values,
+  );
+}
+
+/// Returns the BridgedClass for InteractiveViewer
+BridgedClass getInteractiveViewerBridgingDefinition() {
+  return BridgedClass(
+    nativeType: InteractiveViewer,
+    name: 'InteractiveViewer',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final key = namedArgs.get<Key?>('key');
+        final clipBehavior =
+            namedArgs.get<Clip?>('clipBehavior') ?? Clip.hardEdge;
+        final panAxis = namedArgs.get<PanAxis?>('panAxis') ?? PanAxis.free;
+        final panEnabled = namedArgs.get<bool?>('panEnabled') ?? true;
+        final scaleEnabled = namedArgs.get<bool?>('scaleEnabled') ?? true;
+        final scaleFactor =
+            (namedArgs['scaleFactor'] as num?)?.toDouble() ?? 200.0;
+        final minScale = (namedArgs['minScale'] as num?)?.toDouble() ?? 0.8;
+        final maxScale = (namedArgs['maxScale'] as num?)?.toDouble() ?? 2.5;
+        final interactionEndFrictionCoefficient =
+            (namedArgs['interactionEndFrictionCoefficient'] as num?)
+                ?.toDouble() ??
+            0.0000135;
+        final onInteractionStart =
+            namedArgs.handleValueCallback<ScaleStartDetails>(
+              'onInteractionStart',
+              visitor,
+            );
+        final onInteractionUpdate =
+            namedArgs.handleValueCallback<ScaleUpdateDetails>(
+              'onInteractionUpdate',
+              visitor,
+            );
+        final onInteractionEnd = namedArgs.handleValueCallback<ScaleEndDetails>(
+          'onInteractionEnd',
+          visitor,
+        );
+        final child = visitor.toWidget(namedArgs['child']) ?? const SizedBox();
+
+        return InteractiveViewer(
+          key: key,
+          clipBehavior: clipBehavior,
+          panAxis: panAxis,
+          panEnabled: panEnabled,
+          scaleEnabled: scaleEnabled,
+          scaleFactor: scaleFactor,
+          minScale: minScale,
+          maxScale: maxScale,
+          interactionEndFrictionCoefficient: interactionEndFrictionCoefficient,
+          onInteractionStart: onInteractionStart,
+          onInteractionUpdate: onInteractionUpdate,
+          onInteractionEnd: onInteractionEnd,
+          child: child,
+        );
+      },
+    },
+    getters: {
+      'child': (visitor, target) => (target as InteractiveViewer).child,
+      'clipBehavior': (visitor, target) =>
+          (target as InteractiveViewer).clipBehavior,
+      'panEnabled': (visitor, target) =>
+          (target as InteractiveViewer).panEnabled,
+      'scaleEnabled': (visitor, target) =>
+          (target as InteractiveViewer).scaleEnabled,
+      'minScale': (visitor, target) => (target as InteractiveViewer).minScale,
+      'maxScale': (visitor, target) => (target as InteractiveViewer).maxScale,
+      'key': (visitor, target) => (target as InteractiveViewer).key,
+    },
+  );
+}
+
+/// Returns the BridgedClass for MouseRegion
+BridgedClass getMouseRegionBridgingDefinition() {
+  return BridgedClass(
+    nativeType: MouseRegion,
+    name: 'MouseRegion',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final key = namedArgs.get<Key?>('key');
+        final onEnter = namedArgs.handleValueCallback<PointerEnterEvent>(
+          'onEnter',
+          visitor,
+        );
+        final onExit = namedArgs.handleValueCallback<PointerExitEvent>(
+          'onExit',
+          visitor,
+        );
+        final onHover = namedArgs.handleValueCallback<PointerHoverEvent>(
+          'onHover',
+          visitor,
+        );
+        final cursor =
+            namedArgs.get<MouseCursor?>('cursor') ?? MouseCursor.defer;
+        final opaque = namedArgs.get<bool?>('opaque') ?? true;
+        final hitTestBehavior = namedArgs.get<HitTestBehavior?>(
+          'hitTestBehavior',
+        );
+        final child = visitor.toWidget(namedArgs['child']);
+
+        return MouseRegion(
+          key: key,
+          onEnter: onEnter,
+          onExit: onExit,
+          onHover: onHover,
+          cursor: cursor,
+          opaque: opaque,
+          hitTestBehavior: hitTestBehavior,
+          child: child,
+        );
+      },
+    },
+    getters: {
+      'child': (visitor, target) => (target as MouseRegion).child,
+      'cursor': (visitor, target) => (target as MouseRegion).cursor,
+      'opaque': (visitor, target) => (target as MouseRegion).opaque,
+      'key': (visitor, target) => (target as MouseRegion).key,
+    },
+  );
+}
+

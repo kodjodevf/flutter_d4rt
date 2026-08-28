@@ -62,6 +62,7 @@ import 'package:flutter_d4rt/src/material/pickers_dialog.dart';
 import 'package:flutter_d4rt/src/material/grid_tile.dart';
 import 'package:flutter_d4rt/src/material/back_button.dart';
 import 'package:flutter_d4rt/src/material/states.dart';
+import 'package:flutter_d4rt/src/material/reorderable_list.dart';
 
 // dart format off
 
@@ -674,6 +675,10 @@ void registerMaterialBridges(D4rt interpreter) {
   );
   interpreter.registerBridgedEnum(
     getTimePickerEntryModeBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getReorderableListViewBridgingDefinition(),
     'package:flutter/material_.dart',
   );
 }

@@ -2,6 +2,7 @@
 
 import 'package:d4rt/d4rt.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter_d4rt/utils/extensions/map.dart';
 import 'package:flutter_d4rt/utils/extensions/widget.dart';
 
@@ -206,6 +207,99 @@ BridgedClass getDragTargetBridgingDefinition() {
       'hitTestBehavior': (visitor, target) =>
           (target as DragTarget).hitTestBehavior,
       'key': (visitor, target) => (target as DragTarget).key,
+    },
+  );
+}
+
+/// Returns the BridgedClass for LongPressDraggable widget.
+BridgedClass getLongPressDraggableBridgingDefinition() {
+  return BridgedClass(
+    nativeType: LongPressDraggable,
+    name: 'LongPressDraggable',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final key = namedArgs.get<Key?>('key');
+        final child =
+            visitor.toWidgets(namedArgs['child']) ?? const SizedBox.shrink();
+        final feedback = visitor.toWidgets(namedArgs['feedback']) ?? child;
+
+        final data = namedArgs.get('data');
+        final axis = namedArgs.get<Axis?>('axis');
+        final childWhenDragging = visitor.toWidgets(
+          namedArgs['childWhenDragging'],
+        );
+        final feedbackOffset =
+            namedArgs.get<Offset?>('feedbackOffset') ?? Offset.zero;
+        final dragAnchorStrategy = namedArgs.get<DragAnchorStrategy?>(
+          'dragAnchorStrategy',
+        );
+        final maxSimultaneousDrags = namedArgs.get<int?>(
+          'maxSimultaneousDrags',
+        );
+        final rootOverlay = namedArgs.get<bool?>('rootOverlay') ?? false;
+        final hitTestBehavior =
+            namedArgs.get<HitTestBehavior?>('hitTestBehavior') ??
+            HitTestBehavior.deferToChild;
+        final ignoringFeedbackSemantics =
+            namedArgs.get<bool?>('ignoringFeedbackSemantics') ?? true;
+        final ignoringFeedbackPointer =
+            namedArgs.get<bool?>('ignoringFeedbackPointer') ?? true;
+        final hapticFeedbackOnStart =
+            namedArgs.get<bool?>('hapticFeedbackOnStart') ?? true;
+        final delay = namedArgs.get<Duration?>('delay') ?? kLongPressTimeout;
+
+        final onDragStarted = namedArgs.handleVoidCallback(
+          'onDragStarted',
+          visitor,
+        );
+        final onDragUpdate = namedArgs.handleValueCallback<DragUpdateDetails>(
+          'onDragUpdate',
+          visitor,
+        );
+        final onDraggableCanceled = namedArgs
+            .handle2ValueCallback<Velocity, Offset>(
+              'onDraggableCanceled',
+              visitor,
+            );
+        final onDragEnd = namedArgs.handleValueCallback<DraggableDetails>(
+          'onDragEnd',
+          visitor,
+        );
+        final onDragCompleted = namedArgs.handleVoidCallback(
+          'onDragCompleted',
+          visitor,
+        );
+
+        return LongPressDraggable(
+          key: key,
+          data: data,
+          axis: axis,
+          feedback: feedback,
+          childWhenDragging: childWhenDragging,
+          feedbackOffset: feedbackOffset,
+          dragAnchorStrategy: dragAnchorStrategy ?? childDragAnchorStrategy,
+          maxSimultaneousDrags: maxSimultaneousDrags,
+          onDragStarted: onDragStarted,
+          onDragUpdate: onDragUpdate,
+          onDraggableCanceled: onDraggableCanceled,
+          onDragEnd: onDragEnd,
+          onDragCompleted: onDragCompleted,
+          rootOverlay: rootOverlay,
+          hitTestBehavior: hitTestBehavior,
+          ignoringFeedbackSemantics: ignoringFeedbackSemantics,
+          ignoringFeedbackPointer: ignoringFeedbackPointer,
+          hapticFeedbackOnStart: hapticFeedbackOnStart,
+          delay: delay,
+          child: child,
+        );
+      },
+    },
+    getters: {
+      'child': (visitor, target) => (target as LongPressDraggable).child,
+      'feedback': (visitor, target) => (target as LongPressDraggable).feedback,
+      'data': (visitor, target) => (target as LongPressDraggable).data,
+      'axis': (visitor, target) => (target as LongPressDraggable).axis,
+      'key': (visitor, target) => (target as LongPressDraggable).key,
     },
   );
 }

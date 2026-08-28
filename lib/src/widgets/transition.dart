@@ -2,6 +2,8 @@
 
 import 'package:d4rt/d4rt.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_d4rt/utils/extensions/map.dart';
 import 'package:flutter_d4rt/utils/extensions/widget.dart';
 
 Animation<T> _extractAnimation<T>(dynamic raw) {
@@ -204,6 +206,112 @@ BridgedClass getSizeTransitionBridgingDefinition() {
           (target as SizeTransition).axisAlignment,
       'child': (visitor, target) => (target as SizeTransition).child,
       'key': (visitor, target) => (target as SizeTransition).key,
+    },
+  );
+}
+
+/// Returns the BridgedClass for ListenableBuilder
+BridgedClass getListenableBuilderBridgingDefinition() {
+  return BridgedClass(
+    nativeType: ListenableBuilder,
+    name: 'ListenableBuilder',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final key = namedArgs.get<Key?>('key');
+        final rawListenable = namedArgs['listenable'];
+        final Listenable listenable = rawListenable is BridgedInstance
+            ? rawListenable.nativeObject as Listenable
+            : rawListenable as Listenable;
+        final builder = namedArgs['builder'];
+        final child = visitor.toWidget(namedArgs['child']);
+
+        return ListenableBuilder(
+          key: key,
+          listenable: listenable,
+          builder: (BuildContext context, Widget? child) {
+            if (builder is InterpretedFunction) {
+              final result = builder.call(visitor, [context, child], {});
+              return visitor.toWidget(result) ?? const SizedBox();
+            }
+            return const SizedBox();
+          },
+          child: child,
+        );
+      },
+    },
+  );
+}
+
+/// Returns the BridgedClass for ValueListenableBuilder
+BridgedClass getValueListenableBuilderBridgingDefinition() {
+  return BridgedClass(
+    nativeType: ValueListenableBuilder,
+    name: 'ValueListenableBuilder',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final key = namedArgs.get<Key?>('key');
+        final rawListenable = namedArgs['valueListenable'];
+        final ValueListenable<dynamic> valueListenable =
+            rawListenable is BridgedInstance
+                ? rawListenable.nativeObject as ValueListenable<dynamic>
+                : rawListenable as ValueListenable<dynamic>;
+        final builder = namedArgs['builder'];
+        final child = visitor.toWidget(namedArgs['child']);
+
+        return ValueListenableBuilder<dynamic>(
+          key: key,
+          valueListenable: valueListenable,
+          builder: (BuildContext context, dynamic value, Widget? child) {
+            if (builder is InterpretedFunction) {
+              final result = builder.call(visitor, [context, value, child], {});
+              return visitor.toWidget(result) ?? const SizedBox();
+            }
+            return const SizedBox();
+          },
+          child: child,
+        );
+      },
+    },
+  );
+}
+
+/// Returns the BridgedClass for TweenAnimationBuilder
+BridgedClass getTweenAnimationBuilderBridgingDefinition() {
+  return BridgedClass(
+    nativeType: TweenAnimationBuilder,
+    name: 'TweenAnimationBuilder',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final key = namedArgs.get<Key?>('key');
+        final rawTween = namedArgs['tween'];
+        final Tween<dynamic> tween = rawTween is BridgedInstance
+            ? rawTween.nativeObject as Tween<dynamic>
+            : (rawTween is Tween<dynamic>
+                ? rawTween
+                : Tween<double>(begin: 0.0, end: 1.0));
+        final duration = namedArgs.get<Duration>('duration') ??
+            const Duration(milliseconds: 300);
+        final curve = namedArgs.get<Curve?>('curve') ?? Curves.linear;
+        final builder = namedArgs['builder'];
+        final onEnd = namedArgs.handleVoidCallback('onEnd', visitor);
+        final child = visitor.toWidget(namedArgs['child']);
+
+        return TweenAnimationBuilder<dynamic>(
+          key: key,
+          tween: tween,
+          duration: duration,
+          curve: curve,
+          builder: (BuildContext context, dynamic value, Widget? child) {
+            if (builder is InterpretedFunction) {
+              final result = builder.call(visitor, [context, value, child], {});
+              return visitor.toWidget(result) ?? const SizedBox();
+            }
+            return const SizedBox();
+          },
+          onEnd: onEnd,
+          child: child,
+        );
+      },
     },
   );
 }
