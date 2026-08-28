@@ -1,5 +1,79 @@
 # Changelog
 
+## [0.0.7] - 2026-08-28
+
+### Added
+
+#### Material 3 & UI Component Bridges
+- **Button Styling**: Added full static method bridging for `FilledButton.styleFrom` and `IconButton.styleFrom`.
+- **Search & Filters**:
+  - Bridged `SearchAnchor`, `SearchAnchor.bar`, and `SearchController` with interpreted `suggestionsBuilder`.
+  - Bridged `SegmentedButton` and `ButtonSegment` with robust generic and set unboxing.
+- **Material 3 Cascading Menus**:
+  - Bridged `MenuBar`, `MenuController`, `SubmenuButton`, `CheckboxMenuButton`, `RadioMenuButton`, `MenuItemButton`.
+  - Bridged `PopupMenuEntry`, `CheckedPopupMenuItem`, and enhanced `PopupMenuButton`.
+- **Dialogs & Pickers**:
+  - Bridged `DatePickerDialog`, `TimePickerDialog`, `Dialog`, `Dialog.fullscreen`, `SimpleDialogOption`, and `showGeneralDialog`.
+- **Interactive & Drag-and-Drop**:
+  - Added support for `ReorderableListView`, `LongPressDraggable`, and `MouseRegion`.
+- **Tables & Flow Layouts**:
+  - Bridged `Table`, `TableRow`, `TableCell`, `TableBorder`, and column width specifications (`IntrinsicColumnWidth`, `FixedColumnWidth`, `FlexColumnWidth`).
+  - Added `Flow` widget and `FlowDelegateBridge`.
+- **Custom Rendering & Clipping**:
+  - Added `CustomClipperBridge` supporting custom `Path` and `Rect` clippers.
+  - Added `ClipPath`, `ClipRRect`, `ClipOval`, and enhanced `CustomPaint`.
+- **Slivers & Scrolling**:
+  - Bridged `CustomScrollView`, `SliverList`, `SliverGrid`, `SliverAppBar`, `SliverToBoxAdapter`, `SliverPadding`, and `SliverFillRemaining`.
+  - Added `NestedScrollView`, `Scrollbar`, `ScrollController`, `PageController`, `TabController`, and `DefaultTabController`.
+- **Text & Rich Text**:
+  - Added `Text.rich`, `TextSpan`, `WidgetSpan`, and text style decorations.
+- **Feedback & Notifications**:
+  - Added `NotificationListener`, `ScrollNotification`, `Tooltip`, and `TooltipVisibility`.
+- **Transitions & Animations**:
+  - Bridged `SlideTransition`, `ScaleTransition`, `RotationTransition`, `SizeTransition`, `FadeTransition`, and `AnimatedBuilder`.
+
+#### Cupertino iOS Widget Suite
+- **Cupertino Shell & Navigation**:
+  - Bridged `CupertinoTabScaffold`, `CupertinoTabBar`, `CupertinoTabView`, `CupertinoNavigationBar`, and `CupertinoPageScaffold`.
+- **Cupertino Dialogs & Popups**:
+  - Bridged `CupertinoAlertDialog`, `CupertinoActionSheet`, `CupertinoActionSheetAction`, `CupertinoDialogAction`, `showCupertinoDialog`, and `showCupertinoModalPopup`.
+- **Cupertino Form Controls**:
+  - Bridged `CupertinoActivityIndicator`, `CupertinoSlider`, `CupertinoSwitch`, `CupertinoTextField`, and `CupertinoButton`.
+- **Cupertino Icons**: Complete bridging for `CupertinoIcons`.
+
+#### Painting, Borders & Services
+- **Borders & Radius**:
+  - Bridged `BorderRadiusGeometry`, `BorderRadiusDirectional`, `BorderRadius`, `Radius`, `BorderSide`, `Border`, `BoxBorder`.
+  - Added shape borders: `RoundedRectangleBorder`, `ContinuousRectangleBorder`, `BeveledRectangleBorder`, `CircleBorder`, `StadiumBorder`.
+  - Added `EdgeInsets` named constructors (`all`, `symmetric`, `only`, `zero`, `fromLTRB`).
+- **Shadows & Styling**:
+  - Added `Shadow` and `BoxShadow` bridging.
+  - Added `WidgetStateProperty` / `MaterialStateProperty` integration (`WidgetState`, `WidgetStateProperty.all`, `resolveWith`).
+- **Services & Input**:
+  - Bridged `TextInputType`, `TextInputAction`, `TextCapitalization`, and `Clipboard.setData`.
+  - Expanded Material Icons palette (`delete_outline`, `delete_outlined`, `delete_forever`, `edit_outlined`, `notifications_outlined`, `visibility_outlined`, `bookmark_outline`, `bolt`, `speed`, `bar_chart_outlined`, `explore_outlined`, `dashboard_outlined`, `menu_open`, `folder_open_outlined`, `terminal`, etc.).
+
+#### State Management & Foundation
+- **ChangeNotifier & ValueNotifier**: Enhanced listener management, registration, and notification dispatching in interpreted code.
+- **Keys**: Improved key hierarchy and bridging (`ValueKey`, `UniqueKey`, `ObjectKey`, `GlobalKey`).
+
+#### Unified Multi-Showcase Application
+- **Unified Hub (`example/lib/main.dart`)**:
+  - Single application with Material 3 `NavigationBar` to switch seamlessly between:
+    1. **DartPad Studio**: Live code editor with multi-device framing (Phone, Tablet, Full), interactive logs console with execution duration metrics, code formatting, and 9 gallery samples.
+    2. **Material 3 Gallery**: Dynamic interpreted showcase with real-time theme toggling via `ChangeNotifier`.
+    3. **Cupertino iOS Showcase**: Native iOS styling and tabbed navigation.
+  - Dedicated example apps (`cupertino_example.dart`, `dartpad_clone_example.dart`).
+
+### Changed
+- Upgraded `d4rt` dependency to `^0.2.4`.
+- Replaced deprecated `MaterialStateProperty` with `WidgetStateProperty` across material bridging.
+
+### Fixed
+- Fixed static member resolution on `Icons` for modern outlined and action icon identifiers.
+- Fixed sample icon null-safety handling in the DartPad gallery modal sheet.
+- Fixed `showModalBottomSheet` scroll parameter in DartPad.
+
 ## [0.0.6] - 2026-02-22
 
 ### Added
