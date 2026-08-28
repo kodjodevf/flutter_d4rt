@@ -85,23 +85,36 @@ BridgedClass getSimpleDialogBridgingDefinition() {
     name: 'SimpleDialog',
     constructors: {
       '': (visitor, positionalArgs, namedArgs) {
-        final title = visitor.toWidgets(namedArgs['title']);
-        final children = visitor.toWidgets(namedArgs['children']);
+        final title = visitor.toWidget(namedArgs['title']);
+        final children = visitor.toWidgetList(namedArgs['children']);
+        final rawTitlePadding = namedArgs['titlePadding'];
+        final titlePadding = (rawTitlePadding is BridgedInstance
+                ? rawTitlePadding.nativeObject
+                : rawTitlePadding) as EdgeInsetsGeometry? ??
+            const EdgeInsets.fromLTRB(24.0, 24.0, 24.0, 0.0);
+        final rawContentPadding = namedArgs['contentPadding'];
+        final contentPadding = (rawContentPadding is BridgedInstance
+                ? rawContentPadding.nativeObject
+                : rawContentPadding) as EdgeInsetsGeometry? ??
+            const EdgeInsets.fromLTRB(0.0, 12.0, 0.0, 16.0);
+        final rawInsetPadding = namedArgs['insetPadding'];
+        final insetPadding = (rawInsetPadding is BridgedInstance
+                ? rawInsetPadding.nativeObject
+                : rawInsetPadding) as EdgeInsets? ??
+            const EdgeInsets.symmetric(horizontal: 40.0, vertical: 24.0);
 
         return SimpleDialog(
           key: namedArgs.get<Key?>('key'),
           title: title,
-          titlePadding: namedArgs['titlePadding'] as EdgeInsetsGeometry,
+          titlePadding: titlePadding,
           titleTextStyle: namedArgs['titleTextStyle'] as TextStyle?,
-          contentPadding: namedArgs['contentPadding'] as EdgeInsetsGeometry,
+          contentPadding: contentPadding,
           backgroundColor: namedArgs['backgroundColor'] as Color?,
           elevation: toDouble(namedArgs['elevation']),
           shadowColor: namedArgs['shadowColor'] as Color?,
           surfaceTintColor: namedArgs['surfaceTintColor'] as Color?,
           semanticLabel: namedArgs['semanticLabel'] as String?,
-          insetPadding:
-              namedArgs['insetPadding'] as EdgeInsets? ??
-              const EdgeInsets.symmetric(horizontal: 40.0, vertical: 24.0),
+          insetPadding: insetPadding,
           clipBehavior: namedArgs['clipBehavior'] as Clip? ?? Clip.none,
           shape: namedArgs['shape'] as ShapeBorder?,
           alignment: namedArgs['alignment'] as AlignmentGeometry?,

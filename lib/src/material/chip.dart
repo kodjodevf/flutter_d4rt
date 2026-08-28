@@ -77,3 +77,253 @@ BridgedClass getChipBridgingDefinition() {
     },
   );
 }
+
+/// Returns the BridgedClass for Flutter ActionChip.
+BridgedClass getActionChipBridgingDefinition() {
+  return BridgedClass(
+    nativeType: ActionChip,
+    name: 'ActionChip',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final key = namedArgs.get<Key?>('key');
+        final avatar = visitor.toWidget(namedArgs['avatar']);
+        final label = visitor.toWidget(namedArgs['label']) ?? const SizedBox();
+        final labelStyle = namedArgs.get<TextStyle?>('labelStyle');
+        final labelPadding = namedArgs.get<EdgeInsetsGeometry?>('labelPadding');
+        final onPressed = namedArgs.handleVoidCallback('onPressed', visitor);
+        final tooltip = namedArgs.get<String?>('tooltip');
+        final side = namedArgs.get<BorderSide?>('side');
+        final shape = namedArgs.get<OutlinedBorder?>('shape');
+        final clipBehavior = namedArgs.get<Clip?>('clipBehavior') ?? Clip.none;
+        final focusNode = namedArgs.get<FocusNode?>('focusNode');
+        final autofocus = namedArgs.get<bool?>('autofocus') ?? false;
+        final backgroundColor = namedArgs.get<Color?>('backgroundColor');
+        final padding = namedArgs.get<EdgeInsetsGeometry?>('padding');
+        final visualDensity = namedArgs.get<VisualDensity?>('visualDensity');
+        final elevation = (namedArgs['elevation'] as num?)?.toDouble();
+        final shadowColor = namedArgs.get<Color?>('shadowColor');
+        final surfaceTintColor = namedArgs.get<Color?>('surfaceTintColor');
+        final iconTheme = namedArgs.get<IconThemeData?>('iconTheme');
+
+        return ActionChip(
+          key: key,
+          avatar: avatar,
+          label: label,
+          labelStyle: labelStyle,
+          labelPadding: labelPadding,
+          onPressed: onPressed,
+          tooltip: tooltip,
+          side: side,
+          shape: shape,
+          clipBehavior: clipBehavior,
+          focusNode: focusNode,
+          autofocus: autofocus,
+          backgroundColor: backgroundColor,
+          padding: padding,
+          visualDensity: visualDensity,
+          elevation: elevation,
+          shadowColor: shadowColor,
+          surfaceTintColor: surfaceTintColor,
+          iconTheme: iconTheme,
+        );
+      },
+    },
+  );
+}
+
+/// Returns the BridgedClass for Flutter ChoiceChip.
+BridgedClass getChoiceChipBridgingDefinition() {
+  return BridgedClass(
+    nativeType: ChoiceChip,
+    name: 'ChoiceChip',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final key = namedArgs.get<Key?>('key');
+        final avatar = visitor.toWidget(namedArgs['avatar']);
+        final label = visitor.toWidget(namedArgs['label']) ?? const SizedBox();
+        final labelStyle = namedArgs.get<TextStyle?>('labelStyle');
+        final labelPadding = namedArgs.get<EdgeInsetsGeometry?>('labelPadding');
+        final selected = namedArgs.get<bool?>('selected') ?? false;
+        final onSelected =
+            namedArgs.handleValueCallback<bool>('onSelected', visitor);
+        final selectedColor = namedArgs.get<Color?>('selectedColor');
+        final disabledColor = namedArgs.get<Color?>('disabledColor');
+        final tooltip = namedArgs.get<String?>('tooltip');
+        final side = namedArgs.get<BorderSide?>('side');
+        final shape = namedArgs.get<OutlinedBorder?>('shape');
+        final clipBehavior = namedArgs.get<Clip?>('clipBehavior') ?? Clip.none;
+        final focusNode = namedArgs.get<FocusNode?>('focusNode');
+        final autofocus = namedArgs.get<bool?>('autofocus') ?? false;
+        final backgroundColor = namedArgs.get<Color?>('backgroundColor');
+        final padding = namedArgs.get<EdgeInsetsGeometry?>('padding');
+        final visualDensity = namedArgs.get<VisualDensity?>('visualDensity');
+        final elevation = (namedArgs['elevation'] as num?)?.toDouble();
+        final shadowColor = namedArgs.get<Color?>('shadowColor');
+        final surfaceTintColor = namedArgs.get<Color?>('surfaceTintColor');
+        final iconTheme = namedArgs.get<IconThemeData?>('iconTheme');
+
+        return ChoiceChip(
+          key: key,
+          avatar: avatar,
+          label: label,
+          labelStyle: labelStyle,
+          labelPadding: labelPadding,
+          selected: selected,
+          onSelected: onSelected,
+          selectedColor: selectedColor,
+          disabledColor: disabledColor,
+          tooltip: tooltip,
+          side: side,
+          shape: shape,
+          clipBehavior: clipBehavior,
+          focusNode: focusNode,
+          autofocus: autofocus,
+          backgroundColor: backgroundColor,
+          padding: padding,
+          visualDensity: visualDensity,
+          elevation: elevation,
+          shadowColor: shadowColor,
+          surfaceTintColor: surfaceTintColor,
+          iconTheme: iconTheme,
+        );
+      },
+    },
+  );
+}
+
+/// Returns the BridgedClass for Flutter FilterChip.
+BridgedClass getFilterChipBridgingDefinition() {
+  return BridgedClass(
+    nativeType: FilterChip,
+    name: 'FilterChip',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final key = namedArgs.get<Key?>('key');
+        final avatar = visitor.toWidget(namedArgs['avatar']);
+        final label = visitor.toWidget(namedArgs['label']) ?? const SizedBox();
+        final labelStyle = namedArgs.get<TextStyle?>('labelStyle');
+        final labelPadding = namedArgs.get<EdgeInsetsGeometry?>('labelPadding');
+        final selected = namedArgs.get<bool?>('selected') ?? false;
+        final onSelected =
+            namedArgs.handleValueCallback<bool>('onSelected', visitor);
+        final selectedColor = namedArgs.get<Color?>('selectedColor');
+        final disabledColor = namedArgs.get<Color?>('disabledColor');
+        final checkmarkColor = namedArgs.get<Color?>('checkmarkColor');
+        final showCheckmark = namedArgs.get<bool?>('showCheckmark');
+        final tooltip = namedArgs.get<String?>('tooltip');
+        final side = namedArgs.get<BorderSide?>('side');
+        final shape = namedArgs.get<OutlinedBorder?>('shape');
+        final clipBehavior = namedArgs.get<Clip?>('clipBehavior') ?? Clip.none;
+        final focusNode = namedArgs.get<FocusNode?>('focusNode');
+        final autofocus = namedArgs.get<bool?>('autofocus') ?? false;
+        final backgroundColor = namedArgs.get<Color?>('backgroundColor');
+        final padding = namedArgs.get<EdgeInsetsGeometry?>('padding');
+        final visualDensity = namedArgs.get<VisualDensity?>('visualDensity');
+        final elevation = (namedArgs['elevation'] as num?)?.toDouble();
+        final shadowColor = namedArgs.get<Color?>('shadowColor');
+        final surfaceTintColor = namedArgs.get<Color?>('surfaceTintColor');
+        final iconTheme = namedArgs.get<IconThemeData?>('iconTheme');
+
+        return FilterChip(
+          key: key,
+          avatar: avatar,
+          label: label,
+          labelStyle: labelStyle,
+          labelPadding: labelPadding,
+          selected: selected,
+          onSelected: onSelected,
+          selectedColor: selectedColor,
+          disabledColor: disabledColor,
+          checkmarkColor: checkmarkColor,
+          showCheckmark: showCheckmark,
+          tooltip: tooltip,
+          side: side,
+          shape: shape,
+          clipBehavior: clipBehavior,
+          focusNode: focusNode,
+          autofocus: autofocus,
+          backgroundColor: backgroundColor,
+          padding: padding,
+          visualDensity: visualDensity,
+          elevation: elevation,
+          shadowColor: shadowColor,
+          surfaceTintColor: surfaceTintColor,
+          iconTheme: iconTheme,
+        );
+      },
+    },
+  );
+}
+
+/// Returns the BridgedClass for Flutter InputChip.
+BridgedClass getInputChipBridgingDefinition() {
+  return BridgedClass(
+    nativeType: InputChip,
+    name: 'InputChip',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final key = namedArgs.get<Key?>('key');
+        final avatar = visitor.toWidget(namedArgs['avatar']);
+        final label = visitor.toWidget(namedArgs['label']) ?? const SizedBox();
+        final labelStyle = namedArgs.get<TextStyle?>('labelStyle');
+        final labelPadding = namedArgs.get<EdgeInsetsGeometry?>('labelPadding');
+        final selected = namedArgs.get<bool?>('selected') ?? false;
+        final isEnabled = namedArgs.get<bool?>('isEnabled') ?? true;
+        final onSelected =
+            namedArgs.handleValueCallback<bool>('onSelected', visitor);
+        final deleteIcon = visitor.toWidget(namedArgs['deleteIcon']);
+        final onDeleted = namedArgs.handleVoidCallback('onDeleted', visitor);
+        final deleteIconColor = namedArgs.get<Color?>('deleteIconColor');
+        final deleteButtonTooltipMessage =
+            namedArgs.get<String?>('deleteButtonTooltipMessage');
+        final onPressed = namedArgs.handleVoidCallback('onPressed', visitor);
+        final selectedColor = namedArgs.get<Color?>('selectedColor');
+        final disabledColor = namedArgs.get<Color?>('disabledColor');
+        final tooltip = namedArgs.get<String?>('tooltip');
+        final side = namedArgs.get<BorderSide?>('side');
+        final shape = namedArgs.get<OutlinedBorder?>('shape');
+        final clipBehavior = namedArgs.get<Clip?>('clipBehavior') ?? Clip.none;
+        final focusNode = namedArgs.get<FocusNode?>('focusNode');
+        final autofocus = namedArgs.get<bool?>('autofocus') ?? false;
+        final backgroundColor = namedArgs.get<Color?>('backgroundColor');
+        final padding = namedArgs.get<EdgeInsetsGeometry?>('padding');
+        final visualDensity = namedArgs.get<VisualDensity?>('visualDensity');
+        final elevation = (namedArgs['elevation'] as num?)?.toDouble();
+        final shadowColor = namedArgs.get<Color?>('shadowColor');
+        final surfaceTintColor = namedArgs.get<Color?>('surfaceTintColor');
+        final iconTheme = namedArgs.get<IconThemeData?>('iconTheme');
+
+        return InputChip(
+          key: key,
+          avatar: avatar,
+          label: label,
+          labelStyle: labelStyle,
+          labelPadding: labelPadding,
+          selected: selected,
+          isEnabled: isEnabled,
+          onSelected: onSelected,
+          deleteIcon: deleteIcon,
+          onDeleted: onDeleted,
+          deleteIconColor: deleteIconColor,
+          deleteButtonTooltipMessage: deleteButtonTooltipMessage,
+          onPressed: onPressed,
+          selectedColor: selectedColor,
+          disabledColor: disabledColor,
+          tooltip: tooltip,
+          side: side,
+          shape: shape,
+          clipBehavior: clipBehavior,
+          focusNode: focusNode,
+          autofocus: autofocus,
+          backgroundColor: backgroundColor,
+          padding: padding,
+          visualDensity: visualDensity,
+          elevation: elevation,
+          shadowColor: shadowColor,
+          surfaceTintColor: surfaceTintColor,
+          iconTheme: iconTheme,
+        );
+      },
+    },
+  );
+}

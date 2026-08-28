@@ -58,6 +58,7 @@ import 'package:flutter_d4rt/src/material/search_bar.dart';
 import 'package:flutter_d4rt/src/material/time_picker.dart';
 import 'package:flutter_d4rt/src/material/toggle_buttons.dart';
 import 'package:flutter_d4rt/src/material/bottom_app_bar.dart';
+import 'package:flutter_d4rt/src/material/pickers_dialog.dart';
 import 'package:flutter_d4rt/src/material/grid_tile.dart';
 import 'package:flutter_d4rt/src/material/back_button.dart';
 import 'package:flutter_d4rt/src/material/states.dart';
@@ -423,6 +424,10 @@ void registerMaterialBridges(D4rt interpreter) {
     getRangeLabelsBridgingDefinition(),
     'package:flutter/material_.dart',
   );
+  interpreter.registerBridgedClass(
+    getRangeSliderBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
 
   // Register enums
   interpreter.registerBridgedEnum(
@@ -611,6 +616,64 @@ void registerMaterialBridges(D4rt interpreter) {
   );
   interpreter.registerBridgedClass(
     getCloseButtonBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+
+  // Dialogs & Option
+  interpreter.registerBridgedClass(
+    getSimpleDialogOptionBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getShowDialogBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+
+  // Chips
+  interpreter.registerBridgedClass(
+    getActionChipBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getChoiceChipBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getFilterChipBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getInputChipBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+
+  // Pickers & Menus
+  interpreter.registerBridgedClass(
+    getShowDatePickerBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getShowTimePickerBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getShowDateRangePickerBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getShowMenuBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedEnum(
+    getDatePickerEntryModeBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedEnum(
+    getDatePickerModeBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedEnum(
+    getTimePickerEntryModeBridgingDefinition(),
     'package:flutter/material_.dart',
   );
 }

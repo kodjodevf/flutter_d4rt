@@ -101,7 +101,12 @@ BridgedClass getRangeSliderBridgingDefinition() {
     constructors: {
       '': (visitor, positionalArgs, namedArgs) {
         final key = namedArgs.get<Key?>('key');
-        final values = namedArgs.get<RangeValues>('values')!;
+        final rawValues = namedArgs['values'];
+        final values = rawValues is BridgedInstance
+            ? rawValues.nativeObject as RangeValues
+            : (rawValues is RangeValues
+                ? rawValues
+                : const RangeValues(0.0, 1.0));
 
         // Handle onChanged callback
         final onChanged = namedArgs.handleValueCallback<RangeValues>(
@@ -124,7 +129,10 @@ BridgedClass getRangeSliderBridgingDefinition() {
         final min = namedArgs.getToDouble('min') ?? 0.0;
         final max = namedArgs.getToDouble('max') ?? 1.0;
         final divisions = namedArgs.get<int?>('divisions');
-        final labels = namedArgs.get<RangeLabels?>('labels');
+        final rawLabels = namedArgs['labels'];
+        final labels = rawLabels is BridgedInstance
+            ? rawLabels.nativeObject as RangeLabels?
+            : rawLabels as RangeLabels?;
         final activeColor = namedArgs.get<Color?>('activeColor');
         final inactiveColor = namedArgs.get<Color?>('inactiveColor');
         final overlayColor = namedArgs.get<WidgetStateProperty<Color?>?>(
@@ -175,8 +183,12 @@ BridgedClass getRangeValuesBridgingDefinition() {
     name: 'RangeValues',
     constructors: {
       '': (visitor, positionalArgs, namedArgs) {
-        final start = (positionalArgs.get<num>(0) ?? 0.0).toDouble();
-        final end = (positionalArgs.get<num>(1) ?? 1.0).toDouble();
+        final start = positionalArgs.isNotEmpty
+            ? (positionalArgs[0] as num).toDouble()
+            : (namedArgs['start'] as num?)?.toDouble() ?? 0.0;
+        final end = positionalArgs.length > 1
+            ? (positionalArgs[1] as num).toDouble()
+            : (namedArgs['end'] as num?)?.toDouble() ?? 1.0;
 
         return RangeValues(start, end);
       },
@@ -200,8 +212,12 @@ BridgedClass getRangeLabelsBridgingDefinition() {
     name: 'RangeLabels',
     constructors: {
       '': (visitor, positionalArgs, namedArgs) {
-        final start = positionalArgs.get<String?>(0) ?? '';
-        final end = positionalArgs.get<String?>(1) ?? '';
+        final start = positionalArgs.isNotEmpty
+            ? positionalArgs[0].toString()
+            : namedArgs['start']?.toString() ?? '';
+        final end = positionalArgs.length > 1
+            ? positionalArgs[1].toString()
+            : namedArgs['end']?.toString() ?? '';
 
         return RangeLabels(start, end);
       },

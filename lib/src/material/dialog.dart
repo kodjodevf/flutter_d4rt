@@ -3,6 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_d4rt/utils/extensions/map.dart';
 import '../../utils/extensions/widget.dart';
 
+EdgeInsets? _extractEdgeInsets(dynamic raw) {
+  if (raw == null) return null;
+  final obj = raw is BridgedInstance ? raw.nativeObject : raw;
+  if (obj is EdgeInsets) return obj;
+  return null;
+}
+
+EdgeInsetsGeometry? _extractEdgeInsetsGeometry(dynamic raw) {
+  if (raw == null) return null;
+  final obj = raw is BridgedInstance ? raw.nativeObject : raw;
+  if (obj is EdgeInsetsGeometry) return obj;
+  return null;
+}
+
 /// Returns the BridgedClass for the Flutter AlertDialog widget.
 BridgedClass getAlertDialogBridgingDefinition() {
   return BridgedClass(
@@ -11,7 +25,7 @@ BridgedClass getAlertDialogBridgingDefinition() {
     constructors: {
       '': (visitor, positionalArgs, namedArgs) {
         final key = namedArgs.get<Key?>('key');
-        final insetPadding = namedArgs.get<EdgeInsets?>('insetPadding');
+        final insetPadding = _extractEdgeInsets(namedArgs['insetPadding']);
         final clipBehavior = namedArgs.get<Clip?>('clipBehavior') ?? Clip.none;
         final shape = namedArgs.get<ShapeBorder?>('shape');
         final alignment = namedArgs.get<AlignmentGeometry?>('alignment');
@@ -20,21 +34,17 @@ BridgedClass getAlertDialogBridgingDefinition() {
         final shadowColor = namedArgs.get<Color?>('shadowColor');
         final surfaceTintColor = namedArgs.get<Color?>('surfaceTintColor');
         final scrollable = namedArgs.get<bool?>('scrollable') ?? false;
-        final title = visitor.toWidgets(namedArgs['title']);
-        final content = visitor.toWidgets(namedArgs['content']);
-        final actionsRaw = visitor.toWidgets(namedArgs['actions']);
-        final List<Widget>? actions = actionsRaw is List<Widget>
-            ? actionsRaw
-            : (actionsRaw is List
-                ? actionsRaw.cast<Widget>()
-                : (actionsRaw is Widget ? [actionsRaw] : null));
+        final title = visitor.toWidget(namedArgs['title']);
+        final content = visitor.toWidget(namedArgs['content']);
+        final actions = visitor.toWidgetList(namedArgs['actions']);
 
         return AlertDialog(
           key: key,
           title: title,
           content: content,
           actions: actions,
-          insetPadding: insetPadding,
+          insetPadding: insetPadding ??
+              const EdgeInsets.symmetric(horizontal: 40.0, vertical: 24.0),
           clipBehavior: clipBehavior,
           shape: shape,
           alignment: alignment,
@@ -66,7 +76,7 @@ BridgedClass getSimpleDialogBridgingDefinition() {
     constructors: {
       '': (visitor, positionalArgs, namedArgs) {
         final key = namedArgs.get<Key?>('key');
-        final insetPadding = namedArgs.get<EdgeInsets?>('insetPadding');
+        final insetPadding = _extractEdgeInsets(namedArgs['insetPadding']);
         final clipBehavior = namedArgs.get<Clip?>('clipBehavior') ?? Clip.none;
         final shape = namedArgs.get<ShapeBorder?>('shape');
         final alignment = namedArgs.get<AlignmentGeometry?>('alignment');
@@ -74,22 +84,18 @@ BridgedClass getSimpleDialogBridgingDefinition() {
         final elevation = namedArgs.getToDouble('elevation');
         final shadowColor = namedArgs.get<Color?>('shadowColor');
         final surfaceTintColor = namedArgs.get<Color?>('surfaceTintColor');
-        final titlePadding = namedArgs.get<EdgeInsetsGeometry?>('titlePadding');
-        final contentPadding = namedArgs.get<EdgeInsetsGeometry?>(
-          'contentPadding',
-        );
-        final title = visitor.toWidgets(namedArgs['title']);
-        final childrenRaw = visitor.toWidgets(namedArgs['children']);
-        final List<Widget>? children = childrenRaw is List<Widget>
-            ? childrenRaw
-            : (childrenRaw is List
-                ? childrenRaw.cast<Widget>()
-                : (childrenRaw is Widget ? [childrenRaw] : null));
+        final titlePadding =
+            _extractEdgeInsetsGeometry(namedArgs['titlePadding']);
+        final contentPadding =
+            _extractEdgeInsetsGeometry(namedArgs['contentPadding']);
+        final title = visitor.toWidget(namedArgs['title']);
+        final children = visitor.toWidgetList(namedArgs['children']);
 
         return SimpleDialog(
           key: key,
           title: title,
-          insetPadding: insetPadding,
+          insetPadding: insetPadding ??
+              const EdgeInsets.symmetric(horizontal: 40.0, vertical: 24.0),
           clipBehavior: clipBehavior,
           shape: shape,
           alignment: alignment,
@@ -112,6 +118,76 @@ BridgedClass getSimpleDialogBridgingDefinition() {
       'backgroundColor': (visitor, target) =>
           (target as SimpleDialog).backgroundColor,
       'elevation': (visitor, target) => (target as SimpleDialog).elevation,
+    },
+  );
+}
+
+/// Returns the BridgedClass for the Flutter SimpleDialogOption widget.
+BridgedClass getSimpleDialogOptionBridgingDefinition() {
+  return BridgedClass(
+    nativeType: SimpleDialogOption,
+    name: 'SimpleDialogOption',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final key = namedArgs.get<Key?>('key');
+        final onPressed = namedArgs.handleVoidCallback('onPressed', visitor);
+        final padding = _extractEdgeInsets(namedArgs['padding']);
+        final child = visitor.toWidget(namedArgs['child']);
+
+        return SimpleDialogOption(
+          key: key,
+          onPressed: onPressed,
+          padding: padding,
+          child: child,
+        );
+      },
+    },
+    getters: {
+      'child': (visitor, target) => (target as SimpleDialogOption).child,
+      'padding': (visitor, target) => (target as SimpleDialogOption).padding,
+    },
+  );
+}
+
+/// Returns the BridgedClass for the Flutter showDialog function.
+BridgedClass getShowDialogBridgingDefinition() {
+  return BridgedClass(
+    nativeType: Object,
+    name: 'showDialog',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final context = namedArgs.get<BuildContext>('context') ??
+            (positionalArgs.isNotEmpty
+                ? positionalArgs[0] as BuildContext
+                : null);
+        if (context == null) {
+          throw ArgumentError('BuildContext is required for showDialog');
+        }
+        final builderRaw = namedArgs['builder'];
+        final barrierDismissible =
+            namedArgs.get<bool?>('barrierDismissible') ?? true;
+        final barrierColor = namedArgs.get<Color?>('barrierColor');
+        final barrierLabel = namedArgs.get<String?>('barrierLabel');
+        final useSafeArea = namedArgs.get<bool?>('useSafeArea') ?? true;
+        final useRootNavigator =
+            namedArgs.get<bool?>('useRootNavigator') ?? true;
+
+        return showDialog(
+          context: context,
+          barrierDismissible: barrierDismissible,
+          barrierColor: barrierColor,
+          barrierLabel: barrierLabel,
+          useSafeArea: useSafeArea,
+          useRootNavigator: useRootNavigator,
+          builder: (BuildContext ctx) {
+            if (builderRaw is InterpretedFunction) {
+              final result = builderRaw.call(visitor, [ctx], {});
+              return visitor.toWidget(result) ?? const SizedBox();
+            }
+            return const SizedBox();
+          },
+        );
+      },
     },
   );
 }
