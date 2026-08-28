@@ -347,7 +347,7 @@ BridgedClass getIconsBridgingDefinition() {
       'nfc': (visitor) => Icons.nfc,
       'usb': (visitor) => Icons.usb,
 
-      // WEATHER ICONS
+      // WEATHER & THEME ICONS
       'wb_sunny': (visitor) => Icons.wb_sunny,
       'wb_cloudy': (visitor) => Icons.wb_cloudy,
       'wb_incandescent': (visitor) => Icons.wb_incandescent,
@@ -355,6 +355,13 @@ BridgedClass getIconsBridgingDefinition() {
       'beach_access': (visitor) => Icons.beach_access,
       'opacity': (visitor) => Icons.opacity,
       'thermostat': (visitor) => Icons.thermostat,
+      'nightlight': (visitor) => Icons.nightlight,
+      'nightlight_round': (visitor) => Icons.nightlight_round,
+      'sunny': (visitor) => Icons.sunny,
+      'light_mode': (visitor) => Icons.light_mode,
+      'dark_mode': (visitor) => Icons.dark_mode,
+      'auto_mode': (visitor) => Icons.auto_mode,
+      'bedtime': (visitor) => Icons.bedtime,
 
       // BUSINESS & WORK ICONS
       'business': (visitor) => Icons.business,
@@ -430,9 +437,6 @@ BridgedClass getIconsBridgingDefinition() {
       'brightness_high': (visitor) => Icons.brightness_high,
       'brightness_low': (visitor) => Icons.brightness_low,
       'brightness_medium': (visitor) => Icons.brightness_medium,
-      'dark_mode': (visitor) => Icons.dark_mode,
-      'light_mode': (visitor) => Icons.light_mode,
-      'auto_mode': (visitor) => Icons.auto_mode,
       'invert_colors': (visitor) => Icons.invert_colors,
       'invert_colors_off': (visitor) => Icons.invert_colors_off,
 

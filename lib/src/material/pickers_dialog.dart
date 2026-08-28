@@ -247,3 +247,109 @@ BridgedClass getShowMenuBridgingDefinition() {
     },
   );
 }
+
+/// Returns the BridgedClass for the Flutter DatePickerDialog widget.
+BridgedClass getDatePickerDialogBridgingDefinition() {
+  return BridgedClass(
+    nativeType: DatePickerDialog,
+    name: 'DatePickerDialog',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final key = namedArgs.get<Key?>('key');
+        final initialDate =
+            namedArgs.get<DateTime>('initialDate') ?? DateTime.now();
+        final firstDate =
+            namedArgs.get<DateTime>('firstDate') ?? DateTime(1900);
+        final lastDate =
+            namedArgs.get<DateTime>('lastDate') ?? DateTime(2100);
+        final currentDate = namedArgs.get<DateTime?>('currentDate');
+        final initialEntryMode =
+            namedArgs.get<DatePickerEntryMode?>('initialEntryMode') ??
+                DatePickerEntryMode.calendar;
+        final helpText = namedArgs.get<String?>('helpText');
+        final cancelText = namedArgs.get<String?>('cancelText');
+        final confirmText = namedArgs.get<String?>('confirmText');
+        final restorationId = namedArgs.get<String?>('restorationId');
+        final initialCalendarMode =
+            namedArgs.get<DatePickerMode?>('initialCalendarMode') ??
+                DatePickerMode.day;
+
+        return DatePickerDialog(
+          key: key,
+          initialDate: initialDate,
+          firstDate: firstDate,
+          lastDate: lastDate,
+          currentDate: currentDate,
+          initialEntryMode: initialEntryMode,
+          helpText: helpText,
+          cancelText: cancelText,
+          confirmText: confirmText,
+          restorationId: restorationId,
+          initialCalendarMode: initialCalendarMode,
+        );
+      },
+    },
+    getters: {
+      'initialDate': (visitor, target) =>
+          (target as DatePickerDialog).initialDate,
+      'firstDate': (visitor, target) => (target as DatePickerDialog).firstDate,
+      'lastDate': (visitor, target) => (target as DatePickerDialog).lastDate,
+      'currentDate': (visitor, target) =>
+          (target as DatePickerDialog).currentDate,
+      'initialEntryMode': (visitor, target) =>
+          (target as DatePickerDialog).initialEntryMode,
+      'helpText': (visitor, target) => (target as DatePickerDialog).helpText,
+      'cancelText': (visitor, target) =>
+          (target as DatePickerDialog).cancelText,
+      'confirmText': (visitor, target) =>
+          (target as DatePickerDialog).confirmText,
+      'key': (visitor, target) => (target as DatePickerDialog).key,
+    },
+    isSubtypeOfFunc: (value) => value is DatePickerDialog,
+  );
+}
+
+/// Returns the BridgedClass for the Flutter TimePickerDialog widget.
+BridgedClass getTimePickerDialogBridgingDefinition() {
+  return BridgedClass(
+    nativeType: TimePickerDialog,
+    name: 'TimePickerDialog',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final key = namedArgs.get<Key?>('key');
+        final initialTime =
+            namedArgs.get<TimeOfDay>('initialTime') ?? TimeOfDay.now();
+        final cancelText = namedArgs.get<String?>('cancelText');
+        final confirmText = namedArgs.get<String?>('confirmText');
+        final helpText = namedArgs.get<String?>('helpText');
+        final initialEntryMode =
+            namedArgs.get<TimePickerEntryMode?>('initialEntryMode') ??
+                TimePickerEntryMode.dial;
+        final restorationId = namedArgs.get<String?>('restorationId');
+
+        return TimePickerDialog(
+          key: key,
+          initialTime: initialTime,
+          cancelText: cancelText,
+          confirmText: confirmText,
+          helpText: helpText,
+          initialEntryMode: initialEntryMode,
+          restorationId: restorationId,
+        );
+      },
+    },
+    getters: {
+      'initialTime': (visitor, target) =>
+          (target as TimePickerDialog).initialTime,
+      'cancelText': (visitor, target) =>
+          (target as TimePickerDialog).cancelText,
+      'confirmText': (visitor, target) =>
+          (target as TimePickerDialog).confirmText,
+      'helpText': (visitor, target) => (target as TimePickerDialog).helpText,
+      'initialEntryMode': (visitor, target) =>
+          (target as TimePickerDialog).initialEntryMode,
+      'key': (visitor, target) => (target as TimePickerDialog).key,
+    },
+    isSubtypeOfFunc: (value) => value is TimePickerDialog,
+  );
+}

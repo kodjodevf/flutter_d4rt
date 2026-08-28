@@ -191,3 +191,121 @@ BridgedClass getShowDialogBridgingDefinition() {
     },
   );
 }
+
+/// Returns the BridgedClass for the Flutter Dialog widget.
+BridgedClass getDialogBridgingDefinition() {
+  return BridgedClass(
+    nativeType: Dialog,
+    name: 'Dialog',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final key = namedArgs.get<Key?>('key');
+        final backgroundColor = namedArgs.get<Color?>('backgroundColor');
+        final elevation = namedArgs.getToDouble('elevation');
+        final shadowColor = namedArgs.get<Color?>('shadowColor');
+        final surfaceTintColor = namedArgs.get<Color?>('surfaceTintColor');
+        final insetAnimationDuration =
+            namedArgs.get<Duration?>('insetAnimationDuration') ??
+                const Duration(milliseconds: 100);
+        final insetAnimationCurve =
+            namedArgs.get<Curve?>('insetAnimationCurve') ?? Curves.decelerate;
+        final insetPadding = _extractEdgeInsets(namedArgs['insetPadding']);
+        final clipBehavior = namedArgs.get<Clip?>('clipBehavior') ?? Clip.none;
+        final shape = namedArgs.get<ShapeBorder?>('shape');
+        final alignment = namedArgs.get<AlignmentGeometry?>('alignment');
+        final child = visitor.toWidget(namedArgs['child']);
+
+        return Dialog(
+          key: key,
+          backgroundColor: backgroundColor,
+          elevation: elevation,
+          shadowColor: shadowColor,
+          surfaceTintColor: surfaceTintColor,
+          insetAnimationDuration: insetAnimationDuration,
+          insetAnimationCurve: insetAnimationCurve,
+          insetPadding: insetPadding,
+          clipBehavior: clipBehavior,
+          shape: shape,
+          alignment: alignment,
+          child: child,
+        );
+      },
+      'fullscreen': (visitor, positionalArgs, namedArgs) {
+        final key = namedArgs.get<Key?>('key');
+        final backgroundColor = namedArgs.get<Color?>('backgroundColor');
+        final insetAnimationDuration =
+            namedArgs.get<Duration?>('insetAnimationDuration') ??
+                const Duration(milliseconds: 100);
+        final insetAnimationCurve =
+            namedArgs.get<Curve?>('insetAnimationCurve') ?? Curves.decelerate;
+        final child = visitor.toWidget(namedArgs['child']);
+
+        return Dialog.fullscreen(
+          key: key,
+          backgroundColor: backgroundColor,
+          insetAnimationDuration: insetAnimationDuration,
+          insetAnimationCurve: insetAnimationCurve,
+          child: child,
+        );
+      },
+    },
+    getters: {
+      'child': (visitor, target) => (target as Dialog).child,
+      'backgroundColor': (visitor, target) =>
+          (target as Dialog).backgroundColor,
+      'elevation': (visitor, target) => (target as Dialog).elevation,
+      'shape': (visitor, target) => (target as Dialog).shape,
+      'alignment': (visitor, target) => (target as Dialog).alignment,
+      'key': (visitor, target) => (target as Dialog).key,
+    },
+    isSubtypeOfFunc: (value) => value is Dialog,
+  );
+}
+
+/// Returns the BridgedClass for Flutter showGeneralDialog function.
+BridgedClass getShowGeneralDialogBridgingDefinition() {
+  return BridgedClass(
+    nativeType: Object,
+    name: 'showGeneralDialog',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final context = namedArgs.get<BuildContext>('context') ??
+            (positionalArgs.isNotEmpty
+                ? positionalArgs[0] as BuildContext
+                : null);
+        if (context == null) {
+          throw ArgumentError('BuildContext is required for showGeneralDialog');
+        }
+        final pageBuilderRaw = namedArgs['pageBuilder'];
+        final barrierDismissible =
+            namedArgs.get<bool?>('barrierDismissible') ?? false;
+        final barrierLabel = namedArgs.get<String?>('barrierLabel') ?? '';
+        final barrierColor =
+            namedArgs.get<Color?>('barrierColor') ?? const Color(0x80000000);
+        final transitionDuration =
+            namedArgs.get<Duration?>('transitionDuration') ??
+                const Duration(milliseconds: 200);
+        final useRootNavigator =
+            namedArgs.get<bool?>('useRootNavigator') ?? true;
+
+        return showGeneralDialog(
+          context: context,
+          barrierDismissible: barrierDismissible,
+          barrierLabel: barrierLabel,
+          barrierColor: barrierColor,
+          transitionDuration: transitionDuration,
+          useRootNavigator: useRootNavigator,
+          pageBuilder: (BuildContext ctx, Animation<double> anim1,
+              Animation<double> anim2) {
+            if (pageBuilderRaw is InterpretedFunction) {
+              final result =
+                  pageBuilderRaw.call(visitor, [ctx, anim1, anim2], {});
+              return visitor.toWidget(result) ?? const SizedBox();
+            }
+            return const SizedBox();
+          },
+        );
+      },
+    },
+  );
+}

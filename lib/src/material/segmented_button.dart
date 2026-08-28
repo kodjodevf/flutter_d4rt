@@ -11,8 +11,22 @@ BridgedClass getSegmentedButtonBridgingDefinition() {
     constructors: {
       '': (visitor, positionalArgs, namedArgs) {
         final key = namedArgs.get<Key?>('key');
-        final segments = namedArgs.get<List<ButtonSegment>>('segments') ?? [];
-        final selected = namedArgs.get<Set>('selected') ?? {};
+        final rawSegments = namedArgs['segments'];
+        final List<ButtonSegment<dynamic>> segments = [];
+        if (rawSegments is List) {
+          segments.addAll(
+            rawSegments
+                .map((e) => e is BridgedInstance ? e.nativeObject : e)
+                .whereType<ButtonSegment<dynamic>>(),
+          );
+        }
+        final rawSelected = namedArgs['selected'];
+        final Set<dynamic> selected = {};
+        if (rawSelected is Iterable) {
+          selected.addAll(
+            rawSelected.map((e) => e is BridgedInstance ? e.nativeObject : e),
+          );
+        }
 
         // Handle onSelectionChanged callback
         final onSelectionChanged = namedArgs.handleValueCallback<Set<dynamic>>(

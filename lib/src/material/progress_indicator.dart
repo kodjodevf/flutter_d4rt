@@ -82,6 +82,7 @@ BridgedClass getCircularProgressIndicatorBridgingDefinition() {
           (target as CircularProgressIndicator).semanticsLabel,
       'semanticsValue': (visitor, target) =>
           (target as CircularProgressIndicator).semanticsValue,
+      'key': (visitor, target) => (target as CircularProgressIndicator).key,
     },
   );
 }
@@ -101,7 +102,8 @@ BridgedClass getLinearProgressIndicatorBridgingDefinition() {
         final minHeight = namedArgs.getToDouble('minHeight');
         final semanticsLabel = namedArgs.get<String?>('semanticsLabel');
         final semanticsValue = namedArgs.get<String?>('semanticsValue');
-        final borderRadius = namedArgs.get<BorderRadiusGeometry?>('borderRadius');
+        final borderRadius =
+            namedArgs.get<BorderRadiusGeometry?>('borderRadius');
 
         return LinearProgressIndicator(
           key: key,
@@ -120,14 +122,18 @@ BridgedClass getLinearProgressIndicatorBridgingDefinition() {
       'value': (visitor, target) => (target as LinearProgressIndicator).value,
       'backgroundColor': (visitor, target) =>
           (target as LinearProgressIndicator).backgroundColor,
+      'color': (visitor, target) => (target as LinearProgressIndicator).color,
       'valueColor': (visitor, target) =>
           (target as LinearProgressIndicator).valueColor,
       'minHeight': (visitor, target) =>
           (target as LinearProgressIndicator).minHeight,
+      'borderRadius': (visitor, target) =>
+          (target as LinearProgressIndicator).borderRadius,
       'semanticsLabel': (visitor, target) =>
           (target as LinearProgressIndicator).semanticsLabel,
       'semanticsValue': (visitor, target) =>
           (target as LinearProgressIndicator).semanticsValue,
+      'key': (visitor, target) => (target as LinearProgressIndicator).key,
     },
   );
 }

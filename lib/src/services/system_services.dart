@@ -138,7 +138,10 @@ BridgedClass getClipboardBridgingDefinition() {
 
     staticMethods: {
       'setData': (visitor, positionalArgs, namedArgs) {
-        final data = positionalArgs[0] as ClipboardData;
+        final rawData = positionalArgs[0];
+        final data = rawData is BridgedInstance
+            ? rawData.nativeObject as ClipboardData
+            : rawData as ClipboardData;
         return Clipboard.setData(data);
       },
       'getData': (visitor, positionalArgs, namedArgs) {

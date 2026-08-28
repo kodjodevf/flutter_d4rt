@@ -99,3 +99,30 @@ BridgedClass getHeroBridgingDefinition() {
     },
   );
 }
+
+/// Returns the BridgedClass for the Flutter HeroMode widget.
+BridgedClass getHeroModeBridgingDefinition() {
+  return BridgedClass(
+    nativeType: HeroMode,
+    name: 'HeroMode',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final key = namedArgs.get<Key?>('key');
+        final enabled = namedArgs.get<bool?>('enabled') ?? true;
+        final child = visitor.toWidgets(namedArgs['child']) ??
+            const SizedBox.shrink();
+        return HeroMode(
+          key: key,
+          enabled: enabled,
+          child: child,
+        );
+      },
+    },
+    getters: {
+      'enabled': (visitor, target) => (target as HeroMode).enabled,
+      'child': (visitor, target) => (target as HeroMode).child,
+      'key': (visitor, target) => (target as HeroMode).key,
+    },
+    isSubtypeOfFunc: (value) => value is HeroMode,
+  );
+}

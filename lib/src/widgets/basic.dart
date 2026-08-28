@@ -1843,5 +1843,39 @@ Map<String, BridgedClass> getBasicBridgingDefinitions() {
     'RotatedBox': getRotatedBoxBridgingDefinition(),
     'Visibility': getVisibilityBridgingDefinition(),
     'CustomPaint': getCustomPaintBridgingDefinition(),
+    'PreferredSize': getPreferredSizeBridgingDefinition(),
   };
+}
+
+/// Returns the BridgedClass for the Flutter PreferredSize widget.
+BridgedClass getPreferredSizeBridgingDefinition() {
+  return BridgedClass(
+    nativeType: PreferredSize,
+    name: 'PreferredSize',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final key = namedArgs.get<Key?>('key');
+        final preferredSize = namedArgs.get<Size>('preferredSize') ??
+            (positionalArgs.isNotEmpty ? positionalArgs[0] as Size : Size.zero);
+        final child = visitor.toWidgets(namedArgs['child']) ??
+            (positionalArgs.length > 1
+                ? visitor.toWidgets(positionalArgs[1])
+                : const SizedBox.shrink());
+
+        return PreferredSize(
+          key: key,
+          preferredSize: preferredSize,
+          child: child!,
+        );
+      },
+    },
+    getters: {
+      'preferredSize': (visitor, target) =>
+          (target as PreferredSize).preferredSize,
+      'child': (visitor, target) => (target as PreferredSize).child,
+      'key': (visitor, target) => (target as PreferredSize).key,
+    },
+    isSubtypeOfFunc: (value) =>
+        value is PreferredSize || value is PreferredSizeWidget,
+  );
 }

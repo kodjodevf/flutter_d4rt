@@ -158,3 +158,196 @@ BridgedClass getMenuItemButtonBridgingDefinition() {
     },
   );
 }
+
+/// Returns the BridgedClass for Flutter MenuController.
+BridgedClass getMenuControllerBridgingDefinition() {
+  return BridgedClass(
+    nativeType: MenuController,
+    name: 'MenuController',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        return MenuController();
+      },
+    },
+    getters: {
+      'isOpen': (visitor, target) => (target as MenuController).isOpen,
+    },
+    methods: {
+      'open': (visitor, target, positionalArgs, namedArgs) {
+        final position = namedArgs.get<Offset?>('position') ??
+            (positionalArgs.isNotEmpty ? positionalArgs[0] as Offset? : null);
+        (target as MenuController).open(position: position);
+        return null;
+      },
+      'close': (visitor, target, positionalArgs, namedArgs) {
+        (target as MenuController).close();
+        return null;
+      },
+    },
+    isSubtypeOfFunc: (value) => value is MenuController,
+  );
+}
+
+/// Returns the BridgedClass for Flutter SubmenuButton.
+BridgedClass getSubmenuButtonBridgingDefinition() {
+  return BridgedClass(
+    nativeType: SubmenuButton,
+    name: 'SubmenuButton',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final key = namedArgs.get<Key?>('key');
+        final rawMenuChildren = namedArgs['menuChildren'];
+        final List<Widget> menuChildren = [];
+        if (rawMenuChildren is List) {
+          menuChildren.addAll(
+            rawMenuChildren
+                .map((e) => visitor.toWidget(e))
+                .whereType<Widget>(),
+          );
+        }
+        final onOpen = namedArgs.handleVoidCallback('onOpen', visitor);
+        final onClose = namedArgs.handleVoidCallback('onClose', visitor);
+        final leadingIcon = visitor.toWidget(namedArgs['leadingIcon']);
+        final trailingIcon = visitor.toWidget(namedArgs['trailingIcon']);
+        final child = visitor.toWidget(namedArgs['child']) ?? const SizedBox.shrink();
+        final style = namedArgs.get<ButtonStyle?>('style');
+
+        return SubmenuButton(
+          key: key,
+          menuChildren: menuChildren,
+          onOpen: onOpen,
+          onClose: onClose,
+          leadingIcon: leadingIcon,
+          trailingIcon: trailingIcon,
+          style: style,
+          child: child,
+        );
+      },
+    },
+    getters: {
+      'menuChildren': (visitor, target) =>
+          (target as SubmenuButton).menuChildren,
+      'leadingIcon': (visitor, target) => (target as SubmenuButton).leadingIcon,
+      'trailingIcon': (visitor, target) =>
+          (target as SubmenuButton).trailingIcon,
+      'child': (visitor, target) => (target as SubmenuButton).child,
+      'key': (visitor, target) => (target as SubmenuButton).key,
+    },
+    isSubtypeOfFunc: (value) => value is SubmenuButton,
+  );
+}
+
+/// Returns the BridgedClass for Flutter CheckboxMenuButton.
+BridgedClass getCheckboxMenuButtonBridgingDefinition() {
+  return BridgedClass(
+    nativeType: CheckboxMenuButton,
+    name: 'CheckboxMenuButton',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final key = namedArgs.get<Key?>('key');
+        final value = namedArgs.get<bool?>('value') ?? false;
+        final onChanged =
+            namedArgs.handleValueCallback<bool?>('onChanged', visitor);
+        final child = visitor.toWidget(namedArgs['child']) ?? const SizedBox.shrink();
+        final trailingIcon = visitor.toWidget(namedArgs['trailingIcon']);
+        final style = namedArgs.get<ButtonStyle?>('style');
+
+        return CheckboxMenuButton(
+          key: key,
+          value: value,
+          onChanged: onChanged,
+          trailingIcon: trailingIcon,
+          style: style,
+          child: child,
+        );
+      },
+    },
+    getters: {
+      'value': (visitor, target) => (target as CheckboxMenuButton).value,
+      'child': (visitor, target) => (target as CheckboxMenuButton).child,
+      'key': (visitor, target) => (target as CheckboxMenuButton).key,
+    },
+    isSubtypeOfFunc: (value) => value is CheckboxMenuButton,
+  );
+}
+
+/// Returns the BridgedClass for Flutter RadioMenuButton.
+BridgedClass getRadioMenuButtonBridgingDefinition() {
+  return BridgedClass(
+    nativeType: RadioMenuButton,
+    name: 'RadioMenuButton',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final key = namedArgs.get<Key?>('key');
+        final value = namedArgs['value'];
+        final groupValue = namedArgs['groupValue'];
+        final rawOnChanged = namedArgs['onChanged'];
+        ValueChanged<dynamic>? onChanged;
+        if (rawOnChanged is InterpretedFunction) {
+          onChanged = (dynamic val) {
+            rawOnChanged.call(visitor, [val], {});
+          };
+        }
+        final child = visitor.toWidget(namedArgs['child']) ?? const SizedBox.shrink();
+        final trailingIcon = visitor.toWidget(namedArgs['trailingIcon']);
+        final style = namedArgs.get<ButtonStyle?>('style');
+
+        return RadioMenuButton<dynamic>(
+          key: key,
+          value: value,
+          groupValue: groupValue,
+          onChanged: onChanged,
+          trailingIcon: trailingIcon,
+          style: style,
+          child: child,
+        );
+      },
+    },
+    getters: {
+      'value': (visitor, target) => (target as RadioMenuButton).value,
+      'groupValue': (visitor, target) => (target as RadioMenuButton).groupValue,
+      'child': (visitor, target) => (target as RadioMenuButton).child,
+      'key': (visitor, target) => (target as RadioMenuButton).key,
+    },
+    isSubtypeOfFunc: (value) => value is RadioMenuButton,
+  );
+}
+
+/// Returns the BridgedClass for Flutter MenuBar.
+BridgedClass getMenuBarBridgingDefinition() {
+  return BridgedClass(
+    nativeType: MenuBar,
+    name: 'MenuBar',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final key = namedArgs.get<Key?>('key');
+        final rawChildren = namedArgs['children'];
+        final List<Widget> children = [];
+        if (rawChildren is List) {
+          children.addAll(
+            rawChildren
+                .map((e) => visitor.toWidget(e))
+                .whereType<Widget>(),
+          );
+        }
+        final style = namedArgs.get<MenuStyle?>('style');
+        final clipBehavior =
+            namedArgs.get<Clip?>('clipBehavior') ?? Clip.none;
+
+        return MenuBar(
+          key: key,
+          style: style,
+          clipBehavior: clipBehavior,
+          children: children,
+        );
+      },
+    },
+    getters: {
+      'children': (visitor, target) => (target as MenuBar).children,
+      'style': (visitor, target) => (target as MenuBar).style,
+      'clipBehavior': (visitor, target) => (target as MenuBar).clipBehavior,
+      'key': (visitor, target) => (target as MenuBar).key,
+    },
+    isSubtypeOfFunc: (value) => value is MenuBar,
+  );
+}

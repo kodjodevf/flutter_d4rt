@@ -187,6 +187,22 @@ void registerMaterialBridges(D4rt interpreter) {
     'package:flutter/material_.dart',
   );
   interpreter.registerBridgedClass(
+    getSimpleDialogOptionBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getDialogBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getShowDialogBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getShowGeneralDialogBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
     getDividerBridgingDefinition(),
     'package:flutter/material_.dart',
   );
@@ -365,6 +381,10 @@ void registerMaterialBridges(D4rt interpreter) {
   );
   interpreter.registerBridgedClass(
     getDefaultTabControllerBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getTabControllerBridgingDefinition(),
     'package:flutter/material_.dart',
   );
   interpreter.registerBridgedClass(
@@ -557,7 +577,27 @@ void registerMaterialBridges(D4rt interpreter) {
     'package:flutter/material_.dart',
   );
   interpreter.registerBridgedClass(
+    getMenuControllerBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
     getMenuItemButtonBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getSubmenuButtonBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getCheckboxMenuButtonBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getRadioMenuButtonBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getMenuBarBridgingDefinition(),
     'package:flutter/material_.dart',
   );
   interpreter.registerBridgedClass(
@@ -582,6 +622,14 @@ void registerMaterialBridges(D4rt interpreter) {
   );
   interpreter.registerBridgedClass(
     getSearchBarBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getSearchControllerBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getSearchAnchorBridgingDefinition(),
     'package:flutter/material_.dart',
   );
   interpreter.registerBridgedClass(
@@ -664,6 +712,14 @@ void registerMaterialBridges(D4rt interpreter) {
   );
   interpreter.registerBridgedClass(
     getShowMenuBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getDatePickerDialogBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getTimePickerDialogBridgingDefinition(),
     'package:flutter/material_.dart',
   );
   interpreter.registerBridgedEnum(

@@ -1,6 +1,7 @@
 import 'package:d4rt/d4rt.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_d4rt/utils/extensions/map.dart';
 import 'package:flutter_d4rt/utils/extensions/widget.dart';
 
@@ -156,5 +157,76 @@ BridgedClass getDefaultTabControllerBridgingDefinition() {
       'child': (visitor, target) => (target as DefaultTabController).child,
       'key': (visitor, target) => (target as DefaultTabController).key,
     },
+  );
+}
+
+class _FallbackTickerProvider implements TickerProvider {
+  const _FallbackTickerProvider();
+  @override
+  Ticker createTicker(TickerCallback onTick) => Ticker(onTick);
+}
+
+/// Returns the BridgedClass for the Flutter TabController.
+BridgedClass getTabControllerBridgingDefinition() {
+  return BridgedClass(
+    nativeType: TabController,
+    name: 'TabController',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final length = namedArgs.get<int?>('length') ??
+            (positionalArgs.isNotEmpty ? positionalArgs[0] as int : 0);
+        final initialIndex = namedArgs.get<int?>('initialIndex') ?? 0;
+        final animationDuration = namedArgs.get<Duration?>('animationDuration');
+        final rawVsync = namedArgs['vsync'];
+        final TickerProvider vsync = rawVsync is TickerProvider
+            ? rawVsync
+            : (rawVsync is BridgedInstance &&
+                    rawVsync.nativeObject is TickerProvider
+                ? rawVsync.nativeObject as TickerProvider
+                : const _FallbackTickerProvider());
+
+        return TabController(
+          length: length,
+          initialIndex: initialIndex,
+          animationDuration: animationDuration,
+          vsync: vsync,
+        );
+      },
+    },
+    getters: {
+      'index': (visitor, target) => (target as TabController).index,
+      'previousIndex': (visitor, target) =>
+          (target as TabController).previousIndex,
+      'length': (visitor, target) => (target as TabController).length,
+      'indexIsChanging': (visitor, target) =>
+          (target as TabController).indexIsChanging,
+      'offset': (visitor, target) => (target as TabController).offset,
+    },
+    setters: {
+      'index': (visitor, target, value) =>
+          (target as TabController).index = value as int,
+      'offset': (visitor, target, value) =>
+          (target as TabController).offset = (value as num).toDouble(),
+    },
+    methods: {
+      'animateTo': (visitor, target, positionalArgs, namedArgs) {
+        final value = positionalArgs.isNotEmpty
+            ? positionalArgs[0] as int
+            : namedArgs['value'] as int? ?? 0;
+        final duration = namedArgs.get<Duration?>('duration');
+        final curve = namedArgs.get<Curve?>('curve') ?? Curves.ease;
+        (target as TabController).animateTo(
+          value,
+          duration: duration,
+          curve: curve,
+        );
+        return null;
+      },
+      'dispose': (visitor, target, positionalArgs, namedArgs) {
+        (target as TabController).dispose();
+        return null;
+      },
+    },
+    isSubtypeOfFunc: (value) => value is TabController,
   );
 }

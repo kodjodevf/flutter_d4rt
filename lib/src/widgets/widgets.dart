@@ -466,6 +466,22 @@ void registerWidgetsBridges(D4rt interpreter) {
     'package:flutter/widgets_.dart',
   );
   interpreter.registerBridgedClass(
+    scrolling.getScrollControllerBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    scrolling.getPageControllerBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    scrolling.getScrollbarBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    scrolling.getNestedScrollViewBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
     scrolling.getSliverGridDelegateWithFixedCrossAxisCountBridgingDefinition(),
     'package:flutter/widgets_.dart',
   );
@@ -949,6 +965,10 @@ void registerWidgetsBridges(D4rt interpreter) {
   // Register new widget bridges
   interpreter.registerBridgedClass(
     getHeroBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getHeroModeBridgingDefinition(),
     'package:flutter/widgets_.dart',
   );
   interpreter.registerBridgedClass(
