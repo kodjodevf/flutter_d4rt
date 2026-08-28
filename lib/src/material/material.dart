@@ -421,20 +421,6 @@ void registerMaterialBridges(D4rt interpreter) {
     'package:flutter/material_.dart',
   );
 
-  // Register About widgets
-  interpreter.registerBridgedClass(
-    getAboutDialogBridgingDefinition(),
-    'package:flutter/material_.dart',
-  );
-  interpreter.registerBridgedClass(
-    getAboutListTileBridgingDefinition(),
-    'package:flutter/material_.dart',
-  );
-  interpreter.registerBridgedClass(
-    getLicensePageBridgingDefinition(),
-    'package:flutter/material_.dart',
-  );
-
   // Register DataTable widgets
   interpreter.registerBridgedClass(
     getTooltipBridgingDefinition(),
@@ -479,73 +465,6 @@ void registerMaterialBridges(D4rt interpreter) {
     'package:flutter/material_.dart',
   );
 
-  // Register additional Material widgets
-  interpreter.registerBridgedClass(
-    getCardBridgingDefinition(),
-    'package:flutter/material_.dart',
-  );
-  interpreter.registerBridgedClass(
-    getDividerBridgingDefinition(),
-    'package:flutter/material_.dart',
-  );
-  interpreter.registerBridgedClass(
-    getChipBridgingDefinition(),
-    'package:flutter/material_.dart',
-  );
-  interpreter.registerBridgedClass(
-    getFloatingActionButtonBridgingDefinition(),
-    'package:flutter/material_.dart',
-  );
-  interpreter.registerBridgedClass(
-    getIconButtonBridgingDefinition(),
-    'package:flutter/material_.dart',
-  );
-  interpreter.registerBridgedClass(
-    getListTileBridgingDefinition(),
-    'package:flutter/material_.dart',
-  );
-
-  // Register more Material widgets
-  interpreter.registerBridgedClass(
-    getTextButtonBridgingDefinition(),
-    'package:flutter/material_.dart',
-  );
-  interpreter.registerBridgedClass(
-    getTextFieldBridgingDefinition(),
-    'package:flutter/material_.dart',
-  );
-  interpreter.registerBridgedClass(
-    getCircularProgressIndicatorBridgingDefinition(),
-    'package:flutter/material_.dart',
-  );
-  interpreter.registerBridgedClass(
-    getRadioBridgingDefinition(),
-    'package:flutter/material_.dart',
-  );
-  interpreter.registerBridgedClass(
-    getScaffoldBridgingDefinition(),
-    'package:flutter/material_.dart',
-  );
-  interpreter.registerBridgedClass(
-    getSliderBridgingDefinition(),
-    'package:flutter/material_.dart',
-  );
-  interpreter.registerBridgedClass(
-    getSnackBarBridgingDefinition(),
-    'package:flutter/material_.dart',
-  );
-  interpreter.registerBridgedClass(
-    getSwitchBridgingDefinition(),
-    'package:flutter/material_.dart',
-  );
-  interpreter.registerBridgedClass(
-    getTabBarBridgingDefinition(),
-    'package:flutter/material_.dart',
-  );
-  interpreter.registerBridgedClass(
-    getTabBridgingDefinition(),
-    'package:flutter/material_.dart',
-  );  
   // Register new Material Design bridges
   interpreter.registerBridgedClass(
     getBadgeBridgingDefinition(),
@@ -565,10 +484,6 @@ void registerMaterialBridges(D4rt interpreter) {
   );
   interpreter.registerBridgedClass(
     getMenuItemButtonBridgingDefinition(),
-    'package:flutter/material_.dart',
-  );
-  interpreter.registerBridgedClass(
-    getBottomSheetBridgingDefinition(),
     'package:flutter/material_.dart',
   );
   interpreter.registerBridgedClass(
@@ -609,10 +524,6 @@ void registerMaterialBridges(D4rt interpreter) {
   );
   interpreter.registerBridgedClass(
     getBottomAppBarBridgingDefinition(),
-    'package:flutter/material_.dart',
-  );
-  interpreter.registerBridgedClass(
-    getDrawerHeaderBridgingDefinition(),
     'package:flutter/material_.dart',
   );
   interpreter.registerBridgedClass(

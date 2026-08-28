@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:ui';
 
 import 'package:d4rt/d4rt.dart';
@@ -212,6 +214,8 @@ BridgedClass getColorsBridgingDefinition() {
       'amberAccent': (visitor) => Colors.amberAccent,
       'orangeAccent': (visitor) => Colors.orangeAccent,
       'deepOrangeAccent': (visitor) => Colors.deepOrangeAccent,
+      'primaries': (visitor) => Colors.primaries,
+      'accents': (visitor) => Colors.accents,
     },
     staticMethods: {
       'primaries': (visitor, positionalArgs, namedArgs) => Colors.primaries,

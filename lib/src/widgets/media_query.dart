@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:d4rt/d4rt.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_d4rt/utils/double.dart';

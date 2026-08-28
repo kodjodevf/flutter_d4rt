@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:d4rt/d4rt.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';

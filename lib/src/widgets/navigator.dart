@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:d4rt/d4rt.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_d4rt/utils/extensions/widget.dart';
@@ -99,7 +101,10 @@ BridgedClass getNavigatorBridgingDefinition() {
       },
       'push': (visitor, positionalArgs, namedArgs) {
         final context = positionalArgs[0] as BuildContext;
-        final route = positionalArgs[1] as Route<Object?>;
+        final rawRoute = positionalArgs[1];
+        final route = (rawRoute is BridgedInstance
+            ? rawRoute.nativeObject
+            : rawRoute) as Route<Object?>;
         return Navigator.push(context, route);
       },
       'pop': (visitor, positionalArgs, namedArgs) {
@@ -295,11 +300,17 @@ BridgedClass getNavigatorStateBridgingDefinition() {
     name: 'NavigatorState',
     methods: {
       'push': (visitor, target, positionalArgs, namedArgs) {
-        final route = positionalArgs[0] as Route<Object?>;
+        final rawRoute = positionalArgs[0];
+        final route = (rawRoute is BridgedInstance
+            ? rawRoute.nativeObject
+            : rawRoute) as Route<Object?>;
         return (target as NavigatorState).push(route);
       },
       'pushReplacement': (visitor, target, positionalArgs, namedArgs) {
-        final newRoute = positionalArgs[0] as Route<Object?>;
+        final rawRoute = positionalArgs[0];
+        final newRoute = (rawRoute is BridgedInstance
+            ? rawRoute.nativeObject
+            : rawRoute) as Route<Object?>;
         final result = namedArgs['result'];
         return (target as NavigatorState).pushReplacement(
           newRoute,
@@ -357,3 +368,24 @@ BridgedClass getRouteSettingsBridgingDefinition() {
     },
   );
 }
+
+/// Returns the BridgedClass for the Flutter Route abstract class.
+BridgedClass getRouteBridgingDefinition() {
+  return BridgedClass(
+    nativeType: Route,
+    name: 'Route',
+    constructors: {},
+    isSubtypeOfFunc: (value) => value is Route,
+  );
+}
+
+/// Returns the BridgedClass for the Flutter PageRoute abstract class.
+BridgedClass getPageRouteBridgingDefinition() {
+  return BridgedClass(
+    nativeType: PageRoute,
+    name: 'PageRoute',
+    constructors: {},
+    isSubtypeOfFunc: (value) => value is PageRoute,
+  );
+}
+

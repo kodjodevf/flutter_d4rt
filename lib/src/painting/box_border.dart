@@ -57,3 +57,14 @@ BridgedEnumDefinition getBoxShapeBridgingDefinition() {
     },
   );
 }
+
+/// Returns the BridgedClass for the Flutter BoxBorder abstract class.
+BridgedClass getBoxBorderBridgingDefinition() {
+  return BridgedClass(
+    nativeType: BoxBorder,
+    name: 'BoxBorder',
+    constructors: {},
+    isSubtypeOfFunc: (value) => value is BoxBorder,
+  );
+}
+

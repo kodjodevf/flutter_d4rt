@@ -20,7 +20,7 @@ BridgedClass getFilledButtonBridgingDefinition() {
         final focusNode = namedArgs.get<FocusNode?>('focusNode');
         final autofocus = namedArgs.get<bool?>('autofocus') ?? false;
         final clipBehavior = namedArgs.get<Clip?>('clipBehavior') ?? Clip.none;
-        final statesController = namedArgs.get<MaterialStatesController?>(
+        final statesController = namedArgs.get<WidgetStatesController?>(
           'statesController',
         );
         final child = visitor.toWidgets(namedArgs['child']);
@@ -48,7 +48,7 @@ BridgedClass getFilledButtonBridgingDefinition() {
         final focusNode = namedArgs.get<FocusNode?>('focusNode');
         final autofocus = namedArgs.get<bool?>('autofocus') ?? false;
         final clipBehavior = namedArgs.get<Clip?>('clipBehavior') ?? Clip.none;
-        final statesController = namedArgs.get<MaterialStatesController?>(
+        final statesController = namedArgs.get<WidgetStatesController?>(
           'statesController',
         );
         final icon = visitor.toWidgets(namedArgs['icon']);
@@ -78,7 +78,7 @@ BridgedClass getFilledButtonBridgingDefinition() {
         final focusNode = namedArgs.get<FocusNode?>('focusNode');
         final autofocus = namedArgs.get<bool?>('autofocus') ?? false;
         final clipBehavior = namedArgs.get<Clip?>('clipBehavior') ?? Clip.none;
-        final statesController = namedArgs.get<MaterialStatesController?>(
+        final statesController = namedArgs.get<WidgetStatesController?>(
           'statesController',
         );
         final child = visitor.toWidgets(namedArgs['child']);
@@ -106,7 +106,7 @@ BridgedClass getFilledButtonBridgingDefinition() {
         final focusNode = namedArgs.get<FocusNode?>('focusNode');
         final autofocus = namedArgs.get<bool?>('autofocus') ?? false;
         final clipBehavior = namedArgs.get<Clip?>('clipBehavior') ?? Clip.none;
-        final statesController = namedArgs.get<MaterialStatesController?>(
+        final statesController = namedArgs.get<WidgetStatesController?>(
           'statesController',
         );
         final icon = visitor.toWidgets(namedArgs['icon']);

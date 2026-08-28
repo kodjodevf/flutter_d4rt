@@ -14,10 +14,10 @@ BridgedClass getSearchBarBridgingDefinition() {
         final controller = namedArgs.get<TextEditingController?>('controller');
         final focusNode = namedArgs.get<FocusNode?>('focusNode');
         final hintText = namedArgs.get<String?>('hintText');
-        final hintStyle = namedArgs.get<MaterialStateProperty<TextStyle?>?>(
+        final hintStyle = namedArgs.get<WidgetStateProperty<TextStyle?>?>(
           'hintStyle',
         );
-        final textStyle = namedArgs.get<MaterialStateProperty<TextStyle?>?>(
+        final textStyle = namedArgs.get<WidgetStateProperty<TextStyle?>?>(
           'textStyle',
         );
         final leading = visitor.toWidgets(namedArgs['leading']);
@@ -49,27 +49,27 @@ BridgedClass getSearchBarBridgingDefinition() {
         );
 
         final constraints = namedArgs.get<BoxConstraints?>('constraints');
-        final elevation = namedArgs.get<MaterialStateProperty<double?>?>(
+        final elevation = namedArgs.get<WidgetStateProperty<double?>?>(
           'elevation',
         );
-        final backgroundColor = namedArgs.get<MaterialStateProperty<Color?>?>(
+        final backgroundColor = namedArgs.get<WidgetStateProperty<Color?>?>(
           'backgroundColor',
         );
-        final shadowColor = namedArgs.get<MaterialStateProperty<Color?>?>(
+        final shadowColor = namedArgs.get<WidgetStateProperty<Color?>?>(
           'shadowColor',
         );
-        final surfaceTintColor = namedArgs.get<MaterialStateProperty<Color?>?>(
+        final surfaceTintColor = namedArgs.get<WidgetStateProperty<Color?>?>(
           'surfaceTintColor',
         );
-        final overlayColor = namedArgs.get<MaterialStateProperty<Color?>?>(
+        final overlayColor = namedArgs.get<WidgetStateProperty<Color?>?>(
           'overlayColor',
         );
-        final side = namedArgs.get<MaterialStateProperty<BorderSide?>?>('side');
-        final shape = namedArgs.get<MaterialStateProperty<OutlinedBorder?>?>(
+        final side = namedArgs.get<WidgetStateProperty<BorderSide?>?>('side');
+        final shape = namedArgs.get<WidgetStateProperty<OutlinedBorder?>?>(
           'shape',
         );
         final padding = namedArgs
-            .get<MaterialStateProperty<EdgeInsetsGeometry?>?>('padding');
+            .get<WidgetStateProperty<EdgeInsetsGeometry?>?>('padding');
         final textCapitalization =
             namedArgs.get<TextCapitalization?>('textCapitalization') ??
             TextCapitalization.none;

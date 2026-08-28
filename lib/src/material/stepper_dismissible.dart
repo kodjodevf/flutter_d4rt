@@ -48,7 +48,7 @@ BridgedClass getStepperBridgingDefinition() {
         );
         final elevation = namedArgs.getToDouble('elevation');
         final margin = namedArgs.get<EdgeInsetsGeometry?>('margin');
-        final connectorColor = namedArgs.get<MaterialStateProperty<Color?>?>(
+        final connectorColor = namedArgs.get<WidgetStateProperty<Color?>?>(
           'connectorColor',
         );
         final connectorThickness =
@@ -70,7 +70,7 @@ BridgedClass getStepperBridgingDefinition() {
           controlsBuilder: controlsBuilder,
           elevation: elevation,
           margin: margin,
-          connectorColor: connectorColor as MaterialStateProperty<Color>?,
+          connectorColor: connectorColor as WidgetStateProperty<Color>?,
           connectorThickness: connectorThickness,
           stepIconBuilder: stepIconBuilder,
         );

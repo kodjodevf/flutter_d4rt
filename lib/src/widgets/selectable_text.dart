@@ -1,8 +1,9 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:ui' show BoxHeightStyle, BoxWidthStyle;
 
 import 'package:d4rt/d4rt.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_d4rt/utils/extensions/map.dart';
 
 /// Returns the BridgedClass for the Flutter SelectableText widget.

@@ -44,7 +44,10 @@ BridgedClass getScaffoldMessengerStateBridgingDefinition() {
     methods: {
       'showSnackBar': (visitor, target, positionalArgs, namedArgs) {
         final state = target as ScaffoldMessengerState;
-        final snackBar = positionalArgs[0] as SnackBar;
+        final rawSnackBar = positionalArgs[0];
+        final snackBar = (rawSnackBar is BridgedInstance
+            ? rawSnackBar.nativeObject
+            : rawSnackBar) as SnackBar;
         return state.showSnackBar(snackBar);
       },
       'hideCurrentSnackBar': (visitor, target, positionalArgs, namedArgs) {
@@ -70,7 +73,10 @@ BridgedClass getScaffoldMessengerStateBridgingDefinition() {
       },
       'showMaterialBanner': (visitor, target, positionalArgs, namedArgs) {
         final state = target as ScaffoldMessengerState;
-        final materialBanner = positionalArgs[0] as MaterialBanner;
+        final rawBanner = positionalArgs[0];
+        final materialBanner = (rawBanner is BridgedInstance
+            ? rawBanner.nativeObject
+            : rawBanner) as MaterialBanner;
         return state.showMaterialBanner(materialBanner);
       },
       'hideCurrentMaterialBanner':

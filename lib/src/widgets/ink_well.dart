@@ -47,7 +47,7 @@ BridgedClass getInkWellBridgingDefinition() {
         final focusColor = namedArgs.get<Color?>('focusColor');
         final hoverColor = namedArgs.get<Color?>('hoverColor');
         final highlightColor = namedArgs.get<Color?>('highlightColor');
-        final overlayColor = namedArgs.get<MaterialStateProperty<Color?>?>(
+        final overlayColor = namedArgs.get<WidgetStateProperty<Color?>?>(
           'overlayColor',
         );
         final splashColor = namedArgs.get<Color?>('splashColor');

@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:d4rt/d4rt.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_d4rt/utils/extensions/map.dart';
@@ -171,12 +173,12 @@ BridgedClass getDataTableBridgingDefinition() {
         final sortColumnIndex = namedArgs.get<int?>('sortColumnIndex');
         final sortAscending = namedArgs.get<bool?>('sortAscending') ?? true;
         final onSelectAll = namedArgs.get<ValueSetter<bool?>?>('onSelectAll');
-        final dataRowColor = namedArgs.get<MaterialStateProperty<Color?>?>(
+        final dataRowColor = namedArgs.get<WidgetStateProperty<Color?>?>(
           'dataRowColor',
         );
         final dataRowHeight = namedArgs.getToDouble('dataRowHeight');
         final dataTextStyle = namedArgs.get<TextStyle?>('dataTextStyle');
-        final headingRowColor = namedArgs.get<MaterialStateProperty<Color?>?>(
+        final headingRowColor = namedArgs.get<WidgetStateProperty<Color?>?>(
           'headingRowColor',
         );
         final headingRowHeight = namedArgs.getToDouble('headingRowHeight');
@@ -296,7 +298,7 @@ BridgedClass getDataRowBridgingDefinition() {
           'onLongPress',
           visitor,
         );
-        final color = namedArgs.get<MaterialStateProperty<Color?>?>('color');
+        final color = namedArgs.get<WidgetStateProperty<Color?>?>('color');
         final cellsRaw = namedArgs['cells'];
         final cells = cellsRaw is List
             ? cellsRaw.map((item) {
@@ -328,7 +330,7 @@ BridgedClass getDataRowBridgingDefinition() {
           'onLongPress',
           visitor,
         );
-        final color = namedArgs.get<MaterialStateProperty<Color?>?>('color');
+        final color = namedArgs.get<WidgetStateProperty<Color?>?>('color');
         final cellsRaw = namedArgs['cells'];
         final cells = cellsRaw is List
             ? cellsRaw.map((item) {

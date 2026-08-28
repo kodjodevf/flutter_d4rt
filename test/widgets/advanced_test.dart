@@ -680,6 +680,53 @@ void main() {
         final widget = interpreter.execute(code, 'build');
         expect(widget, isA<Widget>());
       });
+
+      test('should create shapes and border radius geometry with EdgeInsets constructors', () {
+        const code = '''
+          import 'package:flutter/material.dart';
+          
+          Widget build() {
+            return Container(
+              padding: EdgeInsets.all(16.0),
+              margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12.0),
+                border: Border.all(color: Colors.black, width: 2.0),
+              ),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                ),
+                onPressed: () {},
+                child: Text('Shape Test'),
+              ),
+            );
+          }
+        ''';
+
+        final widget = interpreter.execute(code, 'build');
+        expect(widget, isA<Widget>());
+      });
+
+      test('should access Colors.primaries and Colors.accents getters', () {
+        const code = '''
+          import 'package:flutter/material.dart';
+          
+          Widget build() {
+            final primaries = Colors.primaries;
+            final accents = Colors.accents;
+            return Container(
+              color: primaries[0],
+              child: Text('Colors count: ' + primaries.length.toString()),
+            );
+          }
+        ''';
+
+        final widget = interpreter.execute(code, 'build');
+        expect(widget, isA<Widget>());
+      });
     });
   });
 }

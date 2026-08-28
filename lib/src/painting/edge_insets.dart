@@ -11,6 +11,50 @@ BridgedClass getEdgeInsetsBridgingDefinition() {
   return BridgedClass(
     nativeType: EdgeInsets,
     name: 'EdgeInsets',
+    constructors: {
+      'all': (visitor, positionalArgs, namedArgs) {
+        final value = positionalArgs.getToDouble(0) ??
+            namedArgs.getToDouble('value') ??
+            0.0;
+        return EdgeInsets.all(value);
+      },
+      'symmetric': (visitor, positionalArgs, namedArgs) {
+        final vertical = namedArgs.getToDouble('vertical') ?? 0.0;
+        final horizontal = namedArgs.getToDouble('horizontal') ?? 0.0;
+
+        return EdgeInsets.symmetric(vertical: vertical, horizontal: horizontal);
+      },
+      'only': (visitor, positionalArgs, namedArgs) {
+        final left = namedArgs.getToDouble('left') ?? 0.0;
+        final top = namedArgs.getToDouble('top') ?? 0.0;
+        final right = namedArgs.getToDouble('right') ?? 0.0;
+        final bottom = namedArgs.getToDouble('bottom') ?? 0.0;
+
+        return EdgeInsets.only(
+          left: left,
+          top: top,
+          right: right,
+          bottom: bottom,
+        );
+      },
+      'fromLTRB': (visitor, positionalArgs, namedArgs) {
+        final left = toDouble(positionalArgs.get<dynamic>(0)) ?? 0.0;
+        final top = toDouble(positionalArgs.get<dynamic>(1)) ?? 0.0;
+        final right = toDouble(positionalArgs.get<dynamic>(2)) ?? 0.0;
+        final bottom = toDouble(positionalArgs.get<dynamic>(3)) ?? 0.0;
+
+        return EdgeInsets.fromLTRB(left, top, right, bottom);
+      },
+      'fromViewPadding': (visitor, positionalArgs, namedArgs) {
+        final padding = positionalArgs.get<ViewPadding>(0);
+        final devicePixelRatio = toDouble(positionalArgs.get<dynamic>(1));
+
+        return EdgeInsets.fromViewPadding(padding!, devicePixelRatio!);
+      },
+      'zero': (visitor, positionalArgs, namedArgs) {
+        return EdgeInsets.zero;
+      },
+    },
     staticGetters: {
       'zero': (visitor) {
         return EdgeInsets.zero;

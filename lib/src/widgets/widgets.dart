@@ -431,6 +431,14 @@ void registerWidgetsBridges(D4rt interpreter) {
     'package:flutter/widgets_.dart',
   );
   interpreter.registerBridgedClass(
+    navigation.getRouteBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    navigation.getPageRouteBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
     navigation.getMaterialPageRouteBridgingDefinition(),
     'package:flutter/widgets_.dart',
   );

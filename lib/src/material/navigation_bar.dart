@@ -29,7 +29,7 @@ BridgedClass getNavigationBarBridgingDefinition() {
         final height = namedArgs.get<double?>('height');
         final labelBehavior = namedArgs
             .get<NavigationDestinationLabelBehavior?>('labelBehavior');
-        final overlayColor = namedArgs.get<MaterialStateProperty<Color?>?>(
+        final overlayColor = namedArgs.get<WidgetStateProperty<Color?>?>(
           'overlayColor',
         );
 

@@ -19,7 +19,23 @@ void registerPaintingBridges(D4rt interpreter) {
     'package:flutter/painting_.dart',
   );
   interpreter.registerBridgedClass(
+    getBorderRadiusGeometryBridgingDefinition(),
+    'package:flutter/painting_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getBorderRadiusDirectionalBridgingDefinition(),
+    'package:flutter/painting_.dart',
+  );
+  interpreter.registerBridgedClass(
     getBorderSideBridgingDefinition(),
+    'package:flutter/painting_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getShapeBorderBridgingDefinition(),
+    'package:flutter/painting_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getOutlinedBorderBridgingDefinition(),
     'package:flutter/painting_.dart',
   );
   interpreter.registerBridgedClass(
@@ -27,7 +43,23 @@ void registerPaintingBridges(D4rt interpreter) {
     'package:flutter/painting_.dart',
   );
   interpreter.registerBridgedClass(
+    getStadiumBorderBridgingDefinition(),
+    'package:flutter/painting_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getBeveledRectangleBorderBridgingDefinition(),
+    'package:flutter/painting_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getContinuousRectangleBorderBridgingDefinition(),
+    'package:flutter/painting_.dart',
+  );
+  interpreter.registerBridgedClass(
     getCircleBorderBridgingDefinition(),
+    'package:flutter/painting_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getBoxBorderBridgingDefinition(),
     'package:flutter/painting_.dart',
   );
   interpreter.registerBridgedClass(
