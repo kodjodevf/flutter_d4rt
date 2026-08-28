@@ -4,6 +4,14 @@ import 'package:flutter/painting.dart';
 import 'package:flutter_d4rt/utils/double.dart';
 import 'package:flutter_d4rt/utils/extensions/map.dart';
 
+/// Returns the BridgedEnumDefinition for the Flutter BorderStyle enum.
+BridgedEnumDefinition<BorderStyle> getBorderStyleBridgingDefinition() {
+  return BridgedEnumDefinition<BorderStyle>(
+    name: 'BorderStyle',
+    values: BorderStyle.values,
+  );
+}
+
 /// Returns the BridgedClass for the Flutter BorderSide class.
 BridgedClass getBorderSideBridgingDefinition() {
   return BridgedClass(

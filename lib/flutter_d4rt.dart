@@ -2,6 +2,7 @@ import 'package:d4rt/d4rt.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_d4rt/src/animation.dart';
+import 'package:flutter_d4rt/src/cupertino.dart';
 import 'package:flutter_d4rt/src/foundation.dart';
 import 'package:flutter_d4rt/src/gestures.dart';
 import 'package:flutter_d4rt/src/material.dart';
@@ -148,6 +149,7 @@ class FlutterRunInterpreter {
       preloadedSources.addAll(getServicesSource(_interpreter));
       preloadedSources.addAll(getWidgetsSource(_interpreter));
       preloadedSources.addAll(getMaterialSource(_interpreter));
+      preloadedSources.addAll(getCupertinoSource(_interpreter));
       preloadedSources.addAll(getUiSource(_interpreter));
       preloadedSources.addAll(getPhysicsSource(_interpreter));
       preloadedSources.addAll(getAnimationSource(_interpreter));

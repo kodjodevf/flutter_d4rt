@@ -488,3 +488,75 @@ BridgedClass getSliverAppBarBridgingDefinition() {
     },
   );
 }
+
+/// Returns the BridgedClass for FlexibleSpaceBar.
+BridgedClass getFlexibleSpaceBarBridgingDefinition() {
+  return BridgedClass(
+    nativeType: FlexibleSpaceBar,
+    name: 'FlexibleSpaceBar',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final key = namedArgs.get<Key?>('key');
+        final title = visitor.toWidget(namedArgs['title']);
+        final background = visitor.toWidget(namedArgs['background']);
+        final centerTitle = namedArgs.get<bool?>('centerTitle');
+        final titlePadding = namedArgs.get<EdgeInsetsGeometry?>('titlePadding');
+        final collapseMode = namedArgs.get<CollapseMode?>('collapseMode') ??
+            CollapseMode.parallax;
+        final stretchModes = namedArgs.get<List<StretchMode>?>('stretchModes');
+
+        return FlexibleSpaceBar(
+          key: key,
+          title: title,
+          background: background,
+          centerTitle: centerTitle,
+          titlePadding: titlePadding,
+          collapseMode: collapseMode,
+          stretchModes:
+              stretchModes ?? const <StretchMode>[StretchMode.zoomBackground],
+        );
+      },
+    },
+    getters: {
+      'title': (visitor, target) => (target as FlexibleSpaceBar).title,
+      'background': (visitor, target) => (target as FlexibleSpaceBar).background,
+      'centerTitle': (visitor, target) => (target as FlexibleSpaceBar).centerTitle,
+    },
+  );
+}
+
+/// Returns the BridgedEnumDefinition for CollapseMode enum.
+BridgedEnumDefinition<CollapseMode> getCollapseModeBridgingDefinition() {
+  return BridgedEnumDefinition<CollapseMode>(
+    name: 'CollapseMode',
+    values: CollapseMode.values,
+  );
+}
+
+/// Returns the BridgedClass for SliverFixedExtentList.
+BridgedClass getSliverFixedExtentListBridgingDefinition() {
+  return BridgedClass(
+    nativeType: SliverFixedExtentList,
+    name: 'SliverFixedExtentList',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final key = namedArgs.get<Key?>('key');
+        final delegate = namedArgs.get<SliverChildDelegate>('delegate')!;
+        final itemExtent = (namedArgs['itemExtent'] as num?)?.toDouble() ?? 0.0;
+
+        return SliverFixedExtentList(
+          key: key,
+          delegate: delegate,
+          itemExtent: itemExtent,
+        );
+      },
+    },
+    getters: {
+      'delegate': (visitor, target) =>
+          (target as SliverFixedExtentList).delegate,
+      'itemExtent': (visitor, target) =>
+          (target as SliverFixedExtentList).itemExtent,
+    },
+  );
+}
+

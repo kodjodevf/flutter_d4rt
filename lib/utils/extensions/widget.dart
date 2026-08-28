@@ -65,6 +65,19 @@ extension Widgets on InterpreterVisitor {
     }
   }
 
+  Widget? toWidget(Object? object) {
+    final result = toWidgets(object);
+    return result is Widget ? result : null;
+  }
+
+  List<Widget> toWidgetList(Object? object) {
+    final result = toWidgets(object);
+    if (result is List<Widget>) return result;
+    if (result is List) return result.whereType<Widget>().toList();
+    if (result is Widget) return [result];
+    return [];
+  }
+
   dynamic toElements(Object? object) {
     if (object is List) {
       List<dynamic> children = [];

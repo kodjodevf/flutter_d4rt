@@ -80,9 +80,10 @@ BridgedClass getChangeNotifierBridgingDefinition() {
     name: 'ChangeNotifier',
     constructors: {
       '': (visitor, positionalArgs, namedArgs) {
+        final arg0 = positionalArgs.isNotEmpty ? positionalArgs[0] : null;
         return ChangeNotifierBridge(
           visitor: visitor,
-          instance: positionalArgs.get<dynamic>(0),
+          instance: arg0 is InterpretedInstance ? arg0 : null,
         );
       },
     },
@@ -133,10 +134,11 @@ BridgedClass getValueNotifierBridgingDefinition() {
     name: 'ValueNotifier',
     constructors: {
       '': (visitor, positionalArgs, namedArgs) {
-        final value = positionalArgs.get<dynamic>(0);
+        final value = positionalArgs.isNotEmpty ? positionalArgs[0] : null;
+        final arg1 = positionalArgs.length > 1 ? positionalArgs[1] : null;
         return ValueNotifierBridge(
           visitor: visitor,
-          instance: positionalArgs.get<dynamic>(1),
+          instance: arg1 is InterpretedInstance ? arg1 : null,
           initialValue: value,
         );
       },
@@ -191,9 +193,22 @@ BridgedClass getValueListenableBuilderBridgingDefinition() {
     constructors: {
       '': (visitor, positionalArgs, namedArgs) {
         final key = namedArgs.get<Key?>('key');
-        final valueListenable = namedArgs.get<ValueListenable>(
-          'valueListenable',
-        );
+        final rawListenable = namedArgs['valueListenable'];
+        ValueListenable valueListenable;
+        if (rawListenable is BridgedInstance) {
+          valueListenable = rawListenable.nativeObject as ValueListenable;
+        } else if (rawListenable is ValueListenable) {
+          valueListenable = rawListenable;
+        } else if (rawListenable is InterpretedInstance &&
+            rawListenable.bridgedSuperObject is ValueListenable) {
+          valueListenable =
+              rawListenable.bridgedSuperObject as ValueListenable;
+        } else {
+          throw RuntimeError(
+            'valueListenable must be a ValueListenable for ValueListenableBuilder',
+          );
+        }
+
         final builderFunction = namedArgs['builder'];
         final child = namedArgs['child'] != null
             ? visitor.toWidgets(namedArgs['child'])
@@ -218,7 +233,7 @@ BridgedClass getValueListenableBuilderBridgingDefinition() {
 
         return ValueListenableBuilder(
           key: key,
-          valueListenable: valueListenable!,
+          valueListenable: valueListenable,
           builder: builder,
           child: child,
         );
@@ -240,19 +255,24 @@ BridgedClass getListenableBuilderBridgingDefinition() {
     constructors: {
       '': (visitor, positionalArgs, namedArgs) {
         final key = namedArgs.get<Key?>('key');
-        final listenableInstance = namedArgs.get<InterpretedInstance?>(
-          'listenable',
-        );
-
-        // Check if the instance already has a bridged super object
-        ChangeNotifierBridge listenable;
-        if (listenableInstance!.bridgedSuperObject is ChangeNotifierBridge) {
-          listenable =
-              listenableInstance.bridgedSuperObject as ChangeNotifierBridge;
+        final rawListenable = namedArgs['listenable'];
+        Listenable listenable;
+        if (rawListenable is BridgedInstance) {
+          listenable = rawListenable.nativeObject as Listenable;
+        } else if (rawListenable is Listenable) {
+          listenable = rawListenable;
+        } else if (rawListenable is InterpretedInstance) {
+          if (rawListenable.bridgedSuperObject is Listenable) {
+            listenable = rawListenable.bridgedSuperObject as Listenable;
+          } else {
+            listenable = ChangeNotifierBridge(
+              visitor: visitor,
+              instance: rawListenable,
+            );
+          }
         } else {
-          listenable = ChangeNotifierBridge(
-            visitor: visitor,
-            instance: listenableInstance,
+          throw RuntimeError(
+            'listenable must be a Listenable for ListenableBuilder',
           );
         }
 
@@ -293,27 +313,31 @@ BridgedClass getListenableBuilderBridgingDefinition() {
 /// Bridge class for ChangeNotifier that connects to d4rt interpreted instances
 class ChangeNotifierBridge extends ChangeNotifier {
   final InterpreterVisitor visitor;
-  final InterpretedInstance instance;
+  final InterpretedInstance? instance;
 
-  ChangeNotifierBridge({required this.visitor, required this.instance}) {
-    instance.bridgedSuperObject = this;
+  ChangeNotifierBridge({required this.visitor, this.instance}) {
+    instance?.bridgedSuperObject = this;
   }
 
   @override
   void notifyListeners() {
     super.notifyListeners();
-    final fn = instance.klass.findInstanceMethod('notifyListeners');
-    if (fn != null) {
-      fn.bind(instance).call(visitor, [], {});
+    if (instance != null) {
+      final fn = instance!.klass.findInstanceMethod('notifyListeners');
+      if (fn != null) {
+        fn.bind(instance!).call(visitor, [], {});
+      }
     }
   }
 
   @override
   void dispose() {
     super.dispose();
-    final fn = instance.klass.findInstanceMethod('dispose');
-    if (fn != null) {
-      fn.bind(instance).call(visitor, [], {});
+    if (instance != null) {
+      final fn = instance!.klass.findInstanceMethod('dispose');
+      if (fn != null) {
+        fn.bind(instance!).call(visitor, [], {});
+      }
     }
   }
 
@@ -327,21 +351,23 @@ class ChangeNotifierBridge extends ChangeNotifier {
 /// Bridge class for ValueNotifier that connects to d4rt interpreted instances
 class ValueNotifierBridge<T> extends ValueNotifier<T> {
   final InterpreterVisitor visitor;
-  final InterpretedInstance instance;
+  final InterpretedInstance? instance;
 
   ValueNotifierBridge({
     required this.visitor,
-    required this.instance,
+    this.instance,
     required T initialValue,
   }) : super(initialValue) {
-    instance.bridgedSuperObject = this;
+    instance?.bridgedSuperObject = this;
   }
 
   @override
   T get value {
-    final interpretedValue = instance.get('value');
-    if (interpretedValue is T) {
-      return interpretedValue;
+    if (instance != null) {
+      final interpretedValue = instance!.get('value');
+      if (interpretedValue is T) {
+        return interpretedValue;
+      }
     }
     return super.value;
   }
@@ -351,30 +377,39 @@ class ValueNotifierBridge<T> extends ValueNotifier<T> {
     if (value == newValue) {
       return;
     }
-    instance.set('value', newValue, visitor);
+    if (instance != null) {
+      instance!.set('value', newValue, visitor);
+    }
     super.value = newValue;
   }
 
   @override
   void notifyListeners() {
     super.notifyListeners();
-    final fn = instance.klass.findInstanceMethod('notifyListeners');
-    if (fn != null) {
-      fn.bind(instance).call(visitor, [], {});
+    if (instance != null) {
+      final fn = instance!.klass.findInstanceMethod('notifyListeners');
+      if (fn != null) {
+        fn.bind(instance!).call(visitor, [], {});
+      }
     }
   }
 
   @override
   void dispose() {
     super.dispose();
-    final fn = instance.klass.findInstanceMethod('dispose');
-    if (fn != null) {
-      fn.bind(instance).call(visitor, [], {});
+    if (instance != null) {
+      final fn = instance!.klass.findInstanceMethod('dispose');
+      if (fn != null) {
+        fn.bind(instance!).call(visitor, [], {});
+      }
     }
   }
 
   @override
   String toString() {
-    return '${instance.klass.name}($value)';
+    if (instance != null) {
+      return '${instance!.klass.name}($value)';
+    }
+    return 'ValueNotifier($value)';
   }
 }

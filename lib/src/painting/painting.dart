@@ -6,11 +6,28 @@ import 'package:flutter_d4rt/src/painting/box_border.dart';
 import 'package:flutter_d4rt/src/painting/box_decoration.dart';
 import 'package:flutter_d4rt/src/painting/edge_insets.dart';
 import 'package:flutter_d4rt/src/painting/gradient.dart';
+import 'package:flutter_d4rt/src/painting/shadow.dart';
 import 'package:flutter_d4rt/src/painting/text_style.dart';
 
 void registerPaintingBridges(D4rt interpreter) {
   interpreter.registerBridgedEnum(
     getVerticalDirectionBridgingDefinition(),
+    'package:flutter/painting_.dart',
+  );
+  interpreter.registerBridgedEnum(
+    getBorderStyleBridgingDefinition(),
+    'package:flutter/painting_.dart',
+  );
+  interpreter.registerBridgedEnum(
+    getBlurStyleBridgingDefinition(),
+    'package:flutter/painting_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getShadowBridgingDefinition(),
+    'package:flutter/painting_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getBoxShadowBridgingDefinition(),
     'package:flutter/painting_.dart',
   );
   interpreter.registerBridgedClass(

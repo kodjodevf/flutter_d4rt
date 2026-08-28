@@ -2,6 +2,7 @@ import 'package:d4rt/d4rt.dart';
 import 'package:flutter_d4rt/src/services/asset_bundle.dart';
 import 'package:flutter_d4rt/src/services/system_services.dart' as system;
 import 'package:flutter_d4rt/src/services/platform_channels.dart';
+import 'package:flutter_d4rt/src/services/text_input.dart';
 
 /// Registers all service bridges with the D4rt interpreter
 void registerServicesBridges(D4rt interpreter) {
@@ -101,6 +102,58 @@ void registerServicesBridges(D4rt interpreter) {
   );
   interpreter.registerBridgedClass(
     getJSONMessageCodecBridgingDefinition(),
+    'package:flutter/services_.dart',
+  );
+
+  // Register SystemSound
+  interpreter.registerBridgedEnum(
+    system.getSystemSoundTypeBridgingDefinition(),
+    'package:flutter/services_.dart',
+  );
+  interpreter.registerBridgedClass(
+    system.getSystemSoundBridgingDefinition(),
+    'package:flutter/services_.dart',
+  );
+
+  // Register TextInput & Formatters
+  interpreter.registerBridgedClass(
+    getTextInputTypeBridgingDefinition(),
+    'package:flutter/services_.dart',
+  );
+  interpreter.registerBridgedEnum(
+    getTextInputActionBridgingDefinition(),
+    'package:flutter/services_.dart',
+  );
+  interpreter.registerBridgedEnum(
+    getTextCapitalizationBridgingDefinition(),
+    'package:flutter/services_.dart',
+  );
+  interpreter.registerBridgedEnum(
+    getSmartDashesTypeBridgingDefinition(),
+    'package:flutter/services_.dart',
+  );
+  interpreter.registerBridgedEnum(
+    getSmartQuotesTypeBridgingDefinition(),
+    'package:flutter/services_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getTextEditingValueBridgingDefinition(),
+    'package:flutter/services_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getTextSelectionBridgingDefinition(),
+    'package:flutter/services_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getTextInputFormatterBridgingDefinition(),
+    'package:flutter/services_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getFilteringTextInputFormatterBridgingDefinition(),
+    'package:flutter/services_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getLengthLimitingTextInputFormatterBridgingDefinition(),
     'package:flutter/services_.dart',
   );
 }

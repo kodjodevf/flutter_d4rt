@@ -21,12 +21,12 @@ BridgedClass getNavigationBarBridgingDefinition() {
         );
 
         final backgroundColor = namedArgs.get<Color?>('backgroundColor');
-        final elevation = namedArgs.get<double?>('elevation');
+        final elevation = (namedArgs['elevation'] as num?)?.toDouble();
         final shadowColor = namedArgs.get<Color?>('shadowColor');
         final surfaceTintColor = namedArgs.get<Color?>('surfaceTintColor');
         final indicatorColor = namedArgs.get<Color?>('indicatorColor');
         final indicatorShape = namedArgs.get<ShapeBorder?>('indicatorShape');
-        final height = namedArgs.get<double?>('height');
+        final height = (namedArgs['height'] as num?)?.toDouble();
         final labelBehavior = namedArgs
             .get<NavigationDestinationLabelBehavior?>('labelBehavior');
         final overlayColor = namedArgs.get<WidgetStateProperty<Color?>?>(

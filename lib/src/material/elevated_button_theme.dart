@@ -19,6 +19,24 @@ BridgedClass getElevatedButtonThemeDataBridgingDefinition() {
   );
 }
 
+WidgetStateProperty<T?>? _castProperty<T>(dynamic raw) {
+  if (raw == null) return null;
+  if (raw is WidgetStateProperty<T?>) return raw;
+  if (raw is WidgetStateProperty<T>) {
+    return WidgetStateProperty.resolveWith((states) => raw.resolve(states));
+  }
+  if (raw is WidgetStateProperty) {
+    return WidgetStateProperty.resolveWith((states) {
+      final res = raw.resolve(states);
+      return res is BridgedInstance ? res.nativeObject as T? : res as T?;
+    });
+  }
+  if (raw is T) {
+    return WidgetStateProperty.all(raw);
+  }
+  return null;
+}
+
 /// Returns the BridgedClass for the Flutter ButtonStyle class.
 BridgedClass getButtonStyleBridgingDefinition() {
   return BridgedClass(
@@ -27,48 +45,26 @@ BridgedClass getButtonStyleBridgingDefinition() {
     constructors: {
       '': (visitor, positionalArgs, namedArgs) {
         return ButtonStyle(
-          textStyle: namedArgs.get<WidgetStateProperty<TextStyle?>?>(
-            'textStyle',
-          ),
-          backgroundColor: namedArgs.get<WidgetStateProperty<Color?>?>(
-            'backgroundColor',
-          ),
-          foregroundColor: namedArgs.get<WidgetStateProperty<Color?>?>(
-            'foregroundColor',
-          ),
-          overlayColor: namedArgs.get<WidgetStateProperty<Color?>?>(
-            'overlayColor',
-          ),
-          shadowColor: namedArgs.get<WidgetStateProperty<Color?>?>(
-            'shadowColor',
-          ),
-          surfaceTintColor: namedArgs.get<WidgetStateProperty<Color?>?>(
-            'surfaceTintColor',
-          ),
-          elevation: namedArgs.get<WidgetStateProperty<double?>?>('elevation'),
-          padding: namedArgs.get<WidgetStateProperty<EdgeInsetsGeometry?>?>(
-            'padding',
-          ),
-          minimumSize: namedArgs.get<WidgetStateProperty<Size?>?>(
-            'minimumSize',
-          ),
-          fixedSize: namedArgs.get<WidgetStateProperty<Size?>?>('fixedSize'),
-          maximumSize: namedArgs.get<WidgetStateProperty<Size?>?>(
-            'maximumSize',
-          ),
-          side: namedArgs.get<WidgetStateProperty<BorderSide?>?>('side'),
-          shape: namedArgs.get<WidgetStateProperty<OutlinedBorder?>?>('shape'),
-          mouseCursor: namedArgs.get<WidgetStateProperty<MouseCursor?>?>(
-            'mouseCursor',
-          ),
-          visualDensity: namedArgs.get<VisualDensity?>('visualDensity'),
-          tapTargetSize: namedArgs.get<MaterialTapTargetSize?>('tapTargetSize'),
-          animationDuration: namedArgs.get<Duration?>('animationDuration'),
-          enableFeedback: namedArgs.get<bool?>('enableFeedback'),
-          alignment: namedArgs.get<AlignmentGeometry?>('alignment'),
-          splashFactory: namedArgs.get<InteractiveInkFeatureFactory?>(
-            'splashFactory',
-          ),
+          textStyle: _castProperty<TextStyle>(namedArgs['textStyle']),
+          backgroundColor: _castProperty<Color>(namedArgs['backgroundColor']),
+          foregroundColor: _castProperty<Color>(namedArgs['foregroundColor']),
+          overlayColor: _castProperty<Color>(namedArgs['overlayColor']),
+          shadowColor: _castProperty<Color>(namedArgs['shadowColor']),
+          surfaceTintColor: _castProperty<Color>(namedArgs['surfaceTintColor']),
+          elevation: _castProperty<double>(namedArgs['elevation']),
+          padding: _castProperty<EdgeInsetsGeometry>(namedArgs['padding']),
+          minimumSize: _castProperty<Size>(namedArgs['minimumSize']),
+          fixedSize: _castProperty<Size>(namedArgs['fixedSize']),
+          maximumSize: _castProperty<Size>(namedArgs['maximumSize']),
+          side: _castProperty<BorderSide>(namedArgs['side']),
+          shape: _castProperty<OutlinedBorder>(namedArgs['shape']),
+          mouseCursor: _castProperty<MouseCursor>(namedArgs['mouseCursor']),
+          visualDensity: namedArgs['visualDensity'] as VisualDensity?,
+          tapTargetSize: namedArgs['tapTargetSize'] as MaterialTapTargetSize?,
+          animationDuration: namedArgs['animationDuration'] as Duration?,
+          enableFeedback: namedArgs['enableFeedback'] as bool?,
+          alignment: namedArgs['alignment'] as AlignmentGeometry?,
+          splashFactory: namedArgs['splashFactory'] as InteractiveInkFeatureFactory?,
         );
       },
     },
@@ -158,31 +154,6 @@ BridgedClass getButtonStyleBridgingDefinition() {
       'merge': (visitor, target, positionalArgs, namedArgs) {
         final other = positionalArgs.firstOrNull as ButtonStyle?;
         return (target as ButtonStyle).merge(other);
-      },
-    },
-  );
-}
-
-/// Returns the BridgedClass for WidgetStateProperty class.
-BridgedClass getWidgetStatePropertyBridgingDefinition() {
-  return BridgedClass(
-    nativeType: WidgetStateProperty,
-    name: 'WidgetStateProperty',
-    constructors: {},
-    staticMethods: {
-      'all': (visitor, positionalArgs, namedArgs) {
-        final value = positionalArgs.first;
-        return WidgetStateProperty.all(value);
-      },
-      'resolveWith': (visitor, positionalArgs, namedArgs) {
-        final callback = positionalArgs.first as WidgetPropertyResolver;
-        return WidgetStateProperty.resolveWith(callback);
-      },
-    },
-    methods: {
-      'resolve': (visitor, target, positionalArgs, namedArgs) {
-        final states = positionalArgs.first as Set;
-        return (target as WidgetStateProperty).resolve(states.cast());
       },
     },
   );

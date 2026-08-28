@@ -33,8 +33,13 @@ import 'package:flutter_d4rt/src/widgets/slivers.dart' as slivers;
 import 'package:flutter_d4rt/src/widgets/spacer.dart' as spacer;
 import 'package:flutter_d4rt/src/widgets/table.dart' as table;
 import 'package:flutter_d4rt/src/widgets/flow.dart' as flow;
+import 'package:flutter_d4rt/src/material/bottom_navigation_bar_item.dart' as nav_item;
 
 void registerWidgetsBridges(D4rt interpreter) {
+  interpreter.registerBridgedClass(
+    nav_item.getBottomNavigationBarItemBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
   interpreter.registerBridgedClass(
     media_query.getMediaQueryBridgingDefinition(),
     'package:flutter/widgets_.dart',
@@ -318,6 +323,18 @@ void registerWidgetsBridges(D4rt interpreter) {
     'package:flutter/widgets_.dart',
   );
   interpreter.registerBridgedClass(
+    getAnimatedCrossFadeBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedEnum(
+    getCrossFadeStateBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getAnimatedSwitcherBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
     getAlwaysStoppedAnimationBridgingDefinition(),
     'package:flutter/widgets_.dart',
   );
@@ -486,6 +503,18 @@ void registerWidgetsBridges(D4rt interpreter) {
   );
   interpreter.registerBridgedClass(
     slivers.getSliverAppBarBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    slivers.getFlexibleSpaceBarBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedEnum(
+    slivers.getCollapseModeBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    slivers.getSliverFixedExtentListBridgingDefinition(),
     'package:flutter/widgets_.dart',
   );
 

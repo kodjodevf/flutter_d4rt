@@ -15,7 +15,10 @@ BridgedClass getBoxDecorationBridgingDefinition() {
         final borderRadius = namedArgs.get<BorderRadiusGeometry?>(
           'borderRadius',
         );
-        final boxShadow = visitor.toElements(namedArgs['boxShadow']) as List?;
+        final boxShadowRaw = visitor.toElements(namedArgs['boxShadow']);
+        final List<BoxShadow>? boxShadow = boxShadowRaw is List
+            ? boxShadowRaw.whereType<BoxShadow>().toList()
+            : (boxShadowRaw is BoxShadow ? [boxShadowRaw] : null);
         final gradient = namedArgs.get<Gradient?>('gradient');
         final backgroundBlendMode = namedArgs.get<BlendMode?>(
           'backgroundBlendMode',
@@ -27,7 +30,7 @@ BridgedClass getBoxDecorationBridgingDefinition() {
           image: image,
           border: border,
           borderRadius: borderRadius,
-          boxShadow: boxShadow?.cast(),
+          boxShadow: boxShadow,
           gradient: gradient,
           backgroundBlendMode: backgroundBlendMode,
           shape: shape,

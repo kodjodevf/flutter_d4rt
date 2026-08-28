@@ -1,7 +1,7 @@
 import 'package:d4rt/d4rt.dart';
 import 'package:flutter/material.dart';
 
-extension MapExtension<K, V> on Map<K, V> {
+extension FlutterMapExtension<K, V> on Map<K, V> {
   double? getToDouble(K key) {
     return double.tryParse('${this[key]}');
   }

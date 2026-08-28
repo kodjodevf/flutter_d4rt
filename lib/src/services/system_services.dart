@@ -103,6 +103,31 @@ BridgedClass getHapticFeedbackBridgingDefinition() {
   );
 }
 
+/// Returns the BridgedEnumDefinition for SystemSoundType
+BridgedEnumDefinition<SystemSoundType> getSystemSoundTypeBridgingDefinition() {
+  return BridgedEnumDefinition<SystemSoundType>(
+    name: 'SystemSoundType',
+    values: SystemSoundType.values,
+  );
+}
+
+/// Returns the BridgedClass for SystemSound
+BridgedClass getSystemSoundBridgingDefinition() {
+  return BridgedClass(
+    nativeType: SystemSound,
+    name: 'SystemSound',
+    constructors: {},
+    staticMethods: {
+      'play': (visitor, positionalArgs, namedArgs) {
+        final type = positionalArgs.isNotEmpty
+            ? positionalArgs[0] as SystemSoundType
+            : namedArgs['type'] as SystemSoundType? ?? SystemSoundType.click;
+        return SystemSound.play(type);
+      },
+    },
+  );
+}
+
 /// Returns the BridgedClass for the Flutter Clipboard class.
 BridgedClass getClipboardBridgingDefinition() {
   return BridgedClass(

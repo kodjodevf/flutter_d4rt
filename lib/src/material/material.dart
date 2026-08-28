@@ -60,10 +60,61 @@ import 'package:flutter_d4rt/src/material/toggle_buttons.dart';
 import 'package:flutter_d4rt/src/material/bottom_app_bar.dart';
 import 'package:flutter_d4rt/src/material/grid_tile.dart';
 import 'package:flutter_d4rt/src/material/back_button.dart';
+import 'package:flutter_d4rt/src/material/states.dart';
 
 // dart format off
 
 void registerMaterialBridges(D4rt interpreter) {
+  // Register WidgetState & MaterialState properties
+  interpreter.registerBridgedEnum(
+    getWidgetStateBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedEnum(
+    getMaterialStateBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getWidgetStatePropertyBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getMaterialStatePropertyBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getWidgetStateColorBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getMaterialStateColorBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getWidgetStateMouseCursorBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getMaterialStateMouseCursorBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getWidgetStateBorderSideBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getMaterialStateBorderSideBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getWidgetStateTextStyleBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getMaterialStateTextStyleBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+
   interpreter.registerBridgedClass(
     getThemeDataBridgingDefinition(),
     'package:flutter/material_.dart',
@@ -158,6 +209,10 @@ void registerMaterialBridges(D4rt interpreter) {
   );
   interpreter.registerBridgedClass(
     getElevatedButtonThemeDataBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getButtonStyleBridgingDefinition(),
     'package:flutter/material_.dart',
   );
   interpreter.registerBridgedClass(

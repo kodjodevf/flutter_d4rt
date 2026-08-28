@@ -129,6 +129,10 @@ BridgedClass getThemeDataBridgingDefinition() {
           textTheme: namedArgs.get<TextTheme?>('textTheme'),
         );
       },
+      'estimateBrightnessForColor': (visitor, positionalArgs, namedArgs) {
+        final color = positionalArgs[0] as Color;
+        return ThemeData.estimateBrightnessForColor(color);
+      },
     },
     getters: {
       'useMaterial3': (visitor, target) => (target as ThemeData).useMaterial3,

@@ -1096,3 +1096,134 @@ BridgedClass getAlwaysStoppedAnimationBridgingDefinition() {
     },
   );
 }
+
+/// Returns the BridgedClass for AnimatedCrossFade.
+BridgedClass getAnimatedCrossFadeBridgingDefinition() {
+  return BridgedClass(
+    nativeType: AnimatedCrossFade,
+    name: 'AnimatedCrossFade',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final key = namedArgs.get<Key?>('key');
+        final firstChild =
+            visitor.toWidget(namedArgs['firstChild']) ?? const SizedBox();
+        final secondChild =
+            visitor.toWidget(namedArgs['secondChild']) ?? const SizedBox();
+        final firstCurve =
+            namedArgs.get<Curve?>('firstCurve') ?? Curves.linear;
+        final secondCurve =
+            namedArgs.get<Curve?>('secondCurve') ?? Curves.linear;
+        final sizeCurve = namedArgs.get<Curve?>('sizeCurve') ?? Curves.linear;
+        final alignment =
+            namedArgs.get<AlignmentGeometry?>('alignment') ??
+            Alignment.topCenter;
+        final crossFadeState =
+            namedArgs.get<CrossFadeState?>('crossFadeState') ??
+            CrossFadeState.showFirst;
+        final duration =
+            namedArgs.get<Duration>('duration') ??
+            const Duration(milliseconds: 300);
+        final reverseDuration = namedArgs.get<Duration?>('reverseDuration');
+        final layoutBuilderRaw = namedArgs['layoutBuilder'];
+
+        AnimatedCrossFadeBuilder? layoutBuilder;
+        if (layoutBuilderRaw is InterpretedFunction) {
+          layoutBuilder = (topChild, topChildKey, bottomChild, bottomChildKey) {
+            final result = layoutBuilderRaw.call(visitor, [
+              topChild,
+              topChildKey,
+              bottomChild,
+              bottomChildKey,
+            ]);
+            return visitor.toWidget(result) ?? const SizedBox();
+          };
+        }
+
+        return AnimatedCrossFade(
+          key: key,
+          firstChild: firstChild,
+          secondChild: secondChild,
+          firstCurve: firstCurve,
+          secondCurve: secondCurve,
+          sizeCurve: sizeCurve,
+          alignment: alignment,
+          crossFadeState: crossFadeState,
+          duration: duration,
+          reverseDuration: reverseDuration,
+          layoutBuilder:
+              layoutBuilder ?? AnimatedCrossFade.defaultLayoutBuilder,
+        );
+      },
+    },
+    getters: {
+      'firstChild': (visitor, target) =>
+          (target as AnimatedCrossFade).firstChild,
+      'secondChild': (visitor, target) =>
+          (target as AnimatedCrossFade).secondChild,
+      'crossFadeState': (visitor, target) =>
+          (target as AnimatedCrossFade).crossFadeState,
+      'duration': (visitor, target) => (target as AnimatedCrossFade).duration,
+    },
+  );
+}
+
+/// Returns the BridgedEnumDefinition for CrossFadeState enum.
+BridgedEnumDefinition<CrossFadeState> getCrossFadeStateBridgingDefinition() {
+  return BridgedEnumDefinition<CrossFadeState>(
+    name: 'CrossFadeState',
+    values: CrossFadeState.values,
+  );
+}
+
+/// Returns the BridgedClass for AnimatedSwitcher.
+BridgedClass getAnimatedSwitcherBridgingDefinition() {
+  return BridgedClass(
+    nativeType: AnimatedSwitcher,
+    name: 'AnimatedSwitcher',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final key = namedArgs.get<Key?>('key');
+        final child = visitor.toWidget(namedArgs['child']);
+        final duration =
+            namedArgs.get<Duration>('duration') ??
+            const Duration(milliseconds: 300);
+        final reverseDuration = namedArgs.get<Duration?>('reverseDuration');
+        final switchInCurve =
+            namedArgs.get<Curve?>('switchInCurve') ?? Curves.linear;
+        final switchOutCurve =
+            namedArgs.get<Curve?>('switchOutCurve') ?? Curves.linear;
+        final transitionBuilderRaw = namedArgs['transitionBuilder'];
+
+        AnimatedSwitcherTransitionBuilder? transitionBuilder;
+        if (transitionBuilderRaw is InterpretedFunction) {
+          transitionBuilder = (child, animation) {
+            final result = transitionBuilderRaw.call(visitor, [
+              child,
+              animation,
+            ]);
+            return visitor.toWidget(result) ?? const SizedBox();
+          };
+        }
+
+        return AnimatedSwitcher(
+          key: key,
+          duration: duration,
+          reverseDuration: reverseDuration,
+          switchInCurve: switchInCurve,
+          switchOutCurve: switchOutCurve,
+          transitionBuilder:
+              transitionBuilder ?? AnimatedSwitcher.defaultTransitionBuilder,
+          child: child,
+        );
+      },
+    },
+    getters: {
+      'child': (visitor, target) => (target as AnimatedSwitcher).child,
+      'duration': (visitor, target) => (target as AnimatedSwitcher).duration,
+      'switchInCurve': (visitor, target) =>
+          (target as AnimatedSwitcher).switchInCurve,
+      'switchOutCurve': (visitor, target) =>
+          (target as AnimatedSwitcher).switchOutCurve,
+    },
+  );
+}
