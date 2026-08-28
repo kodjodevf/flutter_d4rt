@@ -173,6 +173,18 @@ void registerMaterialBridges(D4rt interpreter) {
     'package:flutter/material_.dart',
   );
   interpreter.registerBridgedClass(
+    getIconDataBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getIconThemeDataBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getIconThemeBridgingDefinition(),
+    'package:flutter/material_.dart',
+  );
+  interpreter.registerBridgedClass(
     getIconButtonBridgingDefinition(),
     'package:flutter/material_.dart',
   );

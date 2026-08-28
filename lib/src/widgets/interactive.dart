@@ -271,7 +271,8 @@ BridgedClass getDismissibleBridgingDefinition() {
           movementDuration:
               namedArgs['movementDuration'] as Duration? ??
               const Duration(milliseconds: 200),
-          crossAxisEndOffset: toDouble(namedArgs['crossAxisEndOffset']),
+          crossAxisEndOffset:
+              toDouble(namedArgs['crossAxisEndOffset']) ?? 0.0,
           dragStartBehavior:
               namedArgs['dragStartBehavior'] as DragStartBehavior? ??
               DragStartBehavior.start,
@@ -284,3 +285,12 @@ BridgedClass getDismissibleBridgingDefinition() {
     },
   );
 }
+
+/// Returns the BridgedEnumDefinition for DismissDirection
+BridgedEnumDefinition<DismissDirection> getDismissDirectionBridgingDefinition() {
+  return BridgedEnumDefinition<DismissDirection>(
+    name: 'DismissDirection',
+    values: DismissDirection.values,
+  );
+}
+

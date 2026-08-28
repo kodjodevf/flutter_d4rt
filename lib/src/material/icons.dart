@@ -13,6 +13,7 @@ BridgedClass getIconsBridgingDefinition() {
       'close': (visitor) => Icons.close,
       'menu': (visitor) => Icons.menu,
       'home': (visitor) => Icons.home,
+      'home_outlined': (visitor) => Icons.home_outlined,
       'arrow_back': (visitor) => Icons.arrow_back,
       'arrow_forward': (visitor) => Icons.arrow_forward,
       'arrow_upward': (visitor) => Icons.arrow_upward,
@@ -38,11 +39,15 @@ BridgedClass getIconsBridgingDefinition() {
       'arrow_drop_down_circle': (visitor) => Icons.arrow_drop_down_circle,
 
       // ACTION ICONS
+      'drag_handle': (visitor) => Icons.drag_handle,
       'edit': (visitor) => Icons.edit,
       'delete': (visitor) => Icons.delete,
       'save': (visitor) => Icons.save,
       'search': (visitor) => Icons.search,
       'settings': (visitor) => Icons.settings,
+      'settings_outlined': (visitor) => Icons.settings_outlined,
+      'inbox': (visitor) => Icons.inbox,
+      'inbox_outlined': (visitor) => Icons.inbox_outlined,
       'favorite': (visitor) => Icons.favorite,
       'favorite_border': (visitor) => Icons.favorite_border,
       'share': (visitor) => Icons.share,

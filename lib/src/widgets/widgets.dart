@@ -29,6 +29,10 @@ import 'package:flutter_d4rt/src/widgets/safe_area.dart';
 import 'package:flutter_d4rt/src/widgets/tooltip.dart';
 import 'package:flutter_d4rt/src/widgets/ink_well.dart';
 import 'package:flutter_d4rt/src/widgets/selectable_text.dart';
+import 'package:flutter_d4rt/src/widgets/slivers.dart' as slivers;
+import 'package:flutter_d4rt/src/widgets/spacer.dart' as spacer;
+import 'package:flutter_d4rt/src/widgets/table.dart' as table;
+import 'package:flutter_d4rt/src/widgets/flow.dart' as flow;
 
 void registerWidgetsBridges(D4rt interpreter) {
   interpreter.registerBridgedClass(
@@ -112,6 +116,16 @@ void registerWidgetsBridges(D4rt interpreter) {
     'package:flutter/widgets_.dart',
   );
 
+  interpreter.registerBridgedClass(
+    getBuildContextBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+
+  interpreter.registerBridgedClass(
+    spacer.getSpacerBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+
   // Register async widgets
   interpreter.registerBridgedClass(
     async.getFutureBuilderBridgingDefinition(),
@@ -159,6 +173,30 @@ void registerWidgetsBridges(D4rt interpreter) {
     getTextBridgingDefinition(),
     'package:flutter/widgets_.dart',
   );
+  interpreter.registerBridgedClass(
+    getRichTextBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getInlineSpanBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getTextSpanBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getWidgetSpanBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getDefaultTextStyleBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedEnum(
+    getPlaceholderAlignmentBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
 
   // Register layout widgets
   interpreter.registerBridgedClass(
@@ -167,6 +205,74 @@ void registerWidgetsBridges(D4rt interpreter) {
   );
   interpreter.registerBridgedClass(
     getListViewBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getLayoutBuilderBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getOrientationBuilderBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getInteractiveViewerBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+
+  // Register table widgets
+  interpreter.registerBridgedClass(
+    table.getTableBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    table.getTableRowBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    table.getTableCellBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    table.getTableBorderBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedEnum(
+    table.getTableCellVerticalAlignmentBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    table.getTableColumnWidthBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    table.getFlexColumnWidthBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    table.getFixedColumnWidthBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    table.getFractionColumnWidthBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    table.getIntrinsicColumnWidthBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+
+  // Register flow widgets
+  interpreter.registerBridgedClass(
+    flow.getFlowBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    flow.getFlowDelegateBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    flow.getFlowPaintingContextBridgingDefinition(),
     'package:flutter/widgets_.dart',
   );
 
@@ -201,7 +307,7 @@ void registerWidgetsBridges(D4rt interpreter) {
   );
   interpreter.registerBridgedClass(
     getAnimatedScaleBridgingDefinition(),
-    'packageflutter/widgets_.dart',
+    'package:flutter/widgets_.dart',
   );
   interpreter.registerBridgedClass(
     getAnimatedSlideBridgingDefinition(),
@@ -263,6 +369,14 @@ void registerWidgetsBridges(D4rt interpreter) {
     getRotationTransitionBridgingDefinition(),
     'package:flutter/widgets_.dart',
   );
+  interpreter.registerBridgedClass(
+    getSlideTransitionBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getSizeTransitionBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
 
   interpreter.registerBridgedClass(
     getCubicBridgingDefinition(),
@@ -312,6 +426,68 @@ void registerWidgetsBridges(D4rt interpreter) {
     scrolling.getSliverGridDelegateWithMaxCrossAxisExtentBridgingDefinition(),
     'package:flutter/widgets_.dart',
   );
+  interpreter.registerBridgedClass(
+    scrolling.getScrollPhysicsBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    scrolling.getNeverScrollableScrollPhysicsBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    scrolling.getAlwaysScrollableScrollPhysicsBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    scrolling.getBouncingScrollPhysicsBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    scrolling.getClampingScrollPhysicsBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+
+  // Register slivers
+  interpreter.registerBridgedClass(
+    slivers.getCustomScrollViewBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    slivers.getSliverToBoxAdapterBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    slivers.getSliverPaddingBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    slivers.getSliverFillRemainingBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    slivers.getSliverChildListDelegateBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    slivers.getSliverChildBuilderDelegateBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    slivers.getSliverListBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    slivers.getSliverGridBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    slivers.getSliverGridDelegateBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    slivers.getSliverAppBarBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
 
   // Register interactive widgets
   interpreter.registerBridgedClass(
@@ -324,6 +500,10 @@ void registerWidgetsBridges(D4rt interpreter) {
   );
   interpreter.registerBridgedClass(
     interactive.getDismissibleBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedEnum(
+    interactive.getDismissDirectionBridgingDefinition(),
     'package:flutter/widgets_.dart',
   );
 
@@ -350,6 +530,10 @@ void registerWidgetsBridges(D4rt interpreter) {
   );
   interpreter.registerBridgedClass(
     effects.getClipPathBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    effects.getBackdropFilterBridgingDefinition(),
     'package:flutter/widgets_.dart',
   );
 
@@ -416,10 +600,6 @@ void registerWidgetsBridges(D4rt interpreter) {
   );
   interpreter.registerBridgedClass(
     navigation.getRouteSettingsBridgingDefinition(),
-    'package:flutter/widgets_.dart',
-  );
-  interpreter.registerBridgedClass(
-    navigation.getHeroBridgingDefinition(),
     'package:flutter/widgets_.dart',
   );
   interpreter.registerBridgedClass(
@@ -551,6 +731,34 @@ void registerWidgetsBridges(D4rt interpreter) {
     notification.getTooltipBridgingDefinition(),
     'package:flutter/widgets_.dart',
   );
+  interpreter.registerBridgedClass(
+    notification.getNotificationListenerBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    notification.getNotificationBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    notification.getScrollNotificationBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    notification.getScrollStartNotificationBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    notification.getScrollUpdateNotificationBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    notification.getScrollEndNotificationBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedClass(
+    notification.getUserScrollNotificationBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
 
   // Register feedback widgets
   interpreter.registerBridgedClass(
@@ -563,6 +771,10 @@ void registerWidgetsBridges(D4rt interpreter) {
   );
   interpreter.registerBridgedClass(
     feedback.getBannerBridgingDefinition(),
+    'package:flutter/widgets_.dart',
+  );
+  interpreter.registerBridgedEnum(
+    feedback.getBannerLocationBridgingDefinition(),
     'package:flutter/widgets_.dart',
   );
   interpreter.registerBridgedClass(

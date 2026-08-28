@@ -165,3 +165,103 @@ BridgedClass getListViewBridgingDefinition() {
     },
   );
 }
+
+/// Returns the BridgedClass for LayoutBuilder.
+BridgedClass getLayoutBuilderBridgingDefinition() {
+  return BridgedClass(
+    nativeType: LayoutBuilder,
+    name: 'LayoutBuilder',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final key = namedArgs.get<Key?>('key');
+        final builderValue = namedArgs['builder'];
+
+        Widget builder(BuildContext context, BoxConstraints constraints) {
+          if (builderValue is InterpretedFunction) {
+            final result = builderValue.call(visitor, [context, constraints]);
+            return visitor.toWidgets(result) ?? const SizedBox.shrink();
+          } else if (builderValue is Function) {
+            final result = (builderValue as dynamic)(context, constraints);
+            return visitor.toWidgets(result) ?? const SizedBox.shrink();
+          }
+          return const SizedBox.shrink();
+        }
+
+        return LayoutBuilder(key: key, builder: builder);
+      },
+    },
+    getters: {
+      'key': (visitor, target) => (target as LayoutBuilder).key,
+    },
+  );
+}
+
+/// Returns the BridgedClass for OrientationBuilder.
+BridgedClass getOrientationBuilderBridgingDefinition() {
+  return BridgedClass(
+    nativeType: OrientationBuilder,
+    name: 'OrientationBuilder',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final key = namedArgs.get<Key?>('key');
+        final builderValue = namedArgs['builder'];
+
+        Widget builder(BuildContext context, Orientation orientation) {
+          if (builderValue is InterpretedFunction) {
+            final result = builderValue.call(visitor, [context, orientation]);
+            return visitor.toWidgets(result) ?? const SizedBox.shrink();
+          } else if (builderValue is Function) {
+            final result = (builderValue as dynamic)(context, orientation);
+            return visitor.toWidgets(result) ?? const SizedBox.shrink();
+          }
+          return const SizedBox.shrink();
+        }
+
+        return OrientationBuilder(key: key, builder: builder);
+      },
+    },
+    getters: {
+      'key': (visitor, target) => (target as OrientationBuilder).key,
+    },
+  );
+}
+
+/// Returns the BridgedClass for InteractiveViewer.
+BridgedClass getInteractiveViewerBridgingDefinition() {
+  return BridgedClass(
+    nativeType: InteractiveViewer,
+    name: 'InteractiveViewer',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final key = namedArgs.get<Key?>('key');
+        final clipBehavior =
+            namedArgs.get<Clip?>('clipBehavior') ?? Clip.hardEdge;
+        final panAxis = namedArgs.get<PanAxis?>('panAxis') ?? PanAxis.free;
+        final boundaryMargin =
+            namedArgs.get<EdgeInsets?>('boundaryMargin') ?? EdgeInsets.zero;
+        final maxScale = namedArgs.getToDouble('maxScale') ?? 2.5;
+        final minScale = namedArgs.getToDouble('minScale') ?? 0.8;
+        final panEnabled = namedArgs.get<bool?>('panEnabled') ?? true;
+        final scaleEnabled = namedArgs.get<bool?>('scaleEnabled') ?? true;
+        final child = visitor.toWidgets(namedArgs['child']) ?? const SizedBox.shrink();
+
+        return InteractiveViewer(
+          key: key,
+          clipBehavior: clipBehavior,
+          panAxis: panAxis,
+          boundaryMargin: boundaryMargin,
+          maxScale: maxScale,
+          minScale: minScale,
+          panEnabled: panEnabled,
+          scaleEnabled: scaleEnabled,
+          child: child,
+        );
+      },
+    },
+    getters: {
+      'child': (visitor, target) => (target as InteractiveViewer).child,
+      'key': (visitor, target) => (target as InteractiveViewer).key,
+    },
+  );
+}
+

@@ -1,7 +1,19 @@
+import 'dart:ui';
 import 'package:d4rt/d4rt.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_d4rt/utils/double.dart';
 import 'package:flutter_d4rt/utils/extensions/widget.dart';
+
+CustomClipper<T>? _getClipper<T>(dynamic raw) {
+  if (raw == null) return null;
+  if (raw is InterpretedInstance) {
+    return raw.bridgedSuperObject as CustomClipper<T>?;
+  }
+  if (raw is BridgedInstance) {
+    return raw.nativeObject as CustomClipper<T>?;
+  }
+  return raw as CustomClipper<T>?;
+}
 
 /// Transform and clipping widgets bridging definitions
 
@@ -90,8 +102,9 @@ BridgedClass getClipRRectBridgingDefinition() {
         return ClipRRect(
           key: namedArgs.get<Key?>('key'),
           borderRadius:
-              namedArgs['borderRadius'] as BorderRadius? ?? BorderRadius.zero,
-          clipper: namedArgs['clipper'] as CustomClipper<RRect>?,
+              namedArgs['borderRadius'] as BorderRadiusGeometry? ??
+              BorderRadius.zero,
+          clipper: _getClipper<RRect>(namedArgs['clipper']),
           clipBehavior: namedArgs['clipBehavior'] as Clip? ?? Clip.antiAlias,
           child: visitor.toWidgets(namedArgs['child']),
         );
@@ -109,7 +122,7 @@ BridgedClass getClipRectBridgingDefinition() {
       '': (visitor, positionalArgs, namedArgs) {
         return ClipRect(
           key: namedArgs.get<Key?>('key'),
-          clipper: namedArgs['clipper'] as CustomClipper<Rect>?,
+          clipper: _getClipper<Rect>(namedArgs['clipper']),
           clipBehavior: namedArgs['clipBehavior'] as Clip? ?? Clip.hardEdge,
           child: visitor.toWidgets(namedArgs['child']),
         );
@@ -127,7 +140,7 @@ BridgedClass getClipOvalBridgingDefinition() {
       '': (visitor, positionalArgs, namedArgs) {
         return ClipOval(
           key: namedArgs.get<Key?>('key'),
-          clipper: namedArgs['clipper'] as CustomClipper<Rect>?,
+          clipper: _getClipper<Rect>(namedArgs['clipper']),
           clipBehavior: namedArgs['clipBehavior'] as Clip? ?? Clip.antiAlias,
           child: visitor.toWidgets(namedArgs['child']),
         );
@@ -145,7 +158,7 @@ BridgedClass getClipPathBridgingDefinition() {
       '': (visitor, positionalArgs, namedArgs) {
         return ClipPath(
           key: namedArgs.get<Key?>('key'),
-          clipper: namedArgs['clipper'] as CustomClipper<Path>?,
+          clipper: _getClipper<Path>(namedArgs['clipper']),
           clipBehavior: namedArgs['clipBehavior'] as Clip? ?? Clip.antiAlias,
           child: visitor.toWidgets(namedArgs['child']),
         );
@@ -153,3 +166,37 @@ BridgedClass getClipPathBridgingDefinition() {
     },
   );
 }
+
+// BackdropFilter bridging
+BridgedClass getBackdropFilterBridgingDefinition() {
+  return BridgedClass(
+    nativeType: BackdropFilter,
+    name: 'BackdropFilter',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final key = namedArgs.get<Key?>('key');
+        final filterRaw = namedArgs['filter'];
+        final ImageFilter filter = (filterRaw is BridgedInstance)
+            ? filterRaw.nativeObject as ImageFilter
+            : filterRaw as ImageFilter;
+        final blendMode =
+            namedArgs['blendMode'] as BlendMode? ?? BlendMode.srcOver;
+        final child = visitor.toWidgets(namedArgs['child']);
+
+        return BackdropFilter(
+          key: key,
+          filter: filter,
+          blendMode: blendMode,
+          child: child,
+        );
+      },
+    },
+    getters: {
+      'filter': (visitor, target) => (target as BackdropFilter).filter,
+      'blendMode': (visitor, target) => (target as BackdropFilter).blendMode,
+      'child': (visitor, target) => (target as BackdropFilter).child,
+      'key': (visitor, target) => (target as BackdropFilter).key,
+    },
+  );
+}
+

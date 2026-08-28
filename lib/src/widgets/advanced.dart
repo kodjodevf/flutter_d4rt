@@ -316,14 +316,16 @@ BridgedClass getReorderableListViewBridgingDefinition() {
             visitor,
           ),
           itemExtent: toDouble(namedArgs['itemExtent']),
-          itemExtentBuilder: (index, dimensions) {
-            return toDouble(
-              (namedArgs['itemExtentBuilder'] as InterpretedFunction?)?.call(
-                visitor,
-                [index, dimensions],
-              ),
-            );
-          },
+          itemExtentBuilder: namedArgs['itemExtentBuilder'] == null
+              ? null
+              : (index, dimensions) {
+                  return toDouble(
+                    (namedArgs['itemExtentBuilder'] as InterpretedFunction?)?.call(
+                      visitor,
+                      [index, dimensions],
+                    ),
+                  );
+                },
           prototypeItem: visitor.toWidgets(namedArgs['prototypeItem']),
           proxyDecorator:
               namedArgs['proxyDecorator']
@@ -340,7 +342,7 @@ BridgedClass getReorderableListViewBridgingDefinition() {
           primary: namedArgs['primary'] as bool?,
           physics: namedArgs['physics'] as ScrollPhysics?,
           shrinkWrap: namedArgs['shrinkWrap'] as bool? ?? false,
-          anchor: toDouble(namedArgs['anchor']),
+          anchor: toDouble(namedArgs['anchor']) ?? 0.0,
           cacheExtent: toDouble(namedArgs['cacheExtent']),
           dragStartBehavior:
               namedArgs['dragStartBehavior'] as DragStartBehavior? ??
@@ -390,14 +392,16 @@ BridgedClass getReorderableListViewBridgingDefinition() {
             visitor,
           ),
           itemExtent: toDouble(namedArgs['itemExtent']),
-          itemExtentBuilder: (index, dimensions) {
-            return toDouble(
-              (namedArgs['itemExtentBuilder'] as InterpretedFunction?)?.call(
-                visitor,
-                [index, dimensions],
-              ),
-            );
-          },
+          itemExtentBuilder: namedArgs['itemExtentBuilder'] == null
+              ? null
+              : (index, dimensions) {
+                  return toDouble(
+                    (namedArgs['itemExtentBuilder'] as InterpretedFunction?)?.call(
+                      visitor,
+                      [index, dimensions],
+                    ),
+                  );
+                },
 
           prototypeItem: visitor.toWidgets(namedArgs['prototypeItem']),
           proxyDecorator: namedArgs['proxyDecorator'] == null
@@ -420,7 +424,7 @@ BridgedClass getReorderableListViewBridgingDefinition() {
           primary: namedArgs['primary'] as bool?,
           physics: namedArgs['physics'] as ScrollPhysics?,
           shrinkWrap: namedArgs['shrinkWrap'] as bool? ?? false,
-          anchor: toDouble(namedArgs['anchor']),
+          anchor: toDouble(namedArgs['anchor']) ?? 0.0,
           cacheExtent: toDouble(namedArgs['cacheExtent']),
           dragStartBehavior:
               namedArgs['dragStartBehavior'] as DragStartBehavior? ??

@@ -109,10 +109,10 @@ BridgedClass getLinearGradientBridgingDefinition() {
     constructors: {
       '': (visitor, positionalArgs, namedArgs) {
         final begin =
-            namedArgs.get<AlignmentGeometry>('begin') ?? Alignment.centerLeft;
+            namedArgs.get<AlignmentGeometry?>('begin') ?? Alignment.centerLeft;
         final end =
-            namedArgs.get<AlignmentGeometry>('end') ?? Alignment.centerRight;
-        final colors = namedArgs.get<List>('colors')!;
+            namedArgs.get<AlignmentGeometry?>('end') ?? Alignment.centerRight;
+        final colors = namedArgs.get<List?>('colors') ?? const [];
         final stops = namedArgs.get<List?>("stops");
         final tileMode = namedArgs.get<TileMode?>('tileMode') ?? TileMode.clamp;
         final transform = namedArgs.get<GradientTransform?>('transform');
@@ -236,21 +236,21 @@ BridgedClass getSweepGradientBridgingDefinition() {
     constructors: {
       '': (visitor, positionalArgs, namedArgs) {
         final center =
-            namedArgs.get<AlignmentGeometry>('center') ?? Alignment.center;
+            namedArgs.get<AlignmentGeometry?>('center') ?? Alignment.center;
         final startAngle =
             toDouble(namedArgs.get<dynamic>('startAngle')) ?? 0.0;
         final endAngle =
             toDouble(namedArgs.get<dynamic>('endAngle')) ?? math.pi * 2;
-        final colors = namedArgs.get<List>('colors')!;
-        final stops = namedArgs.get<List>('stops')!;
-        final tileMode = namedArgs.get<TileMode>('tileMode') ?? TileMode.clamp;
-        final transform = namedArgs.get<GradientTransform>('transform');
+        final colors = namedArgs.get<List?>('colors') ?? const [];
+        final stops = namedArgs.get<List?>('stops');
+        final tileMode = namedArgs.get<TileMode?>('tileMode') ?? TileMode.clamp;
+        final transform = namedArgs.get<GradientTransform?>('transform');
         return SweepGradient(
           center: center,
           startAngle: startAngle,
           endAngle: endAngle,
           colors: colors.cast(),
-          stops: stops.cast(),
+          stops: stops?.cast(),
           tileMode: tileMode,
           transform: transform,
         );

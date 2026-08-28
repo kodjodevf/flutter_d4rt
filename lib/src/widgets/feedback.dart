@@ -200,6 +200,14 @@ BridgedClass getBannerBridgingDefinition() {
   );
 }
 
+/// Returns the BridgedEnumDefinition for BannerLocation
+BridgedEnumDefinition<BannerLocation> getBannerLocationBridgingDefinition() {
+  return BridgedEnumDefinition<BannerLocation>(
+    name: 'BannerLocation',
+    values: BannerLocation.values,
+  );
+}
+
 // Chip bridging (enhanced from existing)
 BridgedClass getActionChipBridgingDefinition() {
   return BridgedClass(

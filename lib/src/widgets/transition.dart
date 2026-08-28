@@ -1,6 +1,22 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:d4rt/d4rt.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_d4rt/utils/extensions/widget.dart';
+
+Animation<T> _extractAnimation<T>(dynamic raw) {
+  if (raw is BridgedInstance) {
+    return _extractAnimation<T>(raw.nativeObject);
+  }
+  if (raw is Animation<T>) return raw;
+  if (raw is AlwaysStoppedAnimation) {
+    return AlwaysStoppedAnimation<T>(raw.value as T);
+  }
+  if (raw is Animation) {
+    return raw.drive(Animatable.fromCallback((val) => val as T));
+  }
+  throw RuntimeError('Expected Animation<$T>, got $raw');
+}
 
 /// Returns the BridgedClass for AnimatedBuilder
 BridgedClass getAnimatedBuilderBridgingDefinition() {
@@ -18,7 +34,6 @@ BridgedClass getAnimatedBuilderBridgingDefinition() {
           key: key,
           animation: animation!,
           builder: (BuildContext context, Widget? child) {
-            // Call the interpreted builder function
             if (builder is InterpretedFunction) {
               final result = builder.call(visitor, [context, child], {});
               return visitor.toWidgets(result);
@@ -40,7 +55,7 @@ BridgedClass getFadeTransitionBridgingDefinition() {
     name: 'FadeTransition',
     constructors: {
       '': (visitor, positionalArgs, namedArgs) {
-        final opacity = namedArgs.get<Animation<double>>('opacity');
+        final opacity = _extractAnimation<double>(namedArgs['opacity']);
         final alwaysIncludeSemantics =
             namedArgs.get<bool?>('alwaysIncludeSemantics') ?? false;
         final child = visitor.toWidgets(namedArgs['child']);
@@ -48,7 +63,7 @@ BridgedClass getFadeTransitionBridgingDefinition() {
 
         return FadeTransition(
           key: key,
-          opacity: opacity!,
+          opacity: opacity,
           alwaysIncludeSemantics: alwaysIncludeSemantics,
           child: child,
         );
@@ -69,7 +84,7 @@ BridgedClass getScaleTransitionBridgingDefinition() {
     name: 'ScaleTransition',
     constructors: {
       '': (visitor, positionalArgs, namedArgs) {
-        final scale = namedArgs.get<Animation<double>>('scale');
+        final scale = _extractAnimation<double>(namedArgs['scale']);
         final alignment =
             namedArgs.get<Alignment?>('alignment') ?? Alignment.center;
         final filterQuality = namedArgs.get<FilterQuality?>('filterQuality');
@@ -78,7 +93,7 @@ BridgedClass getScaleTransitionBridgingDefinition() {
 
         return ScaleTransition(
           key: key,
-          scale: scale!,
+          scale: scale,
           alignment: alignment,
           filterQuality: filterQuality,
           child: child,
@@ -99,7 +114,7 @@ BridgedClass getRotationTransitionBridgingDefinition() {
     name: 'RotationTransition',
     constructors: {
       '': (visitor, positionalArgs, namedArgs) {
-        final turns = namedArgs.get<Animation<double>>('turns');
+        final turns = _extractAnimation<double>(namedArgs['turns']);
         final alignment =
             namedArgs.get<Alignment?>('alignment') ?? Alignment.center;
         final filterQuality = namedArgs.get<FilterQuality?>('filterQuality');
@@ -108,7 +123,7 @@ BridgedClass getRotationTransitionBridgingDefinition() {
 
         return RotationTransition(
           key: key,
-          turns: turns!,
+          turns: turns,
           alignment: alignment,
           filterQuality: filterQuality,
           child: child,
@@ -119,6 +134,76 @@ BridgedClass getRotationTransitionBridgingDefinition() {
       'turns': (visitor, target) => (target as RotationTransition).turns,
       'alignment': (visitor, target) =>
           (target as RotationTransition).alignment,
+    },
+  );
+}
+
+/// Returns the BridgedClass for SlideTransition
+BridgedClass getSlideTransitionBridgingDefinition() {
+  return BridgedClass(
+    nativeType: SlideTransition,
+    name: 'SlideTransition',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final position = _extractAnimation<Offset>(namedArgs['position']);
+        final transformHitTests =
+            namedArgs.get<bool?>('transformHitTests') ?? true;
+        final textDirection = namedArgs.get<TextDirection?>('textDirection');
+        final child = visitor.toWidgets(namedArgs['child']);
+        final key = namedArgs.get<Key?>('key');
+
+        return SlideTransition(
+          key: key,
+          position: position,
+          transformHitTests: transformHitTests,
+          textDirection: textDirection,
+          child: child,
+        );
+      },
+    },
+    getters: {
+      'position': (visitor, target) => (target as SlideTransition).position,
+      'transformHitTests': (visitor, target) =>
+          (target as SlideTransition).transformHitTests,
+      'textDirection': (visitor, target) =>
+          (target as SlideTransition).textDirection,
+      'child': (visitor, target) => (target as SlideTransition).child,
+      'key': (visitor, target) => (target as SlideTransition).key,
+    },
+  );
+}
+
+/// Returns the BridgedClass for SizeTransition
+BridgedClass getSizeTransitionBridgingDefinition() {
+  return BridgedClass(
+    nativeType: SizeTransition,
+    name: 'SizeTransition',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final sizeFactor = _extractAnimation<double>(namedArgs['sizeFactor']);
+        final axis = namedArgs.get<Axis?>('axis') ?? Axis.vertical;
+        final axisAlignment =
+            (namedArgs['axisAlignment'] as num?)?.toDouble() ?? 0.0;
+        final child = visitor.toWidgets(namedArgs['child']);
+        final key = namedArgs.get<Key?>('key');
+
+        return SizeTransition(
+          key: key,
+          sizeFactor: sizeFactor,
+          axis: axis,
+          axisAlignment: axisAlignment,
+          child: child,
+        );
+      },
+    },
+    getters: {
+      'sizeFactor': (visitor, target) =>
+          (target as SizeTransition).sizeFactor,
+      'axis': (visitor, target) => (target as SizeTransition).axis,
+      'axisAlignment': (visitor, target) =>
+          (target as SizeTransition).axisAlignment,
+      'child': (visitor, target) => (target as SizeTransition).child,
+      'key': (visitor, target) => (target as SizeTransition).key,
     },
   );
 }

@@ -461,7 +461,7 @@ BridgedClass getImageFilterBridgingDefinition() {
       'blur': (visitor, positionalArgs, namedArgs) {
         final sigmaX = toDouble(namedArgs.get<dynamic>('sigmaX')) ?? 0.0;
         final sigmaY = toDouble(namedArgs.get<dynamic>('sigmaY')) ?? 0.0;
-        final tileMode = namedArgs.get<TileMode>('tileMode') ?? TileMode.clamp;
+        final tileMode = namedArgs.get<TileMode?>('tileMode') ?? TileMode.clamp;
         return ImageFilter.blur(
           sigmaX: sigmaX,
           sigmaY: sigmaY,
@@ -481,7 +481,7 @@ BridgedClass getImageFilterBridgingDefinition() {
       'matrix': (visitor, positionalArgs, namedArgs) {
         final matrix4 = positionalArgs.get<Float64List>(0)!;
         final filterQuality =
-            namedArgs.get<FilterQuality>('filterQuality') ?? FilterQuality.low;
+            namedArgs.get<FilterQuality?>('filterQuality') ?? FilterQuality.low;
         return ImageFilter.matrix(matrix4, filterQuality: filterQuality);
       },
       'compose': (visitor, positionalArgs, namedArgs) {

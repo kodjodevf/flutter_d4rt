@@ -369,3 +369,79 @@ BridgedClass getSliverGridDelegateWithMaxCrossAxisExtentBridgingDefinition() {
     },
   );
 }
+
+/// Returns the BridgedClass for ScrollPhysics
+BridgedClass getScrollPhysicsBridgingDefinition() {
+  return BridgedClass(
+    nativeType: ScrollPhysics,
+    name: 'ScrollPhysics',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final parent = namedArgs.get<ScrollPhysics?>('parent');
+        return ScrollPhysics(parent: parent);
+      },
+    },
+    isSubtypeOfFunc: (value) => value is ScrollPhysics,
+  );
+}
+
+/// Returns the BridgedClass for NeverScrollableScrollPhysics
+BridgedClass getNeverScrollableScrollPhysicsBridgingDefinition() {
+  return BridgedClass(
+    nativeType: NeverScrollableScrollPhysics,
+    name: 'NeverScrollableScrollPhysics',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final parent = namedArgs.get<ScrollPhysics?>('parent');
+        return NeverScrollableScrollPhysics(parent: parent);
+      },
+    },
+    isSubtypeOfFunc: (value) => value is NeverScrollableScrollPhysics,
+  );
+}
+
+/// Returns the BridgedClass for AlwaysScrollableScrollPhysics
+BridgedClass getAlwaysScrollableScrollPhysicsBridgingDefinition() {
+  return BridgedClass(
+    nativeType: AlwaysScrollableScrollPhysics,
+    name: 'AlwaysScrollableScrollPhysics',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final parent = namedArgs.get<ScrollPhysics?>('parent');
+        return AlwaysScrollableScrollPhysics(parent: parent);
+      },
+    },
+    isSubtypeOfFunc: (value) => value is AlwaysScrollableScrollPhysics,
+  );
+}
+
+/// Returns the BridgedClass for BouncingScrollPhysics
+BridgedClass getBouncingScrollPhysicsBridgingDefinition() {
+  return BridgedClass(
+    nativeType: BouncingScrollPhysics,
+    name: 'BouncingScrollPhysics',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final parent = namedArgs.get<ScrollPhysics?>('parent');
+        return BouncingScrollPhysics(parent: parent);
+      },
+    },
+    isSubtypeOfFunc: (value) => value is BouncingScrollPhysics,
+  );
+}
+
+/// Returns the BridgedClass for ClampingScrollPhysics
+BridgedClass getClampingScrollPhysicsBridgingDefinition() {
+  return BridgedClass(
+    nativeType: ClampingScrollPhysics,
+    name: 'ClampingScrollPhysics',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final parent = namedArgs.get<ScrollPhysics?>('parent');
+        return ClampingScrollPhysics(parent: parent);
+      },
+    },
+    isSubtypeOfFunc: (value) => value is ClampingScrollPhysics,
+  );
+}
+

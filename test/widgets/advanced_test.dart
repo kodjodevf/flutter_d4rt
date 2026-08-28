@@ -727,6 +727,137 @@ void main() {
         final widget = interpreter.execute(code, 'build');
         expect(widget, isA<Widget>());
       });
+
+      test('should create Text.rich with TextSpan and WidgetSpan', () {
+        const code = '''
+          import 'package:flutter/material.dart';
+          
+          Widget build() {
+            return Text.rich(
+              TextSpan(
+                text: 'Hello ',
+                style: TextStyle(fontSize: 16, color: Colors.black),
+                children: [
+                  TextSpan(
+                    text: 'Flutter ',
+                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
+                  ),
+                  WidgetSpan(
+                    child: Icon(Icons.star, size: 16, color: Colors.amber),
+                  ),
+                ],
+              ),
+            );
+          }
+        ''';
+
+        final widget = interpreter.execute(code, 'build');
+        expect(widget, isA<Widget>());
+      });
+
+      test('should create CustomScrollView with Slivers', () {
+        const code = '''
+          import 'package:flutter/material.dart';
+          
+          Widget build() {
+            return CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  title: Text('Sliver App Bar'),
+                  floating: true,
+                  expandedHeight: 120.0,
+                ),
+                SliverToBoxAdapter(
+                  child: Container(
+                    height: 50,
+                    color: Colors.amber,
+                    child: Center(child: Text('Header')),
+                  ),
+                ),
+                SliverList(
+                  delegate: SliverChildListDelegate([
+                    ListTile(title: Text('Item 1')),
+                    ListTile(title: Text('Item 2')),
+                  ]),
+                ),
+              ],
+            );
+          }
+        ''';
+
+        final widget = interpreter.execute(code, 'build');
+        expect(widget, isA<Widget>());
+      });
+
+      test('should create LayoutBuilder, OrientationBuilder, and InteractiveViewer', () {
+        const code = '''
+          import 'package:flutter/material.dart';
+          
+          Widget build() {
+            return LayoutBuilder(
+              builder: (context, constraints) {
+                return OrientationBuilder(
+                  builder: (ctx, orientation) {
+                    return InteractiveViewer(
+                      maxScale: 3.0,
+                      minScale: 0.5,
+                      child: Container(
+                        width: constraints.maxWidth,
+                        child: Text('Orientation: ' + orientation.toString()),
+                      ),
+                    );
+                  },
+                );
+              },
+            );
+          }
+        ''';
+
+        final widget = interpreter.execute(code, 'build');
+        expect(widget, isA<Widget>());
+      });
+
+      test('should support Keys hierarchy and Spacer', () {
+        const code = '''
+          import 'package:flutter/material.dart';
+          
+          Widget build() {
+            final k1 = Key('k1');
+            final k2 = ValueKey('v2');
+            final k3 = UniqueKey();
+            
+            return Row(
+              key: k1,
+              children: [
+                Container(key: k2, child: Text('Left')),
+                Spacer(flex: 2),
+                Container(key: k3, child: Text('Right')),
+              ],
+            );
+          }
+        ''';
+
+        final widget = interpreter.execute(code, 'build');
+        expect(widget, isA<Widget>());
+      });
+
+      test('should support IconTheme and IconData', () {
+        const code = '''
+          import 'package:flutter/material.dart';
+          
+          Widget build() {
+            final data = IconData(0xe318, fontFamily: 'MaterialIcons');
+            return IconTheme(
+              data: IconThemeData(color: Colors.purple, size: 28.0),
+              child: Icon(data),
+            );
+          }
+        ''';
+
+        final widget = interpreter.execute(code, 'build');
+        expect(widget, isA<Widget>());
+      });
     });
   });
 }
+

@@ -152,30 +152,6 @@ BridgedClass getNavigatorBridgingDefinition() {
   );
 }
 
-// Hero bridging
-BridgedClass getHeroBridgingDefinition() {
-  return BridgedClass(
-    nativeType: Hero,
-    name: 'Hero',
-    constructors: {
-      '': (visitor, positionalArgs, namedArgs) {
-        return Hero(
-          key: namedArgs.get<Key?>('key'),
-          tag: namedArgs['tag'] as Object,
-          createRectTween: namedArgs['createRectTween'] as CreateRectTween?,
-          flightShuttleBuilder:
-              namedArgs['flightShuttleBuilder'] as HeroFlightShuttleBuilder?,
-          placeholderBuilder:
-              namedArgs['placeholderBuilder'] as HeroPlaceholderBuilder?,
-          transitionOnUserGestures:
-              namedArgs['transitionOnUserGestures'] as bool? ?? false,
-          child: visitor.toWidgets(namedArgs['child']),
-        );
-      },
-    },
-  );
-}
-
 BridgedClass getPageBridgingDefinition() {
   return BridgedClass(
     nativeType: Page,

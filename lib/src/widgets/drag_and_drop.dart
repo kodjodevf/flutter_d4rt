@@ -78,7 +78,7 @@ BridgedClass getDraggableBridgingDefinition() {
           feedback: feedback,
           childWhenDragging: childWhenDragging,
           feedbackOffset: feedbackOffset,
-          dragAnchorStrategy: dragAnchorStrategy!,
+          dragAnchorStrategy: dragAnchorStrategy ?? childDragAnchorStrategy,
           affinity: affinity,
           maxSimultaneousDrags: maxSimultaneousDrags,
           onDragStarted: onDragStarted,

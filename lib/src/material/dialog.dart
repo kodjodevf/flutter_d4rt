@@ -22,7 +22,12 @@ BridgedClass getAlertDialogBridgingDefinition() {
         final scrollable = namedArgs.get<bool?>('scrollable') ?? false;
         final title = visitor.toWidgets(namedArgs['title']);
         final content = visitor.toWidgets(namedArgs['content']);
-        final actions = visitor.toWidgets(namedArgs['actions']);
+        final actionsRaw = visitor.toWidgets(namedArgs['actions']);
+        final List<Widget>? actions = actionsRaw is List<Widget>
+            ? actionsRaw
+            : (actionsRaw is List
+                ? actionsRaw.cast<Widget>()
+                : (actionsRaw is Widget ? [actionsRaw] : null));
 
         return AlertDialog(
           key: key,
@@ -74,7 +79,12 @@ BridgedClass getSimpleDialogBridgingDefinition() {
           'contentPadding',
         );
         final title = visitor.toWidgets(namedArgs['title']);
-        final children = visitor.toWidgets(namedArgs['children']);
+        final childrenRaw = visitor.toWidgets(namedArgs['children']);
+        final List<Widget>? children = childrenRaw is List<Widget>
+            ? childrenRaw
+            : (childrenRaw is List
+                ? childrenRaw.cast<Widget>()
+                : (childrenRaw is Widget ? [childrenRaw] : null));
 
         return SimpleDialog(
           key: key,

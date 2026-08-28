@@ -401,3 +401,132 @@ BridgedClass getShowModalBottomSheetBridgingDefinition() {
     },
   );
 }
+
+/// Returns the BridgedClass for NotificationListener.
+BridgedClass getNotificationListenerBridgingDefinition() {
+  return BridgedClass(
+    nativeType: NotificationListener,
+    name: 'NotificationListener',
+    constructors: {
+      '': (visitor, positionalArgs, namedArgs) {
+        final key = namedArgs.get<Key?>('key');
+        final onNotificationValue = namedArgs['onNotification'];
+        final child = visitor.toWidgets(namedArgs['child']) ?? const SizedBox.shrink();
+
+        bool Function(Notification)? onNotification;
+        if (onNotificationValue is InterpretedFunction) {
+          onNotification = (notification) {
+            final result = onNotificationValue.call(visitor, [notification]);
+            return result is bool ? result : true;
+          };
+        } else if (onNotificationValue is Function) {
+          onNotification = (notification) {
+            final result = (onNotificationValue as dynamic)(notification);
+            return result is bool ? result : true;
+          };
+        }
+
+        return NotificationListener<Notification>(
+          key: key,
+          onNotification: onNotification,
+          child: child,
+        );
+      },
+    },
+    getters: {
+      'child': (visitor, target) => (target as NotificationListener).child,
+      'key': (visitor, target) => (target as NotificationListener).key,
+    },
+  );
+}
+
+/// Returns the BridgedClass for Notification abstract class.
+BridgedClass getNotificationBridgingDefinition() {
+  return BridgedClass(
+    nativeType: Notification,
+    name: 'Notification',
+    constructors: {},
+    methods: {
+      'dispatch': (visitor, target, positionalArgs, namedArgs) {
+        final targetContext = positionalArgs[0] as BuildContext;
+        (target as Notification).dispatch(targetContext);
+        return null;
+      },
+    },
+    isSubtypeOfFunc: (value) => value is Notification,
+  );
+}
+
+/// Returns the BridgedClass for ScrollNotification.
+BridgedClass getScrollNotificationBridgingDefinition() {
+  return BridgedClass(
+    nativeType: ScrollNotification,
+    name: 'ScrollNotification',
+    constructors: {},
+    getters: {
+      'metrics': (visitor, target) => (target as ScrollNotification).metrics,
+      'context': (visitor, target) => (target as ScrollNotification).context,
+      'depth': (visitor, target) => (target as ScrollNotification).depth,
+    },
+    isSubtypeOfFunc: (value) => value is ScrollNotification,
+  );
+}
+
+/// Returns the BridgedClass for ScrollStartNotification.
+BridgedClass getScrollStartNotificationBridgingDefinition() {
+  return BridgedClass(
+    nativeType: ScrollStartNotification,
+    name: 'ScrollStartNotification',
+    constructors: {},
+    getters: {
+      'dragDetails': (visitor, target) =>
+          (target as ScrollStartNotification).dragDetails,
+    },
+    isSubtypeOfFunc: (value) => value is ScrollStartNotification,
+  );
+}
+
+/// Returns the BridgedClass for ScrollUpdateNotification.
+BridgedClass getScrollUpdateNotificationBridgingDefinition() {
+  return BridgedClass(
+    nativeType: ScrollUpdateNotification,
+    name: 'ScrollUpdateNotification',
+    constructors: {},
+    getters: {
+      'scrollDelta': (visitor, target) =>
+          (target as ScrollUpdateNotification).scrollDelta,
+      'dragDetails': (visitor, target) =>
+          (target as ScrollUpdateNotification).dragDetails,
+    },
+    isSubtypeOfFunc: (value) => value is ScrollUpdateNotification,
+  );
+}
+
+/// Returns the BridgedClass for ScrollEndNotification.
+BridgedClass getScrollEndNotificationBridgingDefinition() {
+  return BridgedClass(
+    nativeType: ScrollEndNotification,
+    name: 'ScrollEndNotification',
+    constructors: {},
+    getters: {
+      'dragDetails': (visitor, target) =>
+          (target as ScrollEndNotification).dragDetails,
+    },
+    isSubtypeOfFunc: (value) => value is ScrollEndNotification,
+  );
+}
+
+/// Returns the BridgedClass for UserScrollNotification.
+BridgedClass getUserScrollNotificationBridgingDefinition() {
+  return BridgedClass(
+    nativeType: UserScrollNotification,
+    name: 'UserScrollNotification',
+    constructors: {},
+    getters: {
+      'direction': (visitor, target) =>
+          (target as UserScrollNotification).direction,
+    },
+    isSubtypeOfFunc: (value) => value is UserScrollNotification,
+  );
+}
+

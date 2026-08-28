@@ -169,10 +169,12 @@ BridgedClass getStateBridgingDefinition() {
         return (target as StateBridge).build(context);
       },
       'setState': (visitor, target, positionalArgs, namedArgs) {
-        final fn = positionalArgs.get<InterpretedFunction?>(0);
+        final fn = positionalArgs.isNotEmpty ? positionalArgs[0] : null;
         (target as StateBridge).setState(() {
-          if (fn != null) {
+          if (fn is InterpretedFunction) {
             fn.call(visitor, []);
+          } else if (fn is Function) {
+            fn();
           }
         });
         return null;
@@ -337,3 +339,19 @@ class SingleTickerProviderStateBridge extends StateBridge
     }
   }
 }
+
+/// Returns the BridgedClass for BuildContext
+BridgedClass getBuildContextBridgingDefinition() {
+  return BridgedClass(
+    nativeType: BuildContext,
+    name: 'BuildContext',
+    constructors: {},
+    getters: {
+      'mounted': (visitor, target) => (target as BuildContext).mounted,
+      'size': (visitor, target) => (target as BuildContext).size,
+      'widget': (visitor, target) => (target as BuildContext).widget,
+    },
+    isSubtypeOfFunc: (value) => value is BuildContext,
+  );
+}
+

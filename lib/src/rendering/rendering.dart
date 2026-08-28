@@ -5,6 +5,7 @@ import 'package:flutter_d4rt/src/rendering/proxy_box.dart';
 import 'package:flutter_d4rt/src/rendering/stack.dart';
 import 'package:flutter_d4rt/src/rendering/wrap.dart';
 import 'package:flutter_d4rt/src/rendering/custom_paint.dart';
+import 'package:flutter_d4rt/src/rendering/custom_clipper.dart';
 
 void registerRenderingBridges(D4rt interpreter) {
   interpreter.registerBridgedEnum(
@@ -55,6 +56,14 @@ void registerRenderingBridges(D4rt interpreter) {
   );
   interpreter.registerBridgedClass(
     getRenderCustomPaintBridgingDefinition(),
+    'package:flutter/rendering_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getBoxConstraintsBridgingDefinition(),
+    'package:flutter/rendering_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getCustomClipperBridgingDefinition(),
     'package:flutter/rendering_.dart',
   );
 }

@@ -11,7 +11,7 @@ BridgedClass getFutureBuilderBridgingDefinition() {
     constructors: {
       '': (visitor, positionalArgs, namedArgs) {
         final future = namedArgs.get<Future?>('future');
-        final builder = namedArgs.get<InterpretedFunction?>('builder');
+        final builder = namedArgs['builder'];
         final initialData = namedArgs.get<dynamic>('initialData');
         final key = namedArgs.get<Key?>('key');
 
@@ -24,8 +24,14 @@ BridgedClass getFutureBuilderBridgingDefinition() {
           future: future,
           initialData: initialData,
           builder: (context, snapshot) {
-            final result = builder.call(visitor, [context, snapshot]);
-            return visitor.toWidgets(result)!;
+            if (builder is InterpretedFunction) {
+              final result = builder.call(visitor, [context, snapshot]);
+              return visitor.toWidgets(result)!;
+            } else if (builder is Function) {
+              final result = (builder as dynamic)(context, snapshot);
+              return visitor.toWidgets(result)!;
+            }
+            return Container();
           },
         );
       },
@@ -46,7 +52,7 @@ BridgedClass getStreamBuilderBridgingDefinition() {
     constructors: {
       '': (visitor, positionalArgs, namedArgs) {
         final stream = namedArgs.get<Stream?>('stream');
-        final builder = namedArgs.get<InterpretedFunction?>('builder');
+        final builder = namedArgs['builder'];
         final initialData = namedArgs.get<dynamic>('initialData');
         final key = namedArgs.get<Key?>('key');
 
@@ -59,8 +65,14 @@ BridgedClass getStreamBuilderBridgingDefinition() {
           stream: stream?.cast(),
           initialData: initialData,
           builder: (context, snapshot) {
-            final result = builder.call(visitor, [context, snapshot]);
-            return visitor.toWidgets(result)!;
+            if (builder is InterpretedFunction) {
+              final result = builder.call(visitor, [context, snapshot]);
+              return visitor.toWidgets(result)!;
+            } else if (builder is Function) {
+              final result = (builder as dynamic)(context, snapshot);
+              return visitor.toWidgets(result)!;
+            }
+            return Container();
           },
         );
       },
@@ -118,6 +130,7 @@ BridgedClass getAsyncSnapshotBridgingDefinition() {
       'stackTrace': (visitor, target) => (target as AsyncSnapshot).stackTrace,
       'hasData': (visitor, target) => (target as AsyncSnapshot).hasData,
       'hasError': (visitor, target) => (target as AsyncSnapshot).hasError,
+      'requireData': (visitor, target) => (target as AsyncSnapshot).requireData,
     },
     methods: {
       'toString': (visitor, target, positionalArgs, namedArgs) {

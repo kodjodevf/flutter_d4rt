@@ -55,6 +55,22 @@ void registerFoundationBridges(D4rt interpreter) {
     getKeyBridgingDefinition(),
     'package:flutter/foundation_.dart',
   );
+  interpreter.registerBridgedClass(
+    getLocalKeyBridgingDefinition(),
+    'package:flutter/foundation_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getValueKeyBridgingDefinition(),
+    'package:flutter/foundation_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getUniqueKeyBridgingDefinition(),
+    'package:flutter/foundation_.dart',
+  );
+  interpreter.registerBridgedClass(
+    getObjectKeyBridgingDefinition(),
+    'package:flutter/foundation_.dart',
+  );
 
   // Register Platform bridges
   interpreter.registerBridgedEnum(
