@@ -47,14 +47,7 @@ BridgedClass getWidgetBridgingDefinition() {
         return Widget.canUpdate(oldWidget!, newWidget!);
       },
     },
-    isSubtypeOfFunc: (RuntimeType other, {Object? value}) {
-      if (other is BridgedClass) {
-        if (value != null && value is BridgedInstance<Object>) {
-          return value.nativeObject is Widget;
-        }
-      }
-      return false;
-    },
+    isSubtypeOfFunc: (value) => value is Widget,
   );
 }
 
